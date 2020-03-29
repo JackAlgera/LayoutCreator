@@ -2,15 +2,12 @@ package com.projetpaparobin.documents.dao;
 
 import java.io.File;
 
-import org.apache.pdfbox.multipdf.Splitter;
-
-import com.projetpaparobin.documents.PDFHandler;
-
 public class DAOExcelImpl implements DAOExcel {
 
 	private static DAOExcelImpl instance;
-	private static Splitter splitter = new Splitter();
 
+	private static final String EXCEL_TEMPLATE_PATH = "./COM-Q-50035005-EdK.xlsm";
+	
 	private DAOExcelImpl() {
 	}
 	
@@ -22,10 +19,8 @@ public class DAOExcelImpl implements DAOExcel {
 		return instance;
 	}
 	
-	@Override
 	public File getExcelTemplate() {
-		// TODO Auto-generated method stub
-		return null;
+		return new File(EXCEL_TEMPLATE_PATH);
 	}
 	
 }
