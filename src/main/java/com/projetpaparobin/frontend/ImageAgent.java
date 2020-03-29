@@ -3,7 +3,7 @@ package com.projetpaparobin.frontend;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import com.projetpaparobin.model.PDFHandler;
+import com.projetpaparobin.documents.PDFHandler;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -16,9 +16,8 @@ public class ImageAgent extends VBox {
 	private Image image;
 	private ImageView imageView;
 	
-	public ImageAgent(String imagePath, int pageNum) {
+	public ImageAgent(String imagePath, int pageNum, int height) {
 		super();
-		this.setMaxSize(800, 800);
 		
 		try {
 			BufferedImage bufImage = pdfHandler.getImageFromPDF(imagePath, pageNum);
@@ -30,7 +29,7 @@ public class ImageAgent extends VBox {
 		
 		imageView = new ImageView(image);
 		imageView.setPreserveRatio(true);
-		imageView.setFitHeight(800);
+		imageView.setFitHeight(height);
 		
 		this.getChildren().addAll(imageView);		
 	}

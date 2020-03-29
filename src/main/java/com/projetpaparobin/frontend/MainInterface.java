@@ -1,6 +1,6 @@
 package com.projetpaparobin.frontend;
 
-import com.projetpaparobin.model.PDFHandler;
+import com.projetpaparobin.documents.PDFHandler;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -11,8 +11,9 @@ public class MainInterface extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
     	String pathImage = "D:\\Projets Java\\Projet Papa Robin\\image.pdf";
+    	int height = 800;
     	
-		ImageAgent image = new ImageAgent(pathImage, 1);
+		ImageAgent image = new ImageAgent(pathImage, 1, height);
 		
 		Scene scene = new Scene(image);
 		
