@@ -1,4 +1,4 @@
-package com.projetpaparobin.documents;
+package com.projetpaparobin.documents.dao;
 
 import java.io.File;
 
