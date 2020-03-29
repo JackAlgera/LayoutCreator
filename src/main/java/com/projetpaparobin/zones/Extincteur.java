@@ -9,13 +9,14 @@ public class Extincteur {
 	private String squareColor; //either blue,red or yellow
 	private Point positionSquare;
 	private boolean isNew;
+	private Zone zone;
 	
-	public Extincteur(int number, String extinguisherType, String protectionType, String squareColore,
+	public Extincteur(int number, String extinguisherType, String protectionType, String squareColor,
 			Point positionSquare, boolean isNew) {
 		this.number = number;
 		this.extinguisherType = extinguisherType;
 		this.protectionType = protectionType;
-		this.squareColore = squareColore;
+		this.squareColor = squareColor;
 		this.positionSquare = positionSquare;
 		this.isNew = isNew;
 	}
@@ -45,11 +46,11 @@ public class Extincteur {
 	}
 
 	public String getSquareColore() {
-		return squareColore;
+		return squareColor;
 	}
 
 	public void setSquareColore(String squareColore) {
-		this.squareColore = squareColore;
+		this.squareColor = squareColore;
 	}
 
 	public Point getPositionSquare() {
@@ -67,14 +68,5 @@ public class Extincteur {
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
 	}
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
 }

@@ -22,7 +22,6 @@ public class Shape {
 		this.points.remove(point);
 	}
 	
-
 	public void addPoint(Point point) {
 		this.points.add(point);
 	}
@@ -42,7 +41,5 @@ public class Shape {
 	public void setPoints(ArrayList<Point> points) {
 		this.points = points;
 	}
-	
-	
-	
+
 }
