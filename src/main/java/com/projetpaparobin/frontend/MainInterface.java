@@ -10,8 +10,8 @@ public class MainInterface extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-    	String pathImage = "D:\\Projets Java\\Projet Papa Robin\\image.pdf";
     	int height = 800;
+    	String pathImage = "C:\\Users\\robbi\\Desktop\\Travail papa\\initial.pdf";
     	
 		ImageAgent image = new ImageAgent(pathImage, 1, height);
 		

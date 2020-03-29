@@ -1,15 +1,16 @@
 package com.projetpaparobin.zones;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Zone {
 	
 	private Identifiant identifiant;
 	private Shape shape;
-	private String color;
+	private Color color;
 	private ArrayList<Extincteur> extincteurs;	
 	
-	public Zone(Identifiant identifiant, Shape shape, String color, ArrayList<Extincteur> extincteurs) {
+	public Zone(Identifiant identifiant, Shape shape, Color color, ArrayList<Extincteur> extincteurs) {
 		this.identifiant = identifiant;
 		this.shape = shape;
 		this.color = color;
@@ -32,11 +33,11 @@ public class Zone {
 		this.shape = shape;
 	}
 
-	public String getColor() {
+	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(String color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
