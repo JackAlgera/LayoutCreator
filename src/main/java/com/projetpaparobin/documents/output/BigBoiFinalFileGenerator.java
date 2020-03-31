@@ -34,6 +34,9 @@ public class BigBoiFinalFileGenerator {
 		
 		return instance;
 	}
+	public void generateExcel() {
+		
+	}
 		
 	public void PutInExcel(String excelFilePath, int columnPos, int rowPos, int sheetNumber, String dataToAdd) {
 		try {

@@ -4,19 +4,17 @@ import java.util.ArrayList;
 
 public class Shape {
 
-	// Parameters
-	
 	private int aire;
 	private ArrayList<Point> points;
 	
-	//Constructor	
+	public Shape() {
+		points = new ArrayList<Point>();
+	}
 	
 	public Shape(int aire, ArrayList<Point> points) {
 		this.aire = aire;
 		this.points = points;
 	}
-
-	// Methods
 	
 	public void deletePoint(Point point) {
 		this.points.remove(point);
