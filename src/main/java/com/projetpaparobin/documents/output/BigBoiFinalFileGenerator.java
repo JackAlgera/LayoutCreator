@@ -20,5 +20,10 @@ public class BigBoiFinalFileGenerator {
 		
 		return instance;
 	}
+	
+	public void generateExcel() {
 		
+	}
+		
+	
 }

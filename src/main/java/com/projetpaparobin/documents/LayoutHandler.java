@@ -24,5 +24,8 @@ public class LayoutHandler {
 	public void addZone(Zone newZone) {
 		zones.add(newZone);
 	}	
-	
+
+	public ArrayList<Zone> getZones() {
+		return zones;
+	}
 }
