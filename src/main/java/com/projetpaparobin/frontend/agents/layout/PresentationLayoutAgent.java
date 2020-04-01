@@ -68,7 +68,8 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 			updateShapes();
 			updateCanvas();		
 			break;
-		default:
+		case CANCELED:
+			updateCanvas();		
 			break;
 		}
 		

@@ -27,10 +27,11 @@ public class MainUI extends HBox {
 		super();
 		this.setPrefSize(width, height);	
 		
-		sideBar = new SideBarAgent(height, width / 2);
 		layoutPres = new PresentationLayoutAgent();
 		layoutView = new ViewLayoutAgent(layoutPath, 1, height, width / 2, layoutPres);
-		layoutPres.setView(layoutView);
+		layoutPres.setView(layoutView);		
+
+		sideBar = new SideBarAgent(height, width / 2, layoutPres);
 				
 		this.getChildren().addAll(layoutView, sideBar);
 	}	

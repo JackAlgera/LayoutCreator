@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.agents;
 
+import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.utils.UIElements;
 import com.projetpaparobin.zones.creators.IZoneCreatorListener;
 import com.projetpaparobin.zones.creators.ZoneCreator;
@@ -13,24 +14,35 @@ import javafx.scene.layout.VBox;
 public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private Button newShapeButton;
+	private Button newShapeButton, doneEditingShapeButton;
+	private PresentationLayoutAgent presLayoutAgent;
 	
-	public SideBarAgent(int height, int width) {
+	public SideBarAgent(int height, int width, PresentationLayoutAgent presLayoutAgent) {
 		super();
 		this.setBorder(UIElements.BLACK_BORDER);
 		this.setPrefSize(width, height);
 		this.setAlignment(Pos.TOP_CENTER);
+		this.presLayoutAgent = presLayoutAgent;
 				
 		newShapeButton = new Button("New shape");
 		newShapeButton.addEventHandler(ActionEvent.ACTION, this);
+		doneEditingShapeButton = new Button("Finished editing shape");
+		doneEditingShapeButton.addEventHandler(ActionEvent.ACTION, this);
 		
-		this.getChildren().addAll(newShapeButton);
+		this.getChildren().addAll(newShapeButton, doneEditingShapeButton);
 	}
 
+	public void setPresLayoutAgent(PresentationLayoutAgent presLayoutAgent) {
+		this.presLayoutAgent = presLayoutAgent;
+	}
+	
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource().equals(newShapeButton)) {
+			presLayoutAgent.updateCanvas();
 			zoneCreator.newZone();
+		} else if(event.getSource().equals(doneEditingShapeButton)) {
+			zoneCreator.finishedCreatingShape();
 		}
 	}
 	
