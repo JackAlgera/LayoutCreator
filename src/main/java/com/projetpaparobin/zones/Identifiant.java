@@ -4,16 +4,23 @@ public class Identifiant {
 	
 	private String areaType;
 	private int areaNumber;
-	private String activityType;
+	private EZoneType activityType;
 	private int areaSize;
 	
 	public Identifiant(String areaType, int areaNumber, String activityType, int areaSize) {
 		this.areaType = areaType;
 		this.areaNumber = areaNumber;
-		this.activityType = activityType;
+		this.activityType = EZoneType.valueOf(activityType);
 		this.areaSize = areaSize;
 	}
 
+	public Identifiant(String areaType, int areaNumber, EZoneType activityType, int areaSize) {
+		this.areaType = areaType;
+		this.areaNumber = areaNumber;
+		this.activityType = activityType;
+		this.areaSize = areaSize;
+	}
+		
 	public String getAreaType() {
 		return areaType;
 	}
@@ -30,11 +37,11 @@ public class Identifiant {
 		this.areaNumber = areaNumber;
 	}
 
-	public String getActivityType() {
+	public EZoneType getActivityType() {
 		return activityType;
 	}
 
-	public void setActivityType(String activityType) {
+	public void setActivityType(EZoneType activityType) {
 		this.activityType = activityType;
 	}
 
