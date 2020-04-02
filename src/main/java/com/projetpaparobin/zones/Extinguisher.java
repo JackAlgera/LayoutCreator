@@ -2,19 +2,21 @@ package com.projetpaparobin.zones;
 
 import java.awt.Color;
 
-public class Extincteur {
+public class Extinguisher {
 
 	
 	private int number; //from 1 to n 
 	private String extinguisherType;
 	private String protectionType; 
+	private int anneeMiseEnService;
+	private String marque;
 	private Color squareColor; //either blue,red or yellow
 	private Point positionSquare;
 	private boolean isNew;
 	private Zone zone;
 	
-	public Extincteur(int number, String extinguisherType, String protectionType, Color squareColor,
-			Point positionSquare, boolean isNew, Zone zone) {
+	public Extinguisher(int number, String extinguisherType, String protectionType, Color squareColor,
+			Point positionSquare, boolean isNew, Zone zone,int anneeMiseEnService,String marque) {
 		this.number = number;
 		this.extinguisherType = extinguisherType;
 		this.protectionType = protectionType;
@@ -22,6 +24,8 @@ public class Extincteur {
 		this.positionSquare = positionSquare;
 		this.isNew = isNew;
 		this.zone = zone;
+		this.anneeMiseEnService = anneeMiseEnService;
+		this.marque = marque;
 	}
 
 	public int getNumber() {
@@ -72,4 +76,21 @@ public class Extincteur {
 		this.isNew = isNew;
 	}
 
+	public int getAnneeMiseEnService() {
+		return anneeMiseEnService;
+	}
+
+	public void setAnneeMiseEnService(int anneeMiseEnService) {
+		this.anneeMiseEnService = anneeMiseEnService;
+	}
+
+	public String getMarque() {
+		return marque;
+	}
+
+	public void setMarque(String marque) {
+		this.marque = marque;
+	}
+
+	
 }
