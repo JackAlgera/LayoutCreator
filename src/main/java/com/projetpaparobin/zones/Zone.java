@@ -3,6 +3,7 @@ package com.projetpaparobin.zones;
 import java.util.ArrayList;
 
 import com.projetpaparobin.utils.UIElements;
+import com.projetpaparobin.zones.extinguishers.Extinguisher;
 
 import javafx.scene.paint.Color;
 
@@ -66,6 +67,10 @@ public class Zone {
 
 	public void setExtincteurs(ArrayList<Extinguisher> extincteurs) {
 		this.extincteurs = extincteurs;
+	}
+	
+	public boolean containPoint(double posX, double posY) {
+		return shape.getArea().contains(posX, posY);
 	}
 		
 }

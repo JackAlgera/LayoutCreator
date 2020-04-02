@@ -1,6 +1,9 @@
-package com.projetpaparobin.zones;
+package com.projetpaparobin.zones.extinguishers;
 
 import java.awt.Color;
+
+import com.projetpaparobin.zones.Point;
+import com.projetpaparobin.zones.Zone;
 
 public class Extinguisher {
 
@@ -90,6 +93,5 @@ public class Extinguisher {
 	public void setMarque(String marque) {
 		this.marque = marque;
 	}
-
 	
 }

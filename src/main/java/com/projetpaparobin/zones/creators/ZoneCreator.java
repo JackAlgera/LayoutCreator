@@ -86,7 +86,7 @@ public class ZoneCreator {
 
 	private void sendEvent(EZoneEvents event) {
 		for (IZoneCreatorListener listener : listeners) {
-			listener.handleEvent(event);
+			listener.handleZoneCreatorEvent(event);
 		}
 	}
 		

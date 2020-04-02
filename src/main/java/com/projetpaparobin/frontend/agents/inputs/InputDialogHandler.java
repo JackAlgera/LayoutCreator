@@ -13,7 +13,6 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 
 public class InputDialogHandler implements IZoneCreatorListener {
@@ -76,7 +75,7 @@ public class InputDialogHandler implements IZoneCreatorListener {
 	}
 
 	@Override
-	public void handleEvent(EZoneEvents event) {
+	public void handleZoneCreatorEvent(EZoneEvents event) {
 		switch (event) {
 		case CREATING_NEW_ZONE:
 			break;

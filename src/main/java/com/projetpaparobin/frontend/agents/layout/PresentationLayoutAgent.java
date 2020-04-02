@@ -49,7 +49,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 	}	
 	
 	@Override
-	public void handleEvent(EZoneEvents event) {
+	public void handleZoneCreatorEvent(EZoneEvents event) {
 		switch (event) {
 		case CREATING_NEW_ZONE:
 			break;
