@@ -31,6 +31,10 @@ public class InputDialogHandler implements IZoneCreatorListener {
 		areaTypeTextField.setPromptText("Area Type");
 		areaTypeTextField.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
 		
+		TextField areaNumberTextField = new TextField();
+		areaNumberTextField.setPromptText("Area number");
+		areaNumberTextField.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
+		
 		TextField activityTypeTextField  = new TextField();
 		activityTypeTextField.setPromptText("Activity Type");
 		activityTypeTextField.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
@@ -39,10 +43,11 @@ public class InputDialogHandler implements IZoneCreatorListener {
 		areaSizesTextField.setPromptText("Area size");
 		areaSizesTextField.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
-		dialogPane.setContent(new VBox(8, areaTypeTextField, activityTypeTextField, areaSizesTextField));
+		dialogPane.setContent(new VBox(8, areaTypeTextField, areaNumberTextField, activityTypeTextField, areaSizesTextField));
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String areaType = areaTypeTextField.getText();
+				String areaNumber = areaNumberTextField.getText();
 				String activityType = activityTypeTextField.getText();
 				String areaSize = areaSizesTextField.getText();
 				
@@ -53,8 +58,11 @@ public class InputDialogHandler implements IZoneCreatorListener {
 				if(areaSize.isBlank()) {
 					areaSize = "-1";
 				}
+				if(areaNumber.isBlank()) {
+					areaSize = "-1";
+				}
 				
-				return new Identifiant(areaType, activityType, Integer.parseInt(areaSize));
+				return new Identifiant(areaType, Integer.parseInt(areaNumber), activityType, Integer.parseInt(areaSize));
 			} 
 			if(button == ButtonType.CANCEL) {
 				zoneCreator.canceled();
@@ -78,6 +86,7 @@ public class InputDialogHandler implements IZoneCreatorListener {
 			Optional<Identifiant> response = inputDialog.showAndWait();
 			if(!response.isEmpty()) {
 				zoneCreator.setZoneIdentifiant(response.get().getAreaType(), 
+						response.get().getAreaNumber(),
 						response.get().getActivityType(), 
 						response.get().getAreaSize());
 			}

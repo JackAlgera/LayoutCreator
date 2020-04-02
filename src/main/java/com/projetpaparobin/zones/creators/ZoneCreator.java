@@ -3,6 +3,7 @@ package com.projetpaparobin.zones.creators;
 import java.util.ArrayList;
 
 import com.projetpaparobin.documents.LayoutHandler;
+import com.projetpaparobin.zones.EZoneType;
 import com.projetpaparobin.zones.Identifiant;
 import com.projetpaparobin.zones.Point;
 import com.projetpaparobin.zones.Zone;
@@ -55,9 +56,9 @@ public class ZoneCreator {
 		}
 	}
 
-	public void setZoneIdentifiant(String areaType, String activityType, int areaSizes) {
+	public void setZoneIdentifiant(String areaType, int areaNumber, EZoneType activityType, int areaSizes) {
 		if(currentZone != null && (zoneState == EZoneCreationState.SETTING_NAME)) {
-			currentZone.setIdentifiant(new Identifiant(areaType, activityType, areaSizes));
+			currentZone.setIdentifiant(new Identifiant(areaType, areaNumber, activityType, areaSizes));
 			doneCreatingZone();
 		}
 	}
