@@ -11,16 +11,16 @@ public class Zone {
 	private Identifiant identifiant;
 	private Shape shape;
 	private Color rimColor, fillColor;
-	private ArrayList<Extincteur> extincteurs;	
+	private ArrayList<Extinguisher> extincteurs;	
 	
 	public Zone() {
 		this.shape = new Shape();
-		this.extincteurs = new ArrayList<Extincteur>();
+		this.extincteurs = new ArrayList<Extinguisher>();
 		this.fillColor = UIElements.getRandomColor();
 		this.rimColor = fillColor.darker();
 	}
 	
-	public Zone(Identifiant identifiant, Shape shape, Color rimColor, Color fillColor, ArrayList<Extincteur> extincteurs) {
+	public Zone(Identifiant identifiant, Shape shape, Color rimColor, Color fillColor, ArrayList<Extinguisher> extincteurs) {
 		this.identifiant = identifiant;
 		this.shape = shape;
 		this.rimColor = rimColor;
@@ -60,11 +60,11 @@ public class Zone {
 		this.fillColor = fillColor;
 	}
 
-	public ArrayList<Extincteur> getExtincteurs() {
+	public ArrayList<Extinguisher> getExtincteurs() {
 		return extincteurs;
 	}
 
-	public void setExtincteurs(ArrayList<Extincteur> extincteurs) {
+	public void setExtincteurs(ArrayList<Extinguisher> extincteurs) {
 		this.extincteurs = extincteurs;
 	}
 		

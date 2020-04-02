@@ -3,15 +3,24 @@ package com.projetpaparobin.zones;
 public class Identifiant {
 	
 	private String areaType;
-	private String activityType;
+	private int areaNumber;
+	private EZoneType activityType;
 	private int areaSize;
 	
-	public Identifiant(String areaType, String activityType, int areaSize) {
+	public Identifiant(String areaType, int areaNumber, String activityType, int areaSize) {
 		this.areaType = areaType;
-		this.activityType = activityType;
+		this.areaNumber = areaNumber;
+		this.activityType = EZoneType.valueOf(activityType);
 		this.areaSize = areaSize;
 	}
 
+	public Identifiant(String areaType, int areaNumber, EZoneType activityType, int areaSize) {
+		this.areaType = areaType;
+		this.areaNumber = areaNumber;
+		this.activityType = activityType;
+		this.areaSize = areaSize;
+	}
+		
 	public String getAreaType() {
 		return areaType;
 	}
@@ -19,12 +28,20 @@ public class Identifiant {
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
 	}
+	
+	public int getAreaNumber() {
+		return areaNumber;
+	}
 
-	public String getActivityType() {
+	public void setAreaNumber(int areaNumber) {
+		this.areaNumber = areaNumber;
+	}
+
+	public EZoneType getActivityType() {
 		return activityType;
 	}
 
-	public void setActivityType(String activityType) {
+	public void setActivityType(EZoneType activityType) {
 		this.activityType = activityType;
 	}
 
@@ -36,4 +53,5 @@ public class Identifiant {
 		this.areaSize = areaSize;
 	}
 		
+	
 }
