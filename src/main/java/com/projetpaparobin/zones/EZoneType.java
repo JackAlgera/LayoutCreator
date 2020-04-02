@@ -10,4 +10,17 @@ public enum EZoneType {
 		this.type=type;
 	}
 	
+	public String getType() {
+		return type;
+	}
+	
+	public static EZoneType getEnum(String value) {
+        for(EZoneType type : values()) {
+            if(type.getType().equalsIgnoreCase(value)) {
+            	return type;
+            }        	
+        }
+
+        return TERTIAIRE;
+    }
 }

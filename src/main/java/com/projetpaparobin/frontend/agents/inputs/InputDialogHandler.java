@@ -59,7 +59,7 @@ public class InputDialogHandler implements IZoneCreatorListener {
 					areaSize = "-1";
 				}
 				if(areaNumber.isBlank()) {
-					areaSize = "-1";
+					areaNumber = "-1";
 				}
 				
 				return new Identifiant(areaType, Integer.parseInt(areaNumber), activityType, Integer.parseInt(areaSize));

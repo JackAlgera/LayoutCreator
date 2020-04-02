@@ -10,7 +10,7 @@ public class Identifiant {
 	public Identifiant(String areaType, int areaNumber, String activityType, int areaSize) {
 		this.areaType = areaType;
 		this.areaNumber = areaNumber;
-		this.activityType = EZoneType.valueOf(activityType);
+		this.activityType = EZoneType.getEnum(activityType);
 		this.areaSize = areaSize;
 	}
 
