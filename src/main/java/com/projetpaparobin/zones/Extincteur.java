@@ -3,7 +3,6 @@ package com.projetpaparobin.zones;
 import java.awt.Color;
 
 public class Extincteur {
-
 	
 	private int number; //from 1 to n 
 	private String extinguisherType;

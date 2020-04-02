@@ -1,4 +1,4 @@
-package com.projetpaparobin.frontend.agents.inputdialog;
+package com.projetpaparobin.frontend.agents.inputs;
 
 import java.util.Optional;
 
@@ -38,7 +38,7 @@ public class InputDialogHandler implements IZoneCreatorListener {
 		TextField areaSizesTextField  = new TextField();
 		areaSizesTextField.setPromptText("Area size");
 		areaSizesTextField.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
-		
+				
 		dialogPane.setContent(new VBox(8, areaTypeTextField, activityTypeTextField, areaSizesTextField));
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {

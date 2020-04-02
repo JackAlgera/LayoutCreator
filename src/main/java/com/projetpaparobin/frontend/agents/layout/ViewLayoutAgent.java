@@ -4,11 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import com.projetpaparobin.documents.PDFHandler;
-import com.projetpaparobin.frontend.agents.inputdialog.InputDialogHandler;
-import com.projetpaparobin.frontend.shapes.Circle;
-import com.projetpaparobin.utils.UIElements;
+import com.projetpaparobin.frontend.agents.inputs.InputDialogHandler;
+import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.zones.Point;
-import com.projetpaparobin.zones.creators.IZoneCreatorListener;
 import com.projetpaparobin.zones.creators.ZoneCreator;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -20,9 +18,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
-public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, EventHandler<MouseEvent> {
+public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 
-	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
+	private static MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private static PDFHandler pdfHandler = PDFHandler.getInstance();
 	private Image image;
 	private ImageView imageView;
@@ -48,7 +46,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, Even
 		
 		imageView = new ImageView(image);
 		imageView.setPreserveRatio(true);
-		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
+		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseInputHandler);
 		double heightRatio = image.getHeight() / height;
 		double widthRatio = image.getWidth() / width;
 		double aspectRatio = image.getWidth() / image.getHeight();
@@ -73,12 +71,6 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, Even
 	@Override
 	public void cleanCanvas() {
 		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-	}
-
-	@Override
-	public void handle(MouseEvent event) {
-		System.out.println("Button:" + event.getButton() + " x=" + event.getX() + " y=" + event.getY());
-		zoneCreator.addPoint(new Point(event.getX(), event.getY()));		
 	}
 
 }

@@ -1,18 +1,9 @@
 package com.projetpaparobin.frontend.agents;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
-import com.projetpaparobin.frontend.shapes.Circle;
-import com.projetpaparobin.frontend.shapes.UIShape;
-import com.projetpaparobin.utils.UIElements;
-import com.projetpaparobin.zones.Point;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class MainUI extends HBox {

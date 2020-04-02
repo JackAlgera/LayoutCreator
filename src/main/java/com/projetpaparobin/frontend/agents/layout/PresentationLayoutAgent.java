@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.shapes.Polygon;
 import com.projetpaparobin.frontend.shapes.UIShape;
-import com.projetpaparobin.zones.Point;
 import com.projetpaparobin.zones.Zone;
 import com.projetpaparobin.zones.creators.EZoneEvents;
 import com.projetpaparobin.zones.creators.IZoneCreatorListener;
