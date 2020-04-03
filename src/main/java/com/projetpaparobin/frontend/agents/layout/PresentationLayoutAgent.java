@@ -3,10 +3,11 @@ package com.projetpaparobin.frontend.agents.layout;
 import java.util.ArrayList;
 
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.frontend.agents.texts.Text;
-import com.projetpaparobin.frontend.agents.texts.UITextHandler;
+import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.shapes.UIPolygon;
 import com.projetpaparobin.frontend.shapes.UIShape;
+import com.projetpaparobin.frontend.shapes.texts.ZoneText;
+import com.projetpaparobin.frontend.shapes.texts.UITextHandler;
 import com.projetpaparobin.zones.Zone;
 import com.projetpaparobin.zones.creators.EZoneEvents;
 import com.projetpaparobin.zones.creators.IZoneCreatorListener;
@@ -23,6 +24,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 	public PresentationLayoutAgent() {
 		shapes = new ArrayList<UIShape>();
 		zoneCreator.addListener(this);
+		MouseInputHandler.getInstance().setPresLayoutAgent(this);
 	}
 	
 	public void updateCanvas() {
@@ -41,7 +43,10 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 		
 		for (Zone zone : layoutHandler.getZones()) {
 			shapes.add(new UIPolygon(zone.getShape().getPoints(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
-			textHandler.addText(new Text(zone.getDisplayText(), zone.getShape(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
+			
+			if(!textHandler.zoneHasText(zone)) {
+				textHandler.addText(new ZoneText(zone, view.getCanvas()));
+			}			
 		} 
 	}
 	
@@ -77,8 +82,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 		case CANCELED:
 			updateCanvas();		
 			break;
-		}
-		
+		}		
 	}
 	
 }

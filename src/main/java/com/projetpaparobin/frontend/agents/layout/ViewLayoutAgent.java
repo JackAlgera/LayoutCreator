@@ -43,7 +43,9 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		
 		imageView = new ImageView(image);
 		imageView.setPreserveRatio(true);
-		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseInputHandler);
+		imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInputHandler);
+		imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseInputHandler);
+		imageView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseInputHandler);
 		double heightRatio = image.getHeight() / height;
 		double widthRatio = image.getWidth() / width;
 		double aspectRatio = image.getWidth() / image.getHeight();

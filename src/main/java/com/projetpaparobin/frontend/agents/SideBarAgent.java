@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private Button newShapeButton, doneEditingShapeButton;
+	private Button newExtinguisherButton, newShapeButton, doneEditingShapeButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	
 	public SideBarAgent(int height, int width, PresentationLayoutAgent presLayoutAgent) {
@@ -23,13 +23,15 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		this.setPrefSize(width, height);
 		this.setAlignment(Pos.TOP_CENTER);
 		this.presLayoutAgent = presLayoutAgent;
-				
-		newShapeButton = new Button("New shape");
+
+		newExtinguisherButton = new Button("New zone");
+		newExtinguisherButton.addEventHandler(ActionEvent.ACTION, this);
+		newShapeButton = new Button("New zone");
 		newShapeButton.addEventHandler(ActionEvent.ACTION, this);
 		doneEditingShapeButton = new Button("Finished editing shape");
 		doneEditingShapeButton.addEventHandler(ActionEvent.ACTION, this);
 		
-		this.getChildren().addAll(newShapeButton, doneEditingShapeButton);
+		this.getChildren().addAll(newExtinguisherButton, newShapeButton, doneEditingShapeButton);
 	}
 
 	public void setPresLayoutAgent(PresentationLayoutAgent presLayoutAgent) {
@@ -38,7 +40,9 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	
 	@Override
 	public void handle(ActionEvent event) {
-		if(event.getSource().equals(newShapeButton)) {
+		if(event.getSource().equals(newExtinguisherButton)) {
+			
+		} else if(event.getSource().equals(newShapeButton)) {
 			presLayoutAgent.updateCanvas();
 			zoneCreator.newZone();
 		} else if(event.getSource().equals(doneEditingShapeButton)) {

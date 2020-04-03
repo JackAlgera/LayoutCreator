@@ -69,7 +69,7 @@ public class Zone {
 		this.extincteurs = extincteurs;
 	}
 	
-	public boolean containPoint(double posX, double posY) {
+	public boolean containsPoint(double posX, double posY) {
 		return shape.getArea().contains(posX, posY);
 	}
 		

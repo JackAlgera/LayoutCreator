@@ -22,6 +22,19 @@ public abstract class UIShape {
 		this.canvasGC = canvas.getGraphicsContext2D();
 	}
 	
+	public void translateShape(double newPosX, double newPosY) {
+		this.posX = newPosX;
+		this.posY = newPosY;
+	}
+	
+	public double getPosX() {
+		return posX;
+	}
+	
+	public double getPosY() {
+		return posY;
+	}
+	
 	public abstract void drawShape();
 	
 }

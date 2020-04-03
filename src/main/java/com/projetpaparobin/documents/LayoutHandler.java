@@ -31,7 +31,7 @@ public class LayoutHandler {
 	
 	public Zone getZone(double posX, double posY) {
 		for (Zone zone : zones) {
-			if(zone.containPoint(posX, posY)) {
+			if(zone.containsPoint(posX, posY)) {
 				return zone;
 			}
 		}
