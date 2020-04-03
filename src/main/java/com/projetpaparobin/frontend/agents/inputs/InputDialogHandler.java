@@ -51,6 +51,7 @@ public class InputDialogHandler implements IZoneCreatorListener {
 				String areaSize = areaSizesTextField.getText();
 				
 				areaTypeTextField.setText("");
+				areaNumberTextField.setText("");
 				activityTypeTextField.setText("");
 				areaSizesTextField.setText("");
 				
