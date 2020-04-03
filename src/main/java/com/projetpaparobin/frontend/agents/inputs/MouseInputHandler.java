@@ -9,7 +9,7 @@ import com.projetpaparobin.zones.creators.ZoneCreator;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-public class MouseInputHandler implements IZoneCreatorListener, EventHandler<MouseEvent>{
+public class MouseInputHandler implements IZoneCreatorListener, EventHandler<MouseEvent> {
 
 	private static MouseInputHandler instance;
 	
@@ -37,6 +37,7 @@ public class MouseInputHandler implements IZoneCreatorListener, EventHandler<Mou
 	public void handle(MouseEvent event) {
 		System.out.print("Button:" + event.getButton() + " x=" + event.getX() + " y=" + event.getY() + " - ");
 		System.out.println(LayoutHandler.getInstance().getZone(event.getX(), event.getY()));
+				
 		switch (state) {
 		case IDLE:
 			break;

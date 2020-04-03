@@ -6,11 +6,8 @@ import java.io.IOException;
 import com.projetpaparobin.documents.PDFHandler;
 import com.projetpaparobin.frontend.agents.inputs.InputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
-import com.projetpaparobin.zones.Point;
-import com.projetpaparobin.zones.creators.ZoneCreator;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;

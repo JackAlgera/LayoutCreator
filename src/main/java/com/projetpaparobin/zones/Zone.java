@@ -73,4 +73,8 @@ public class Zone {
 		return shape.getArea().contains(posX, posY);
 	}
 		
+	public String getDisplayText() {
+		return identifiant.getAreaType() + identifiant.getAreaNumber() + "-i-" + identifiant.getAreaSize() + "m2";
+	}
+	
 }

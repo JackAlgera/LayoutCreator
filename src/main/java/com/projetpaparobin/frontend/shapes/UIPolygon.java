@@ -2,16 +2,17 @@ package com.projetpaparobin.frontend.shapes;
 
 import java.util.ArrayList;
 
+import com.projetpaparobin.utils.UIElements;
 import com.projetpaparobin.zones.Point;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
-public class Polygon extends UIShape {
+public class UIPolygon extends UIShape {
 
 	double[] pointsX, pointsY;
 	
-	public Polygon(ArrayList<Point> points, Color rimColor, Color fillColor, Canvas canvas) {
+	public UIPolygon(ArrayList<Point> points, Color rimColor, Color fillColor, Canvas canvas) {
 		super(points.get(0).getX(), points.get(0).getY(), rimColor, fillColor, canvas);
 		pointsX = new double[points.size()];
 		pointsY = new double[points.size()];
@@ -22,7 +23,7 @@ public class Polygon extends UIShape {
 	}
 
 	@Override
-	public void drawShape() {		
+	public void drawShape() {				
 		canvasGC.setStroke(rimColor);
 		canvasGC.setLineWidth(4.0);
 		canvasGC.strokePolygon(pointsX, pointsY, pointsX.length);
@@ -31,7 +32,7 @@ public class Polygon extends UIShape {
 		canvasGC.fillPolygon(pointsX, pointsY, pointsX.length);
 		
 		for (int i = 0; i < pointsX.length; i++) {
-			Circle c = new Circle(pointsX[i], pointsY[i], 3.0, Color.BLACK, Color.WHITE, canvasGC.getCanvas());
+			UICircle c = new UICircle(pointsX[i], pointsY[i], 3.0, Color.BLACK, Color.WHITE, canvasGC.getCanvas());
 			c.drawShape();
 		}
 	}

@@ -12,9 +12,9 @@ public class Extinguisher {
 	private String protectionType; 
 	private int anneeMiseEnService;
 	private String marque;
+	private boolean isNew;
 	private Color squareColor; //either blue,red or yellow
 	private Point positionSquare;
-	private boolean isNew;
 	private Zone zone;
 	
 	public Extinguisher(int number, String extinguisherType, String protectionType, Color squareColor,

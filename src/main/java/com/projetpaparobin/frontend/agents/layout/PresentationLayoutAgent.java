@@ -3,7 +3,9 @@ package com.projetpaparobin.frontend.agents.layout;
 import java.util.ArrayList;
 
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.frontend.shapes.Polygon;
+import com.projetpaparobin.frontend.agents.texts.Text;
+import com.projetpaparobin.frontend.agents.texts.UITextHandler;
+import com.projetpaparobin.frontend.shapes.UIPolygon;
 import com.projetpaparobin.frontend.shapes.UIShape;
 import com.projetpaparobin.zones.Zone;
 import com.projetpaparobin.zones.creators.EZoneEvents;
@@ -13,6 +15,7 @@ import com.projetpaparobin.zones.creators.ZoneCreator;
 public class PresentationLayoutAgent implements IZoneCreatorListener {
 
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	private static UITextHandler textHandler = UITextHandler.getInstance();
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private IViewLayoutAgent view;
 	private ArrayList<UIShape> shapes;
@@ -28,13 +31,17 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 		for (UIShape shape : shapes) {
 			shape.drawShape();
 		}
+		for (UIShape text : textHandler.getTexts()) {
+			text.drawShape();
+		}
 	}
 	
 	public void updateShapes() {
 		shapes.clear();
 		
 		for (Zone zone : layoutHandler.getZones()) {
-			shapes.add(new Polygon(zone.getShape().getPoints(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
+			shapes.add(new UIPolygon(zone.getShape().getPoints(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
+			textHandler.addText(new Text(zone.getDisplayText(), zone.getShape(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
 		} 
 	}
 	
@@ -55,7 +62,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 			break;
 		case ADDED_POINT:
 			updateCanvas();			
-			Polygon currentZone = new Polygon(zoneCreator.getCurrentZone().getShape().getPoints(),
+			UIPolygon currentZone = new UIPolygon(zoneCreator.getCurrentZone().getShape().getPoints(),
 					zoneCreator.getCurrentZone().getRimColor(), 
 					zoneCreator.getCurrentZone().getFillColor(), 
 					view.getCanvas());
