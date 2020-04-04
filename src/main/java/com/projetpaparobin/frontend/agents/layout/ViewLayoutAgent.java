@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.projetpaparobin.documents.PDFHandler;
 import com.projetpaparobin.frontend.agents.inputs.ZoneInputDialogHandler;
+import com.projetpaparobin.frontend.agents.inputs.ExtinguisherInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -22,7 +23,8 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 	private Image image;
 	private ImageView imageView;
 	private Canvas canvas;
-	private ZoneInputDialogHandler inputDialog;
+	private ZoneInputDialogHandler zoneInputDialog;
+	private ExtinguisherInputDialogHandler extinguisherInputDialog;
 	
 	private PresentationLayoutAgent pres;
 	
@@ -31,7 +33,8 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		this.setMaxSize(width, height);
 		this.setAlignment(Pos.CENTER);
 		this.pres = pres;		
-		inputDialog = new ZoneInputDialogHandler();
+		zoneInputDialog = new ZoneInputDialogHandler();
+		extinguisherInputDialog = new ExtinguisherInputDialogHandler();
 		
 		try {
 			BufferedImage bufImage = pdfHandler.getImageFromPDF(imagePath, pageNum);

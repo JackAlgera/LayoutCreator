@@ -4,24 +4,24 @@ import javafx.scene.paint.Color;
 
 public class ExtinguisherID {
 
-	private int number; //from 1 to n 
+	private int number; //from 01 to XX 
 	private String extinguisherType;
 	private String protectionType; 
-	private int anneeMiseEnService;
-	private String marque;
+	private int fabricationYear;
+	private String brand;
 	private boolean isNew;
-	private Color squareColor; //either blue,red or yellow
+	private Color color; //either blue,red or yellow
 		
-	public ExtinguisherID(int number, String extinguisherType, String protectionType, int anneeMiseEnService,
-			String marque, boolean isNew, Color squareColor) {
+	public ExtinguisherID(int number, String extinguisherType, String protectionType, int fabricationYear,
+			String brand, boolean isNew, Color color) {
 		super();
 		this.number = number;
 		this.extinguisherType = extinguisherType;
 		this.protectionType = protectionType;
-		this.anneeMiseEnService = anneeMiseEnService;
-		this.marque = marque;
+		this.fabricationYear = fabricationYear;
+		this.brand = brand;
 		this.isNew = isNew;
-		this.squareColor = squareColor;
+		this.color = color;
 	}
 
 	public int getNumber() {
@@ -48,12 +48,12 @@ public class ExtinguisherID {
 		this.protectionType = protectionType;
 	}
 
-	public Color getSquareColore() {
-		return squareColor;
+	public Color getColor() {
+		return color;
 	}
 
-	public void setSquareColore(Color squareColore) {
-		this.squareColor = squareColore;
+	public void setColor(Color color) {
+		this.color = color;
 	}	
 
 	public boolean isNew() {
@@ -64,20 +64,20 @@ public class ExtinguisherID {
 		this.isNew = isNew;
 	}
 
-	public int getAnneeMiseEnService() {
-		return anneeMiseEnService;
+	public int getFabricationYear() {
+		return fabricationYear;
 	}
 
-	public void setAnneeMiseEnService(int anneeMiseEnService) {
-		this.anneeMiseEnService = anneeMiseEnService;
+	public void setFabricationYear(int fabricationYear) {
+		this.fabricationYear = fabricationYear;
 	}
 
-	public String getMarque() {
-		return marque;
+	public String getBrand() {
+		return brand;
 	}
 
-	public void setMarque(String marque) {
-		this.marque = marque;
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 	
 	public String getDisplayText() {

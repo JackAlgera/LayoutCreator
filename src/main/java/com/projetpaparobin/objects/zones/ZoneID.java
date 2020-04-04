@@ -1,20 +1,20 @@
 package com.projetpaparobin.objects.zones;
 
-public class IdentifiantZone {
+public class ZoneID {
 	
 	private String areaType;
 	private int areaNumber;
 	private EZoneType activityType;
 	private int areaSize;
 	
-	public IdentifiantZone(String areaType, int areaNumber, String activityType, int areaSize) {
+	public ZoneID(String areaType, int areaNumber, String activityType, int areaSize) {
 		this.areaType = areaType;
 		this.areaNumber = areaNumber;
 		this.activityType = EZoneType.getEnum(activityType);
 		this.areaSize = areaSize;
 	}
 
-	public IdentifiantZone(String areaType, int areaNumber, EZoneType activityType, int areaSize) {
+	public ZoneID(String areaType, int areaNumber, EZoneType activityType, int areaSize) {
 		this.areaType = areaType;
 		this.areaNumber = areaNumber;
 		this.activityType = activityType;

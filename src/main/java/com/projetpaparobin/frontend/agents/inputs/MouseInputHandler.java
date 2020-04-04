@@ -4,6 +4,9 @@ import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.elements.UIZoneText;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
+import com.projetpaparobin.objects.creators.extinguishers.EExtinguisherEvents;
+import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
+import com.projetpaparobin.objects.creators.extinguishers.IExtinguisherCreatorListener;
 import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
@@ -13,13 +16,16 @@ import com.projetpaparobin.objects.zones.Zone;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-public class MouseInputHandler implements IZoneCreatorListener, EventHandler<MouseEvent> {
+public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCreatorListener, EventHandler<MouseEvent> {
 
 	private static MouseInputHandler instance;
 	
 	private ETypeAction state;
 	private PresentationLayoutAgent presLayout;
+	
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
+	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
+	
 	private static UITextHandler textHandler = UITextHandler.getInstance();
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
@@ -31,6 +37,7 @@ public class MouseInputHandler implements IZoneCreatorListener, EventHandler<Mou
 	private MouseInputHandler() {	
 		state = ETypeAction.IDLE;
 		ZoneCreator.getInstance().addListener(this);
+		ExtinguisherCreator.getInstance().addListener(this);
 	}
 	
 	public static MouseInputHandler getInstance() {
@@ -75,6 +82,11 @@ public class MouseInputHandler implements IZoneCreatorListener, EventHandler<Mou
 				zoneCreator.addPoint(new Point(event.getX(), event.getY()));	
 				break;
 			case CREATING_EXTINGUISHER:
+				selectedZone = layoutHandler.getZone(event.getX(), event.getY());
+				if(selectedZone != null) {
+					extinguisherCreator.setPosition(new Point(event.getX(), event.getY()));
+					extinguisherCreator.setZone(selectedZone);
+				}
 				break;
 			}
 			break;
@@ -118,6 +130,23 @@ public class MouseInputHandler implements IZoneCreatorListener, EventHandler<Mou
 		case SETTING_NAME:
 			break;
 		case FINISHED_CREATING_ZONE:
+			state = ETypeAction.IDLE;
+			break;
+		case CANCELED:
+			state = ETypeAction.IDLE;
+			break;
+		}
+	}
+
+	@Override
+	public void handleExtinguisherCreatorEvent(EExtinguisherEvents event) {
+		switch (event) {
+		case CREATING_NEW_EXTINGUISHER:
+			state = ETypeAction.CREATING_EXTINGUISHER;
+			break;
+		case SETTING_NAME:
+			break;
+		case FINISHED_CREATING_EXTINGUISHER:
 			state = ETypeAction.IDLE;
 			break;
 		case CANCELED:

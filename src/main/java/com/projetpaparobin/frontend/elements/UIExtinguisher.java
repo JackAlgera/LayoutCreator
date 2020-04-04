@@ -14,7 +14,7 @@ public class UIExtinguisher extends UIElement {
 	private String displayNumber;
 	
 	public UIExtinguisher(Extinguisher ex, Canvas canvas) {
-		super(ex.getPositionSquare().getX(), ex.getPositionSquare().getY(), Color.BLACK, ex.getId().getSquareColore(), canvas);
+		super(ex.getPositionSquare().getX(), ex.getPositionSquare().getY(), Color.BLACK, ex.getId().getColor(), canvas);
 		this.clickCircle = new UICircle(posX, posY, UIElements.LAYOUT_FONT.getSize() / 2.0, 3.0, Color.BLACK, fillColor, canvas);
 		this.displayNumber = "" +  ex.getId().getNumber();
 		this.displayText = ex.getDisplayText();

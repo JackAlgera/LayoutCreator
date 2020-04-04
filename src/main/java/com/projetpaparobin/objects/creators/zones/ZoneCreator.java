@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.objects.zones.EZoneType;
-import com.projetpaparobin.objects.zones.IdentifiantZone;
+import com.projetpaparobin.objects.zones.ZoneID;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
 
@@ -60,9 +60,9 @@ public class ZoneCreator {
 		}
 	}
 
-	public void setZoneIdentifiant(String areaType, int areaNumber, EZoneType activityType, int areaSizes) {
+	public void setZoneID(ZoneID id) {
 		if(currentZone != null && (zoneState == EZoneCreationState.SETTING_NAME)) {
-			currentZone.setIdentifiant(new IdentifiantZone(areaType, areaNumber, activityType, areaSizes));
+			currentZone.setIdentifiant(id);
 			doneCreatingZone();
 		}
 	}

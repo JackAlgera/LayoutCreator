@@ -1,7 +1,7 @@
 package com.projetpaparobin.frontend.agents;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
-import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
+import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.utils.UIElements;
 
@@ -13,7 +13,9 @@ import javafx.scene.layout.VBox;
 
 public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 
+	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
+	
 	private Button newExtinguisherButton, newShapeButton, doneEditingShapeButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	
@@ -41,7 +43,8 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource().equals(newExtinguisherButton)) {
-			
+			presLayoutAgent.updateCanvas();
+			extinguisherCreator.newExtinguisher();
 		} else if(event.getSource().equals(newShapeButton)) {
 			presLayoutAgent.updateCanvas();
 			zoneCreator.newZone();

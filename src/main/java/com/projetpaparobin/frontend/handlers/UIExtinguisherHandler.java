@@ -21,16 +21,6 @@ public class UIExtinguisherHandler {
 		return instance;
 	}
 	
-//	public boolean zoneHasText(Zone zone) {
-//		for (ZoneText text : shapeTexts) {
-//			if(text.getZone().equals(zone)) {
-//				return true;
-//			}
-//		}
-//		
-//		return false;
-//	}
-	
 	public UIExtinguisher getExtinguisher(double posX, double posY) {
 		for (UIExtinguisher e : extinguishers) {
 			if(e.containsPoint(posX, posY)) {

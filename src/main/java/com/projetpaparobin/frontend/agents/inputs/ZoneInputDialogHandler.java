@@ -5,7 +5,7 @@ import java.util.Optional;
 import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
-import com.projetpaparobin.objects.zones.IdentifiantZone;
+import com.projetpaparobin.objects.zones.ZoneID;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.scene.control.ButtonType;
@@ -18,10 +18,10 @@ import javafx.scene.layout.VBox;
 public class ZoneInputDialogHandler implements IZoneCreatorListener {
 
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private Dialog<IdentifiantZone> inputDialog;
+	private Dialog<ZoneID> inputDialog;
 	
 	public ZoneInputDialogHandler() {
-		inputDialog = new Dialog<IdentifiantZone>();
+		inputDialog = new Dialog<ZoneID>();
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -62,7 +62,7 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 					areaNumber = "-1";
 				}
 				
-				return new IdentifiantZone(areaType, Integer.parseInt(areaNumber), activityType, Integer.parseInt(areaSize));
+				return new ZoneID(areaType, Integer.parseInt(areaNumber), activityType, Integer.parseInt(areaSize));
 			} 
 			if(button == ButtonType.CANCEL) {
 				zoneCreator.canceled();
@@ -83,12 +83,9 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 		case ADDED_POINT:
 			break;
 		case SETTING_NAME:
-			Optional<IdentifiantZone> response = inputDialog.showAndWait();
+			Optional<ZoneID> response = inputDialog.showAndWait();
 			if(!response.isEmpty()) {
-				zoneCreator.setZoneIdentifiant(response.get().getAreaType(), 
-						response.get().getAreaNumber(),
-						response.get().getActivityType(), 
-						response.get().getAreaSize());
+				zoneCreator.setZoneID(response.get());
 			}
 			break;
 		case FINISHED_CREATING_ZONE:

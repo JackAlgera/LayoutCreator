@@ -11,15 +11,14 @@ public class Extinguisher {
 	private Point positionSquare;
 	private Zone zone;
 	
+	public Extinguisher() {
+	}
+	
 	public Extinguisher(int number, String extinguisherType, String protectionType, Color squareColor,
 			Point positionSquare, boolean isNew, Zone zone,int anneeMiseEnService,String marque) {
 		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, squareColor);
 		this.positionSquare = positionSquare;
 		this.zone = zone;
-	}
-
-	public ExtinguisherID getId() {
-		return id;
 	}
 	
 	public Point getPositionSquare() {
@@ -32,6 +31,22 @@ public class Extinguisher {
 
 	public String getDisplayText() {
 		return id.getDisplayText();
+	}
+
+	public Zone getZone() {
+		return zone;
+	}
+
+	public void setZone(Zone zone) {
+		this.zone = zone;
+	}
+
+	public void setId(ExtinguisherID id) {
+		this.id = id;
+	}
+	
+	public ExtinguisherID getId() {
+		return id;
 	}
 	
 }
