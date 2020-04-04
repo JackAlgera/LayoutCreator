@@ -1,4 +1,4 @@
-package com.projetpaparobin.zones;
+package com.projetpaparobin.objects.zones;
 
 public enum EZoneType {
 

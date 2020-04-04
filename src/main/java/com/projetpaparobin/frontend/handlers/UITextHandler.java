@@ -1,16 +1,17 @@
-package com.projetpaparobin.frontend.shapes.texts;
+package com.projetpaparobin.frontend.handlers;
 
 import java.util.ArrayList;
 
-import com.projetpaparobin.zones.Zone;
+import com.projetpaparobin.frontend.elements.UIZoneText;
+import com.projetpaparobin.objects.zones.Zone;
 
 public class UITextHandler {
 
 	private static UITextHandler instance;
-	private ArrayList<ZoneText> shapeTexts;
+	private ArrayList<UIZoneText> shapeTexts;
 		
 	private UITextHandler() {	
-		shapeTexts = new ArrayList<ZoneText>();
+		shapeTexts = new ArrayList<UIZoneText>();
 	}
 	
 	public static UITextHandler getInstance() {
@@ -22,7 +23,7 @@ public class UITextHandler {
 	}
 	
 	public boolean zoneHasText(Zone zone) {
-		for (ZoneText text : shapeTexts) {
+		for (UIZoneText text : shapeTexts) {
 			if(text.getZone().equals(zone)) {
 				return true;
 			}
@@ -31,8 +32,8 @@ public class UITextHandler {
 		return false;
 	}
 	
-	public ZoneText getText(double posX, double posY) {
-		for (ZoneText text : shapeTexts) {
+	public UIZoneText getText(double posX, double posY) {
+		for (UIZoneText text : shapeTexts) {
 			if(text.containsPoint(posX, posY)) {
 				return text;
 			}
@@ -40,11 +41,11 @@ public class UITextHandler {
 		return null;
 	}
 	
-	public ArrayList<ZoneText> getTexts() {
+	public ArrayList<UIZoneText> getTexts() {
 		return shapeTexts;
 	}
 	
-	public void addText(ZoneText text) {
+	public void addText(UIZoneText text) {
 		shapeTexts.add(text);
 	}
 	

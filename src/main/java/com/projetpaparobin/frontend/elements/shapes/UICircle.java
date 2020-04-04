@@ -1,9 +1,11 @@
-package com.projetpaparobin.frontend.shapes;
+package com.projetpaparobin.frontend.elements.shapes;
+
+import com.projetpaparobin.frontend.elements.UIElement;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
-public class UICircle extends UIShape {
+public class UICircle extends UIElement {
 	 
 	private double radius;
 	private double lineWidth = 1.0;
@@ -31,4 +33,11 @@ public class UICircle extends UIShape {
 		}		
 	}
 	
+	public boolean containsPoint(double posX, double posY) {
+		double dX = Math.pow(this.posX - posX, 2);
+		double dY = Math.pow(this.posY - posY, 2);
+		double d = Math.sqrt(dX + dY);
+		
+		return (d <= radius); 
+	}
 }

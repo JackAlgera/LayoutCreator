@@ -1,9 +1,11 @@
-package com.projetpaparobin.frontend.shapes;
+package com.projetpaparobin.frontend.elements.shapes;
+
+import com.projetpaparobin.frontend.elements.UIElement;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
-public class UIRectangle extends UIShape {
+public class UIRectangle extends UIElement {
 
 	private double width, height;
 	

@@ -2,11 +2,11 @@ package com.projetpaparobin.frontend.agents.inputs;
 
 import java.util.Optional;
 
+import com.projetpaparobin.objects.creators.zones.EZoneEvents;
+import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
+import com.projetpaparobin.objects.creators.zones.ZoneCreator;
+import com.projetpaparobin.objects.zones.IdentifiantZone;
 import com.projetpaparobin.utils.UIElements;
-import com.projetpaparobin.zones.Identifiant;
-import com.projetpaparobin.zones.creators.EZoneEvents;
-import com.projetpaparobin.zones.creators.IZoneCreatorListener;
-import com.projetpaparobin.zones.creators.ZoneCreator;
 
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -15,13 +15,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
 
-public class InputDialogHandler implements IZoneCreatorListener {
+public class ZoneInputDialogHandler implements IZoneCreatorListener {
 
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private Dialog<Identifiant> inputDialog;
+	private Dialog<IdentifiantZone> inputDialog;
 	
-	public InputDialogHandler() {
-		inputDialog = new Dialog<Identifiant>();
+	public ZoneInputDialogHandler() {
+		inputDialog = new Dialog<IdentifiantZone>();
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -62,7 +62,7 @@ public class InputDialogHandler implements IZoneCreatorListener {
 					areaNumber = "-1";
 				}
 				
-				return new Identifiant(areaType, Integer.parseInt(areaNumber), activityType, Integer.parseInt(areaSize));
+				return new IdentifiantZone(areaType, Integer.parseInt(areaNumber), activityType, Integer.parseInt(areaSize));
 			} 
 			if(button == ButtonType.CANCEL) {
 				zoneCreator.canceled();
@@ -83,7 +83,7 @@ public class InputDialogHandler implements IZoneCreatorListener {
 		case ADDED_POINT:
 			break;
 		case SETTING_NAME:
-			Optional<Identifiant> response = inputDialog.showAndWait();
+			Optional<IdentifiantZone> response = inputDialog.showAndWait();
 			if(!response.isEmpty()) {
 				zoneCreator.setZoneIdentifiant(response.get().getAreaType(), 
 						response.get().getAreaNumber(),

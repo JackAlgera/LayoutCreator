@@ -2,7 +2,8 @@ package com.projetpaparobin.documents;
 
 import java.util.ArrayList;
 
-import com.projetpaparobin.zones.Zone;
+import com.projetpaparobin.objects.extinguishers.Extinguisher;
+import com.projetpaparobin.objects.zones.Zone;
 
 public class LayoutHandler {
 
@@ -28,7 +29,7 @@ public class LayoutHandler {
 	public ArrayList<Zone> getZones() {
 		return zones;
 	}
-	
+		
 	public Zone getZone(double posX, double posY) {
 		for (Zone zone : zones) {
 			if(zone.containsPoint(posX, posY)) {

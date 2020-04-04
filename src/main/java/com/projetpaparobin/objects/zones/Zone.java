@@ -1,15 +1,15 @@
-package com.projetpaparobin.zones;
+package com.projetpaparobin.objects.zones;
 
 import java.util.ArrayList;
 
+import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.utils.UIElements;
-import com.projetpaparobin.zones.extinguishers.Extinguisher;
 
 import javafx.scene.paint.Color;
 
 public class Zone {
 	
-	private Identifiant identifiant;
+	private IdentifiantZone identifiant;
 	private Shape shape;
 	private Color rimColor, fillColor;
 	private ArrayList<Extinguisher> extincteurs;	
@@ -21,7 +21,7 @@ public class Zone {
 		this.rimColor = fillColor.darker();
 	}
 	
-	public Zone(Identifiant identifiant, Shape shape, Color rimColor, Color fillColor, ArrayList<Extinguisher> extincteurs) {
+	public Zone(IdentifiantZone identifiant, Shape shape, Color rimColor, Color fillColor, ArrayList<Extinguisher> extincteurs) {
 		this.identifiant = identifiant;
 		this.shape = shape;
 		this.rimColor = rimColor;
@@ -29,11 +29,11 @@ public class Zone {
 		this.extincteurs = extincteurs;
 	}
 
-	public Identifiant getIdentifiant() {
+	public IdentifiantZone getIdentifiant() {
 		return identifiant;
 	}
 
-	public void setIdentifiant(Identifiant identifiant) {
+	public void setIdentifiant(IdentifiantZone identifiant) {
 		this.identifiant = identifiant;
 	}
 

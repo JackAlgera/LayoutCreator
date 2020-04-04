@@ -1,16 +1,16 @@
-package com.projetpaparobin.frontend.shapes;
+package com.projetpaparobin.frontend.elements;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public abstract class UIShape {
+public abstract class UIElement {
 
 	protected Color rimColor, fillColor;
 	protected GraphicsContext canvasGC;
 	protected double posX, posY;
 	
-	public UIShape(double posX, double posY, Color rimColor, Color fillColor, Canvas canvas) {
+	public UIElement(double posX, double posY, Color rimColor, Color fillColor, Canvas canvas) {
 		this.posX = posX;
 		this.posY = posY;
 		this.rimColor = rimColor;

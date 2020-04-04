@@ -1,11 +1,8 @@
-package com.projetpaparobin.zones.extinguishers;
+package com.projetpaparobin.objects.extinguishers;
 
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
-import com.projetpaparobin.zones.Point;
-import com.projetpaparobin.zones.Zone;
-
-public class Extinguisher {
+public class ExtinguisherID {
 
 	private int number; //from 1 to n 
 	private String extinguisherType;
@@ -14,20 +11,17 @@ public class Extinguisher {
 	private String marque;
 	private boolean isNew;
 	private Color squareColor; //either blue,red or yellow
-	private Point positionSquare;
-	private Zone zone;
-	
-	public Extinguisher(int number, String extinguisherType, String protectionType, Color squareColor,
-			Point positionSquare, boolean isNew, Zone zone,int anneeMiseEnService,String marque) {
+		
+	public ExtinguisherID(int number, String extinguisherType, String protectionType, int anneeMiseEnService,
+			String marque, boolean isNew, Color squareColor) {
+		super();
 		this.number = number;
 		this.extinguisherType = extinguisherType;
 		this.protectionType = protectionType;
-		this.squareColor = squareColor;
-		this.positionSquare = positionSquare;
-		this.isNew = isNew;
-		this.zone = zone;
 		this.anneeMiseEnService = anneeMiseEnService;
 		this.marque = marque;
+		this.isNew = isNew;
+		this.squareColor = squareColor;
 	}
 
 	public int getNumber() {
@@ -60,15 +54,7 @@ public class Extinguisher {
 
 	public void setSquareColore(Color squareColore) {
 		this.squareColor = squareColore;
-	}
-
-	public Point getPositionSquare() {
-		return positionSquare;
-	}
-
-	public void setPositionSquare(Point positionSquare) {
-		this.positionSquare = positionSquare;
-	}
+	}	
 
 	public boolean isNew() {
 		return isNew;
@@ -92,6 +78,10 @@ public class Extinguisher {
 
 	public void setMarque(String marque) {
 		this.marque = marque;
+	}
+	
+	public String getDisplayText() {
+		return extinguisherType + "/" + protectionType;
 	}
 	
 }

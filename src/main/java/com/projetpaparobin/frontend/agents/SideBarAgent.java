@@ -1,9 +1,9 @@
 package com.projetpaparobin.frontend.agents;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
+import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
+import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.utils.UIElements;
-import com.projetpaparobin.zones.creators.IZoneCreatorListener;
-import com.projetpaparobin.zones.creators.ZoneCreator;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +24,7 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		this.setAlignment(Pos.TOP_CENTER);
 		this.presLayoutAgent = presLayoutAgent;
 
-		newExtinguisherButton = new Button("New zone");
+		newExtinguisherButton = new Button("New extinguisher");
 		newExtinguisherButton.addEventHandler(ActionEvent.ACTION, this);
 		newShapeButton = new Button("New zone");
 		newShapeButton.addEventHandler(ActionEvent.ACTION, this);

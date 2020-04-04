@@ -1,4 +1,4 @@
-package com.projetpaparobin.zones.extinguishers;
+package com.projetpaparobin.objects.extinguishers;
 
 public class TypeExtinguisher {
 

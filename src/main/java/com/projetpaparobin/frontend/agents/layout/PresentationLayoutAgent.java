@@ -1,28 +1,29 @@
 package com.projetpaparobin.frontend.agents.layout;
 
-import java.util.ArrayList;
-
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
-import com.projetpaparobin.frontend.shapes.UIPolygon;
-import com.projetpaparobin.frontend.shapes.UIShape;
-import com.projetpaparobin.frontend.shapes.texts.ZoneText;
-import com.projetpaparobin.frontend.shapes.texts.UITextHandler;
-import com.projetpaparobin.zones.Zone;
-import com.projetpaparobin.zones.creators.EZoneEvents;
-import com.projetpaparobin.zones.creators.IZoneCreatorListener;
-import com.projetpaparobin.zones.creators.ZoneCreator;
+import com.projetpaparobin.frontend.elements.UIElement;
+import com.projetpaparobin.frontend.elements.UIZone;
+import com.projetpaparobin.frontend.elements.UIZoneText;
+import com.projetpaparobin.frontend.elements.shapes.UIPolygon;
+import com.projetpaparobin.frontend.handlers.UITextHandler;
+import com.projetpaparobin.frontend.handlers.UIZoneHandler;
+import com.projetpaparobin.objects.creators.zones.EZoneEvents;
+import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
+import com.projetpaparobin.objects.creators.zones.ZoneCreator;
+import com.projetpaparobin.objects.zones.Zone;
 
 public class PresentationLayoutAgent implements IZoneCreatorListener {
 
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
-	private static UITextHandler textHandler = UITextHandler.getInstance();
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
+	
+	private static UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
+	private static UITextHandler textHandler = UITextHandler.getInstance();
+	
 	private IViewLayoutAgent view;
-	private ArrayList<UIShape> shapes;
 	
 	public PresentationLayoutAgent() {
-		shapes = new ArrayList<UIShape>();
 		zoneCreator.addListener(this);
 		MouseInputHandler.getInstance().setPresLayoutAgent(this);
 	}
@@ -30,32 +31,26 @@ public class PresentationLayoutAgent implements IZoneCreatorListener {
 	public void updateCanvas() {
 		view.cleanCanvas();
 		
-		for (UIShape shape : shapes) {
-			shape.drawShape();
+		for (UIElement zone : zoneHandler.getZones()) {
+			zone.drawShape();
 		}
-		for (UIShape text : textHandler.getTexts()) {
+		for (UIElement text : textHandler.getTexts()) {
 			text.drawShape();
 		}
 	}
 	
 	public void updateShapes() {
-		shapes.clear();
+		zoneHandler.getZones().clear();
 		
 		for (Zone zone : layoutHandler.getZones()) {
-			shapes.add(new UIPolygon(zone.getShape().getPoints(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
+			zoneHandler.add(new UIZone(zone.getShape().getPoints(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
 			
 			if(!textHandler.zoneHasText(zone)) {
-				textHandler.addText(new ZoneText(zone, view.getCanvas()));
+				textHandler.addText(new UIZoneText(zone, view.getCanvas()));
 			}			
 		} 
 	}
-	
-	public void addShape(UIShape shape) {
-		shape.addCanvas(view.getCanvas());
-		shapes.add(shape);
-		updateCanvas();
-	}
-		
+			
 	public void setView(IViewLayoutAgent view) {
 		this.view = view;
 	}	

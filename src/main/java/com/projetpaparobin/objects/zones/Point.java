@@ -1,18 +1,14 @@
-
-package com.projetpaparobin.zones;
+package com.projetpaparobin.objects.zones;
 
 public class Point {
 
-    // Parameters    
-    private double x,y;
+    private double x, y;
     
-    // Constructor    
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
     }
     
-    // Methods    
     public void setX(double posX){
         this.x=posX;
     }

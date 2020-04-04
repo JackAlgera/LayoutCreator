@@ -2,13 +2,13 @@ package com.projetpaparobin.frontend.agents.inputs;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
-import com.projetpaparobin.frontend.shapes.texts.ZoneText;
-import com.projetpaparobin.frontend.shapes.texts.UITextHandler;
-import com.projetpaparobin.zones.Point;
-import com.projetpaparobin.zones.Zone;
-import com.projetpaparobin.zones.creators.EZoneEvents;
-import com.projetpaparobin.zones.creators.IZoneCreatorListener;
-import com.projetpaparobin.zones.creators.ZoneCreator;
+import com.projetpaparobin.frontend.elements.UIZoneText;
+import com.projetpaparobin.frontend.handlers.UITextHandler;
+import com.projetpaparobin.objects.creators.zones.EZoneEvents;
+import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
+import com.projetpaparobin.objects.creators.zones.ZoneCreator;
+import com.projetpaparobin.objects.zones.Point;
+import com.projetpaparobin.objects.zones.Zone;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +24,7 @@ public class MouseInputHandler implements IZoneCreatorListener, EventHandler<Mou
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
 	private Zone selectedZone = null;
-	private ZoneText selectedText = null;
+	private UIZoneText selectedText = null;
 	private double dX = 0;
 	private double dY = 0;
 	

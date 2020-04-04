@@ -1,14 +1,15 @@
-package com.projetpaparobin.frontend.shapes;
+package com.projetpaparobin.frontend.elements.shapes;
 
 import java.util.ArrayList;
 
+import com.projetpaparobin.frontend.elements.UIElement;
+import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.utils.UIElements;
-import com.projetpaparobin.zones.Point;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
-public class UIPolygon extends UIShape {
+public class UIPolygon extends UIElement {
 
 	double[] pointsX, pointsY;
 	

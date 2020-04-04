@@ -1,4 +1,4 @@
-package com.projetpaparobin.zones.creators;
+package com.projetpaparobin.objects.creators.zones;
 
 public enum EZoneEvents {
 

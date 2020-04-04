@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import com.projetpaparobin.documents.PDFHandler;
-import com.projetpaparobin.frontend.agents.inputs.InputDialogHandler;
+import com.projetpaparobin.frontend.agents.inputs.ZoneInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -22,7 +22,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 	private Image image;
 	private ImageView imageView;
 	private Canvas canvas;
-	private InputDialogHandler inputDialog;
+	private ZoneInputDialogHandler inputDialog;
 	
 	private PresentationLayoutAgent pres;
 	
@@ -31,7 +31,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		this.setMaxSize(width, height);
 		this.setAlignment(Pos.CENTER);
 		this.pres = pres;		
-		inputDialog = new InputDialogHandler();
+		inputDialog = new ZoneInputDialogHandler();
 		
 		try {
 			BufferedImage bufImage = pdfHandler.getImageFromPDF(imagePath, pageNum);
