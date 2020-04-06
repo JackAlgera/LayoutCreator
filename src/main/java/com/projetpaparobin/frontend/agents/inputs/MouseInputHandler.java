@@ -72,17 +72,25 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			switch (state) {
 			case IDLE:
 				selectedExtinguisher = extinguisherHandler.getExtinguisher(event.getX(), event.getY());
+				
 				if(selectedExtinguisher != null) {
 					dX = event.getX() - selectedExtinguisher.getPosX();
 					dY = event.getY() - selectedExtinguisher.getPosY();
 					state = ETypeAction.SELECTED_EXTINGUISHER;
 					break;
 				}
+				selectedExtinguisherText = textHandler.getExtinguisherText(event.getX(), event.getY());
+				if(selectedExtinguisherText != null) {
+					dX = event.getX() - selectedExtinguisherText.getPosX();
+					dY = event.getY() - selectedExtinguisherText.getPosY();
+					state = ETypeAction.SELECTED_EXTINGUISHER_TEXT;
+					break;
+				}
 				selectedZoneText = textHandler.getZoneText(event.getX(), event.getY());
 				if(selectedZoneText != null) {
 					dX = event.getX() - selectedZoneText.getPosX();
 					dY = event.getY() - selectedZoneText.getPosY();
-					state = ETypeAction.SELECTED_TEXT;
+					state = ETypeAction.SELECTED_ZONE_TEXT;
 					break;
 				}
 				selectedZone = layoutHandler.getZone(event.getX(), event.getY());
@@ -114,10 +122,14 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				selectedExtinguisher.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
 				break;
+			case SELECTED_EXTINGUISHER_TEXT:
+				selectedExtinguisherText.translateShape(newPosX, newPosY);
+				presLayout.updateCanvas();
+				break;
 			case SELECTED_CORNER:
 				state = ETypeAction.IDLE;
 				break;
-			case SELECTED_TEXT:
+			case SELECTED_ZONE_TEXT:
 				selectedZoneText.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
 				break;			
@@ -132,7 +144,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			case SELECTED_CORNER:
 				state = ETypeAction.IDLE;
 				break;
-			case SELECTED_TEXT:
+			case SELECTED_EXTINGUISHER_TEXT:
+				state = ETypeAction.IDLE;
+				break;	
+			case SELECTED_ZONE_TEXT:
 				state = ETypeAction.IDLE;
 				break;			
 			}

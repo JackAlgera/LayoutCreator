@@ -32,7 +32,7 @@ public class UIExtinguisherText extends UIElement {
 	
 	@Override
 	public void drawShape() {	
-		canvasGC.drawImage(drawnImage, posX, posY);	
+		canvasGC.drawImage(drawnImage, posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0));	
 	}
 	
 	private void prepareImage(Extinguisher ex) {
