@@ -21,6 +21,7 @@ public class UIElements {
 	public static Random r = new Random();
 	
 	public static Font LAYOUT_FONT = new Font("Monaco", 18);
+	public static Font EXTINGUISHER_FONT = new Font("Monaco", 10);
 	
 	public static Border BLACK_BORDER = new Border(new BorderStroke(
 			Color.BLACK, 

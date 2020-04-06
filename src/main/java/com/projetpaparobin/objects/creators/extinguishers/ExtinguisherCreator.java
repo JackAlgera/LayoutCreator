@@ -44,7 +44,7 @@ public class ExtinguisherCreator {
 	
 	public void setPosition(Point p) {
 		if(state == EExtinguisherCreationState.NEW_EXTINGUISHER) {
-			currentExtinguisher.setPositionSquare(p);
+			currentExtinguisher.setPos(p);
 		}
 	}
 	

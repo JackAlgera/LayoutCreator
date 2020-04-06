@@ -1,35 +1,60 @@
 package com.projetpaparobin.frontend.elements;
 
-import com.projetpaparobin.frontend.elements.shapes.UICircle;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
+import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.utils.UIElements;
 
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 public class UIExtinguisher extends UIElement {
-
-	private UICircle clickCircle;	
-	private String displayText;
-	private String displayNumber;
+	
+	private Circle circle;		
+	private WritableImage drawnImage;
+	private Extinguisher ex;
 	
 	public UIExtinguisher(Extinguisher ex, Canvas canvas) {
-		super(ex.getPositionSquare().getX(), ex.getPositionSquare().getY(), Color.BLACK, ex.getId().getColor(), canvas);
-		this.clickCircle = new UICircle(posX, posY, UIElements.LAYOUT_FONT.getSize() / 2.0, 3.0, Color.BLACK, fillColor, canvas);
-		this.displayNumber = "" +  ex.getId().getNumber();
-		this.displayText = ex.getDisplayText();
+		super(ex.getPos().getX(), ex.getPos().getY(), Color.BLACK, ex.getId().getColor(), canvas);
+		this.ex = ex;
+		prepareImage();
 	}
 
 	@Override
 	public void drawShape() {
-		clickCircle.drawShape();
+		canvasGC.drawImage(drawnImage, posX - circle.getRadius(), posY - circle.getRadius());	
+	}
+
+	private void prepareImage() {
+		StackPane sPane = new StackPane();
 		
-		canvasGC.setFont(UIElements.LAYOUT_FONT);
-		canvasGC.setFill(Color.BLACK);
-		canvasGC.fillText(displayNumber, posX, posY);		
+		circle = new Circle(posX, posY, UIElements.EXTINGUISHER_FONT.getSize(), ex.getId().getColor());
+		circle.setStroke(rimColor);
+		circle.setStrokeWidth(0.8);		
+		
+		Text nbrText = new Text("" + ex.getId().getNumber());
+		nbrText.setFont(UIElements.EXTINGUISHER_FONT);
+		
+		sPane.getChildren().addAll(circle, nbrText);
+		
+		SnapshotParameters params = new SnapshotParameters();
+		params.setFill(Color.TRANSPARENT);
+		
+		drawnImage = sPane.snapshot(params, null);
 	}
 	
 	public boolean containsPoint(double posX, double posY) {
-		return clickCircle.containsPoint(posX, posY);
+		return circle.contains(posX, posY);
+	}
+	
+	@Override
+	public void translateShape(double newPosX, double newPosY) {
+		super.translateShape(newPosX, newPosY);
+		circle = new Circle(posX, posY, circle.getRadius());
+		ex.setPos(new Point(newPosX, newPosY));
 	}
 }

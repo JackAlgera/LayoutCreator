@@ -1,6 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
-import com.projetpaparobin.objects.zones.Zone;
+import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.geometry.Bounds;
@@ -14,52 +14,48 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Transform;
 
-public class UIZoneText extends UIElement {
+public class UIExtinguisherText extends UIElement {
+
+	private static double Y_OFFSET = -UIElements.LAYOUT_FONT.getSize() * 2.0;
 	
 	private Rectangle hitbox;
-	private Zone zone;
+	private Extinguisher ex;
 
 	private WritableImage drawnImage;
 	private Bounds bounds;
 		
-	public UIZoneText(Zone zone, Canvas canvas) {
-		super(zone.getShape().getArea().getBounds2D().getCenterX(), zone.getShape().getArea().getBounds2D().getMinY(), zone.getRimColor(), zone.getFillColor(), canvas);
-		this.zone = zone;
-		prepareImage(zone);
+	public UIExtinguisherText(Extinguisher ex, Canvas canvas) {
+		super(ex.getPos().getX(), ex.getPos().getY() + Y_OFFSET, Color.BLACK, null, canvas);
+		this.ex = ex;
+		prepareImage(ex);
 	}
 	
 	@Override
 	public void drawShape() {	
-		canvasGC.drawImage(drawnImage, posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0));	
+		canvasGC.drawImage(drawnImage, posX, posY);	
 	}
 	
-	private void prepareImage(Zone zone) {
+	private void prepareImage(Extinguisher ex) {
 		int scale = 5;
 	
 		StackPane sPane = new StackPane();		
-		Text txt = new Text(zone.getDisplayText());
+		Text txt = new Text(ex.getDisplayText());
 		txt.setFont(UIElements.LAYOUT_FONT);
 			
 		sPane.getChildren().addAll(txt);		
 		bounds = sPane.getBoundsInLocal();
-		
-		Rectangle whiteRect = new Rectangle(bounds.getWidth() * 1.1, bounds.getHeight() * 1.1);
-		whiteRect.setStroke(rimColor);
-		whiteRect.setStrokeWidth(1);
-		whiteRect.setFill(Color.WHITE);
-		
-		sPane.getChildren().remove(txt);
-		sPane.getChildren().addAll(whiteRect, txt);
-
+				
 		SnapshotParameters params = new SnapshotParameters();
 		params.setTransform(Transform.scale(scale, scale));
+		params.setFill(Color.TRANSPARENT);
 		
 		drawnImage = sPane.snapshot(params, null);
 		
 		ImageView view = new ImageView(drawnImage);
 		view.setFitWidth(bounds.getWidth());
 		view.setFitHeight(bounds.getHeight());
-		drawnImage = view.snapshot(null, null);
+		params.setTransform(Transform.scale(1, 1));
+		drawnImage = view.snapshot(params, null);
 		
 		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
 	}
@@ -68,8 +64,8 @@ public class UIZoneText extends UIElement {
 		return hitbox.contains(posX, posY);
 	}
 	
-	public Zone getZone() {
-		return zone;
+	public Extinguisher getExtinguisher() {
+		return ex;
 	}
 	
 	@Override
@@ -77,4 +73,5 @@ public class UIZoneText extends UIElement {
 		super.translateShape(newPosX, newPosY);
 		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
 	}
+	
 }

@@ -4,9 +4,9 @@ import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.elements.UIElement;
 import com.projetpaparobin.frontend.elements.UIExtinguisher;
+import com.projetpaparobin.frontend.elements.UIExtinguisherText;
 import com.projetpaparobin.frontend.elements.UIZone;
 import com.projetpaparobin.frontend.elements.UIZoneText;
-import com.projetpaparobin.frontend.elements.shapes.UIPolygon;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
@@ -44,11 +44,14 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		for (UIElement zone : zoneHandler.getZones()) {
 			zone.drawShape();
 		}
-		for (UIElement text : textHandler.getTexts()) {
+		for (UIElement text : textHandler.getZoneTexts()) {
 			text.drawShape();
 		}
 		for (UIElement extinguisher : extinguisherHandler.getExtinguishers()) {
 			extinguisher.drawShape();
+		}
+		for (UIElement text : textHandler.getExtinguisherTexts()) {
+			text.drawShape();
 		}
 	}
 	
@@ -60,11 +63,15 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			zoneHandler.add(new UIZone(zone.getShape().getPoints(), zone.getRimColor(), zone.getFillColor(), view.getCanvas()));
 			
 			if(!textHandler.zoneHasText(zone)) {
-				textHandler.addText(new UIZoneText(zone, view.getCanvas()));
+				textHandler.addZoneText(new UIZoneText(zone, view.getCanvas()));
 			}		
 
 			for (Extinguisher ex : zone.getExtinguishers()) {
 				extinguisherHandler.addExtinguisher(new UIExtinguisher(ex, view.getCanvas()));
+				
+				if(!textHandler.extinguisherHasText(ex)) {
+					textHandler.addExtinguisherText(new UIExtinguisherText(ex, view.getCanvas()));
+				}	
 			}
 		} 
 	}
@@ -80,7 +87,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			break;
 		case ADDED_POINT:
 			updateCanvas();			
-			UIPolygon currentZone = new UIPolygon(zoneCreator.getCurrentZone().getShape().getPoints(),
+			UIZone currentZone = new UIZone(zoneCreator.getCurrentZone().getShape().getPoints(),
 					zoneCreator.getCurrentZone().getRimColor(), 
 					zoneCreator.getCurrentZone().getFillColor(), 
 					view.getCanvas());
