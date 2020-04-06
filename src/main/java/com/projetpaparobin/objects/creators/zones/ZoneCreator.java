@@ -3,7 +3,7 @@ package com.projetpaparobin.objects.creators.zones;
 import java.util.ArrayList;
 
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.objects.zones.EZoneType;
+import com.projetpaparobin.objects.zones.EActivityType;
 import com.projetpaparobin.objects.zones.ZoneID;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
@@ -62,7 +62,7 @@ public class ZoneCreator {
 
 	public void setZoneID(ZoneID id) {
 		if(currentZone != null && (zoneState == EZoneCreationState.SETTING_NAME)) {
-			currentZone.setIdentifiant(id);
+			currentZone.setId(id);
 			doneCreatingZone();
 		}
 	}

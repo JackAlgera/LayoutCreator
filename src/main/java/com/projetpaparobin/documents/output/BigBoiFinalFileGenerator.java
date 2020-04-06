@@ -7,30 +7,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.dao.DAOExcelImpl;
-import com.projetpaparobin.zones.EZoneType;
-import com.projetpaparobin.zones.Extinguisher;
-import com.projetpaparobin.zones.Zone;
-import com.projetpaparobin.zones.extinguishers.TypeExtinguisher;
+import com.projetpaparobin.objects.extinguishers.Extinguisher;
+import com.projetpaparobin.objects.extinguishers.TypeExtinguisher;
+import com.projetpaparobin.objects.zones.Zone;
 
 public class BigBoiFinalFileGenerator {
 
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
-	private static DAOExcelImpl daoExcel = DAOExcelImpl.getInstance();
+	private static DAOExcelImpl dao = DAOExcelImpl.getInstance();
 	
 	private static BigBoiFinalFileGenerator instance;
 	
-	private BigBoiFinalFileGenerator() {	
-		
-		
+	private BigBoiFinalFileGenerator() {			
 	}
 	
 	public static BigBoiFinalFileGenerator getInstance() {
@@ -41,82 +37,105 @@ public class BigBoiFinalFileGenerator {
 		return instance;
 	}
 	
-	public void generateExcel(String ExcelPath) {
-		createNewExcel(daoExcel.getExcelTemplate(), ExcelPath);
-		inputStream = new createInputStream(ExcelPath)
-		Workbook workbook = WorkbookFactory.create(inputStream);
-		for (Zone zone : layoutHandler.getZones()) {
-			
-			 HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
-	            for (Extinguisher e: zone.getExtincteurs()) {
-	                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getExtinguisherType(), e.getAnneeMiseEnService());
+	public void generateExcel(String outputTitle) {
+//		createNewExcel(dao.getExcelTemplate(), outputTitle);
+		FileInputStream fileInputStream = null;
+		XSSFWorkbook workbook = null;
+		try {
+			fileInputStream = new FileInputStream(dao.getExcelTemplate());
+			workbook = new XSSFWorkbook(fileInputStream);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		XSSFSheet industrielleSheet = workbook.getSheet(dao.PARC_INDUSTRIELLE_SHEET_NAME);
+		XSSFSheet tertiaireSheet = workbook.getSheet(dao.PARC_TERTIAIRE_SHEET_NAME);
+		
+		int tertiaireRow = 11;
+		int industrielleRow = 11;
+		
+		for (Zone zone : layoutHandler.getZones()) {			
+			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
+            for (Extinguisher e: zone.getExtinguishers()) {
+                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear());
 
-	                if(extinguisherList.containsKey(typeExtinguisher)) {
-	                    extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
-	                } else {
-	                    extinguisherList.put(typeExtinguisher, 1);
-	                }
-	            }
-	            
-			switch (zone.getIdentifiant().getActivityType()) {
-			case INDUSTRIELLE:
-				Sheet sheet = workbook.getSheetAt(2);
-				putInExcel(0,11, zone.getIdentifiant().getAreaNumber(),sheet);
-				putInExcel( 5, 11, zone.getIdentifiant().getAreaSize(),sheet);
-				putInExcel( 0, 11, zone.getIdentifiant().getAreaNumber(),sheet);
-				int lineVariable = 11;
+                if(extinguisherList.containsKey(typeExtinguisher)) {
+                    extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
+                } else {
+                    extinguisherList.put(typeExtinguisher, 1);
+                }
+            }
+	            	            
+			switch (zone.getId().getActivityType()) {
+			case INDUSTRIELLE:				
+				fillExcelSheet(industrielleSheet, tertiaireRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
+				fillExcelSheet(industrielleSheet, tertiaireRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
+				
 				for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {
-					putInExcel(6, lineVariable, extinguisher.getValue(),sheet);
-					putInExcel(7, lineVariable, extinguisher.getKey().getType(),sheet);	
-					putInExcel(8, lineVariable, extinguisher.getKey().getFabricationYear(),sheet);	
-					lineVariable = lineVariable +1;
+					fillExcelSheet(industrielleSheet, tertiaireRow, 6, CellType.NUMERIC, extinguisher.getValue());
+					fillExcelSheet(industrielleSheet, tertiaireRow, 7, CellType.STRING, extinguisher.getKey().getType());
+					fillExcelSheet(industrielleSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+					tertiaireRow++;
 				}
-				
-				
 				break;
+				
 			case TERTIAIRE:
+				fillExcelSheet(tertiaireSheet, industrielleRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
+				fillExcelSheet(tertiaireSheet, industrielleRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
 				
-				
-				
-				
+				for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {
+					fillExcelSheet(tertiaireSheet, industrielleRow, 6, CellType.NUMERIC, extinguisher.getValue());
+					fillExcelSheet(tertiaireSheet, industrielleRow, 7, CellType.STRING, extinguisher.getKey().getType());
+					fillExcelSheet(tertiaireSheet, industrielleRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+					industrielleRow++;
+				}
 				break;
 			}
-			
-			
 		}
-	}
 		
+		closeProject(fileInputStream, outputTitle, workbook);
+	}
 	
-	
-	public void createNewExcel(String titleOfTemplate, String titleOfNewExcel) {
-		// copie le excel template
-		try {
-			FileInputStream inputStream = new FileInputStream(new File(titleOfTemplate));
-		    Workbook workbook = WorkbookFactory.create(inputStream);
-		    inputStream.close();
-		    FileOutputStream outputStream = new FileOutputStream(titleOfNewExcel);
-		    workbook.write(outputStream);
-		    workbook.close();
-		    outputStream.close();
-		}catch (IOException | EncryptedDocumentException ex) {
-			System.out.println("ERROR");
-			// TODO: better handle of exception
+	private void fillExcelSheet(XSSFSheet sheet, int rowNbr, int columnNbr, CellType cellType, Object data) {
+		Row row = (sheet.getRow(rowNbr) == null) ? sheet.createRow(rowNbr) : sheet.getRow(rowNbr);
+		Cell cell = (row.getCell(columnNbr) == null) ? row.createCell(columnNbr) : row.getCell(columnNbr);
+		
+		switch (cellType) {
+		case BOOLEAN:
+			cell.setCellValue((boolean) data);
+			break;
+		case NUMERIC:
+			if(data.getClass().equals(Integer.class)) {
+				cell.setCellValue(((Integer) data).doubleValue());
+			} else {
+				cell.setCellValue((double) data);
+			}
+			break;
+		case STRING:
+			cell.setCellValue((String) data);
+			break;
+		case _NONE:
+			cell.setCellValue((String) data);
+			break;
+		default:
+			break;
 		}
 	}
 	
-public void fileExcelLineParc(int line, Zone zone) {
-		// remplie une ligne du fichier excel pour le parc (industriel ou tertiaire)
-		if (zone.getIdentifiant().getActivityType()=="T") {
-			int sheetNumber = 4;
-		}
-		else if (zone.getIdentifiant().getActivityType()=="I") {
-			int sheetNumber = 3;
-		} 
-
-		if (zone.getIdentifiant().getActivityType()=="PG") {
+	private void createNewExcel(File templateFile, String outputTitle) {
+	    try {
+			FileInputStream fileInputStream = new FileInputStream(templateFile);
+			XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
+			fileInputStream.close();
 			
+		    FileOutputStream fileOutputStream = new FileOutputStream(outputTitle);
+		    workbook.write(fileOutputStream);
+		    workbook.close();
+		    fileOutputStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		else if (zone.getIdentifiant().getActivityType()=="PC")
 	}
 	
 	public void fileExcelLineRecensement(int line) {
@@ -124,85 +143,17 @@ public void fileExcelLineParc(int line, Zone zone) {
 		
 	}
 	
-	
-	
-	public FileInputStream createInputStream(String ExcelPath) {
-		FileInputStream inputStream = null;
+	private void closeProject(FileInputStream fileInputStream, String outputName, XSSFWorkbook workbook) {
 		try {
-			inputStream = new FileInputStream(new File(ExcelPath));
-		}
-		catch (IOException | EncryptedDocumentException
-	            ex) {
-			ex.printStackTrace();
-			System.out.println("ERROR on FileInputStream");
-		}
-		return inputStream;
-
-	}
-		
-	public Workbook createWorkbook(FileInputStream inputStream){
-		Workbook workbook = null;
-		try {
-			workbook = WorkbookFactory.create(inputStream);
-			
-		}
-		catch (IOException | EncryptedDocumentException
-	            ex) {
-			ex.printStackTrace();
-			System.out.println("ERROR");
-			// TODO: better handle of exception
-		}
-		return workbook;
-	}
-	
-	public Sheet selectSheet(int sheetNumber,Workbook workbook) {
-		Sheet sheet = workbook.getSheetAt(sheetNumber);	
-		return sheet;
-	}
-	
-	
-	public void putInExcel(int columnPos, int rowPos,String dataToAdd, Sheet sheet) {
-		    Cell cell;
-		    Row row = sheet.getRow(rowPos);
-		    if (row==null) {
-		    	row = sheet.createRow(rowPos);		    	
-		    }
-		    cell = row.getCell(columnPos);
-		    if(cell==null) {
-		    	cell = row.createCell(columnPos);
-		    }
-		        cell.setCellValue(dataToAdd);
-
-	}
-	
-	public void putInExcel(int columnPos, int rowPos,int dataToAdd, Sheet sheet) {
-		    Cell cell;
-		    Row row = sheet.getRow(rowPos);
-		    if (row==null) {
-		    	row = sheet.createRow(rowPos);		    	
-		    }
-		    cell = row.getCell(columnPos);
-		    if(cell==null) {
-		    	cell = row.createCell(columnPos);
-		    }
-		        cell.setCellValue(dataToAdd);
-	}
-	
-	public void closeWorkbook(FileInputStream inputStream, Workbook workbook, String ExcelPath) {
-		try {
-			inputStream.close();
-			FileOutputStream outputStream = new FileOutputStream(ExcelPath);
+			fileInputStream.close();
+			FileOutputStream outputStream = new FileOutputStream(outputName);
 			workbook.write(outputStream);
-			workbook.close();
+			workbook.close();	
 			outputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch (IOException | EncryptedDocumentException
-	            ex) {
-			ex.printStackTrace();
-			System.out.println("ERROR");
-			// TODO: better handle of exception
-		}
-	}
-	
+	}	
 	
 }
