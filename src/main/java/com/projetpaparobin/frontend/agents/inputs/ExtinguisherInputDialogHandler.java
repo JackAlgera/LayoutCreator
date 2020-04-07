@@ -4,17 +4,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.controlsfx.control.textfield.TextFields;
+
 import com.projetpaparobin.objects.creators.extinguishers.EExtinguisherEvents;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.extinguishers.IExtinguisherCreatorListener;
+import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.ExtinguisherID;
-import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -44,9 +45,19 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		number.setPromptText("Number");
 		number.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		
+		ComboBox<UIColor> colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIColor.RED, UIColor.BLUE, UIColor.GREEN));
+		colorComboBox.setValue(UIColor.RED);
+		colorComboBox.setPrefWidth(width);		
+		
 		TextField extinguisherType = new TextField();
-		extinguisherType.setPromptText("Extinguisher type");
-		extinguisherType.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
+		extinguisherType.setPromptText("Extinguisher type");		
+		TextFields.bindAutoCompletion(extinguisherType, Stream.of(EExtinguisherType.values()).map(t -> t.getName()).collect(Collectors.toSet()));
+		extinguisherType.textProperty().addListener((observable, oldValue, newValue) -> {
+			EExtinguisherType type = EExtinguisherType.getEnum(newValue);
+			if(type != EExtinguisherType.OTHER) {
+				colorComboBox.setValue(UIColor.getEnum(type.getColor()));
+			}
+		});
 		
 		ComboBox<String> protectionType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EProtectionType.values())
 				.map(val -> val.toString())
@@ -63,16 +74,13 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		brand.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
 		
 		CheckBox isNew = new CheckBox("Is new");
-
-		ComboBox<UIColor> colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIColor.RED, UIColor.BLUE, UIColor.GREEN));
-		colorComboBox.setValue(UIColor.RED);
-		colorComboBox.setPrefWidth(width);			
+	
 		
 		dialogPane.setContent(new VBox(8, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String numberVal = number.getText();
-				String extinguisherTypeVal = extinguisherType.getText();
+				EExtinguisherType extinguisherTypeVal = EExtinguisherType.getEnum(extinguisherType.getText());
 				String protectionTypeVal = protectionType.getValue();
 				String fabricationYearVal = fabricationYear.getText();
 				String brandVal = brand.getText();

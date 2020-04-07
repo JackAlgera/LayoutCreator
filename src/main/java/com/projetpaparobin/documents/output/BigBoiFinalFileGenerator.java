@@ -58,7 +58,7 @@ public class BigBoiFinalFileGenerator {
 		for (Zone zone : layoutHandler.getZones()) {			
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
             for (Extinguisher e: zone.getExtinguishers()) {
-                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear());
+                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType().getName(), e.getId().getFabricationYear());
 
                 if(extinguisherList.containsKey(typeExtinguisher)) {
                     extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
@@ -76,6 +76,7 @@ public class BigBoiFinalFileGenerator {
 					fillExcelSheet(industrielleSheet, tertiaireRow, 6, CellType.NUMERIC, extinguisher.getValue());
 					fillExcelSheet(industrielleSheet, tertiaireRow, 7, CellType.STRING, extinguisher.getKey().getType());
 					fillExcelSheet(industrielleSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+					fillExcelSheet(industrielleSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
 					tertiaireRow++;
 				}
 				break;
@@ -88,6 +89,7 @@ public class BigBoiFinalFileGenerator {
 					fillExcelSheet(tertiaireSheet, industrielleRow, 6, CellType.NUMERIC, extinguisher.getValue());
 					fillExcelSheet(tertiaireSheet, industrielleRow, 7, CellType.STRING, extinguisher.getKey().getType());
 					fillExcelSheet(tertiaireSheet, industrielleRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+					fillExcelSheet(tertiaireSheet, industrielleRow, 9, CellType.NUMERIC, 1.0);
 					industrielleRow++;
 				}
 				break;

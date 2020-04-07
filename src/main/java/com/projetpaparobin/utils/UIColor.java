@@ -23,4 +23,16 @@ public enum UIColor {
 		return colorName;
 	}
 	
+	public static UIColor getEnum(Color color) {
+		if(color.equals(Color.RED)) {
+			return RED;
+		} else if(color.equals(Color.BLUE)) {
+			return BLUE;
+		} else if(color.equals(Color.YELLOW)) {
+			return YELLOW;
+		} else {
+			return GREEN;
+		}
+	}
+	
 }
