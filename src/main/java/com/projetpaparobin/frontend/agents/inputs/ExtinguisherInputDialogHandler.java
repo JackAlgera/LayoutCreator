@@ -45,7 +45,8 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		number.setPromptText("Number");
 		number.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		
-		ComboBox<UIColor> colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIColor.RED, UIColor.BLUE, UIColor.GREEN));
+		ComboBox<UIColor> colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(Stream.of(UIColor.values())
+				.collect(Collectors.toList())));
 		colorComboBox.setValue(UIColor.RED);
 		colorComboBox.setPrefWidth(width);		
 		

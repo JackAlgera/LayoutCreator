@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 public enum UIColor {
 
-	RED("Red", Color.RED), BLUE("Blue", Color.BLUE), YELLOW("Yellow", Color.YELLOW), GREEN("Green", Color.GREEN);
+	RED("Red", Color.RED), BLUE("Blue", Color.LIGHTSKYBLUE), YELLOW("Yellow", Color.YELLOW), GREEN("Green", Color.LIGHTGREEN);
 	
 	private Color color;
 	private String colorName;
@@ -24,11 +24,11 @@ public enum UIColor {
 	}
 	
 	public static UIColor getEnum(Color color) {
-		if(color.equals(Color.RED)) {
+		if(color.equals(RED.getColor())) {
 			return RED;
-		} else if(color.equals(Color.BLUE)) {
+		} else if(color.equals(BLUE.getColor())) {
 			return BLUE;
-		} else if(color.equals(Color.YELLOW)) {
+		} else if(color.equals(YELLOW.getColor())) {
 			return YELLOW;
 		} else {
 			return GREEN;
