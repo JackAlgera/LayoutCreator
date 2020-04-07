@@ -1,14 +1,22 @@
 package com.projetpaparobin.frontend.agents.inputs;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
+import com.projetpaparobin.objects.zones.EActivityType;
+import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.ZoneID;
 import com.projetpaparobin.utils.UIElements;
 
+import javafx.collections.FXCollections;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
@@ -17,6 +25,8 @@ import javafx.scene.layout.VBox;
 
 public class ZoneInputDialogHandler implements IZoneCreatorListener {
 
+	private static double width = 180;
+	
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private Dialog<ZoneID> inputDialog;
 	
@@ -25,44 +35,52 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		dialogPane.setPrefWidth(width);
 		
-		TextField areaTypeTextField  = new TextField();
-		areaTypeTextField.setPromptText("Area Type");
-		areaTypeTextField.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
+		ComboBox<String> areaType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EAreaType.values())
+						.map(val -> val.toString())
+						.collect(Collectors.toList())));	
+		areaType.setValue(EAreaType.values()[0].toString());
+		areaType.setPrefWidth(width);
 		
-		TextField areaNumberTextField = new TextField();
-		areaNumberTextField.setPromptText("Area number");
-		areaNumberTextField.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
+		TextField areaNumber = new TextField();
+		areaNumber.setPromptText("Area number");
+		areaNumber.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
+
+		ComboBox<String> activityType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EActivityType.values())
+				.map(val -> val.toString())
+				.collect(Collectors.toList())));	
+		activityType.setValue(EActivityType.values()[0].toString());
+		activityType.setPrefWidth(width);
 		
-		TextField activityTypeTextField  = new TextField();
-		activityTypeTextField.setPromptText("Activity Type");
-		activityTypeTextField.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
-		
-		TextField areaSizesTextField  = new TextField();
-		areaSizesTextField.setPromptText("Area size");
-		areaSizesTextField.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
+		TextField areaSizes = new TextField();
+		areaSizes.setPromptText("Area size");
+		areaSizes.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
-		dialogPane.setContent(new VBox(8, areaTypeTextField, areaNumberTextField, activityTypeTextField, areaSizesTextField));
+		VBox vbox = new VBox(8, areaType, areaNumber, activityType, areaSizes);
+		vbox.setFillWidth(true);
+		
+		dialogPane.setContent(vbox);
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
-				String areaType = areaTypeTextField.getText();
-				String areaNumber = areaNumberTextField.getText();
-				String activityType = activityTypeTextField.getText();
-				String areaSize = areaSizesTextField.getText();
-				
-				areaTypeTextField.setText("");
-				areaNumberTextField.setText("");
-				activityTypeTextField.setText("");
-				areaSizesTextField.setText("");
-				
-				if(areaSize.isBlank()) {
-					areaSize = "-1";
+				String areaTypeVal = areaType.getValue();
+				String areaNumberVal = areaNumber.getText();
+				String activityTypeVal = activityType.getValue();
+				String areaSizeVal = areaSizes.getText();
+
+				areaType.setValue(EAreaType.values()[0].toString());
+				areaNumber.setText("");
+				activityType.setValue(EActivityType.values()[0].toString());
+				areaSizes.setText("");
+
+				if(areaNumberVal.isBlank()) {
+					areaNumberVal = "-1";
 				}
-				if(areaNumber.isBlank()) {
-					areaNumber = "-1";
+				if(areaSizeVal.isBlank()) {
+					areaSizeVal = "-1";
 				}
 				
-				return new ZoneID(areaType, Integer.parseInt(areaNumber), activityType, Integer.parseInt(areaSize));
+				return new ZoneID(EAreaType.valueOf(areaTypeVal), Integer.parseInt(areaNumberVal), EActivityType.valueOf(activityTypeVal), Integer.parseInt(areaSizeVal));
 			} 
 			if(button == ButtonType.CANCEL) {
 				zoneCreator.canceled();

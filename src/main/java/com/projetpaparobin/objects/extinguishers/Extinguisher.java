@@ -14,7 +14,7 @@ public class Extinguisher {
 	public Extinguisher() {
 	}
 	
-	public Extinguisher(int number, String extinguisherType, String protectionType, Color color,
+	public Extinguisher(String number, String extinguisherType, EProtectionType protectionType, Color color,
 			Point pos, boolean isNew, Zone zone,int anneeMiseEnService,String marque) {
 		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color);
 		this.pos = pos;

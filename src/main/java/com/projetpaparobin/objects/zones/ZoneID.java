@@ -1,31 +1,24 @@
 package com.projetpaparobin.objects.zones;
 
 public class ZoneID {
-	
-	private String areaType;
+
 	private int areaNumber;
-	private EZoneType activityType;
+	private EAreaType areaType;
+	private EActivityType activityType;
 	private int areaSize;
 	
-	public ZoneID(String areaType, int areaNumber, String activityType, int areaSize) {
-		this.areaType = areaType;
+	public ZoneID(EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize) {
 		this.areaNumber = areaNumber;
-		this.activityType = EZoneType.getEnum(activityType);
-		this.areaSize = areaSize;
-	}
-
-	public ZoneID(String areaType, int areaNumber, EZoneType activityType, int areaSize) {
 		this.areaType = areaType;
-		this.areaNumber = areaNumber;
 		this.activityType = activityType;
 		this.areaSize = areaSize;
 	}
 		
-	public String getAreaType() {
+	public EAreaType getAreaType() {
 		return areaType;
 	}
 
-	public void setAreaType(String areaType) {
+	public void setAreaType(EAreaType areaType) {
 		this.areaType = areaType;
 	}
 	
@@ -37,11 +30,11 @@ public class ZoneID {
 		this.areaNumber = areaNumber;
 	}
 
-	public EZoneType getActivityType() {
+	public EActivityType getActivityType() {
 		return activityType;
 	}
 
-	public void setActivityType(EZoneType activityType) {
+	public void setActivityType(EActivityType activityType) {
 		this.activityType = activityType;
 	}
 

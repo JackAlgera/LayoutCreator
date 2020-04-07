@@ -1,11 +1,16 @@
 package com.projetpaparobin.frontend.agents.inputs;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.projetpaparobin.objects.creators.extinguishers.EExtinguisherEvents;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.extinguishers.IExtinguisherCreatorListener;
+import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.ExtinguisherID;
+import com.projetpaparobin.objects.zones.EAreaType;
+import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
@@ -21,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListener {
+
+	private static double width = 180;
 	
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	
@@ -31,6 +38,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		dialogPane.setPrefWidth(width);
 		
 		TextField number = new TextField();
 		number.setPromptText("Number");
@@ -40,9 +48,11 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		extinguisherType.setPromptText("Extinguisher type");
 		extinguisherType.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
 		
-		TextField protectionType = new TextField();
-		protectionType.setPromptText("Protection type");
-		protectionType.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
+		ComboBox<String> protectionType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EProtectionType.values())
+				.map(val -> val.toString())
+				.collect(Collectors.toList())));	
+		protectionType.setValue(EProtectionType.values()[0].toString());
+		protectionType.setPrefWidth(width);
 		
 		TextField fabricationYear = new TextField();
 		fabricationYear.setPromptText("Fabrication year");
@@ -54,35 +64,35 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		
 		CheckBox isNew = new CheckBox("Is new");
 
-		ObservableList<Color> colorList = FXCollections.observableArrayList(Color.RED, Color.BLUE, Color.GREEN);
-		ComboBox<Color> colorComboBox = new ComboBox<Color>(colorList);
-				
-		dialogPane.setContent(new VBox(8, number, extinguisherType, protectionType, fabricationYear, brand, isNew));
+		ComboBox<UIColor> colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIColor.RED, UIColor.BLUE, UIColor.GREEN));
+		colorComboBox.setValue(UIColor.RED);
+		colorComboBox.setPrefWidth(width);			
+		
+		dialogPane.setContent(new VBox(8, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String numberVal = number.getText();
 				String extinguisherTypeVal = extinguisherType.getText();
-				String protectionTypeVal = protectionType.getText();
+				String protectionTypeVal = protectionType.getValue();
 				String fabricationYearVal = fabricationYear.getText();
 				String brandVal = brand.getText();
 				boolean isNewVal = isNew.isSelected();
-				Color colorVal = Color.RED;
+				Color colorVal = colorComboBox.getValue().getColor();
 				
 				number.setText("");
 				extinguisherType.setText("");
-				protectionType.setText("");
+				protectionType.setValue(EProtectionType.values()[0].toString());
 				fabricationYear.setText("");
 				brand.setText("");
 				isNew.setSelected(false);
 				
-				if(numberVal.isBlank()) {
-					numberVal = "-1";
-				}
+				EProtectionType.valueOf(protectionTypeVal);
+				
 				if(fabricationYearVal.isBlank()) {
 					fabricationYearVal = "-1";
 				}
 				
-				return new ExtinguisherID(Integer.parseInt(numberVal), extinguisherTypeVal, protectionTypeVal, Integer.parseInt(fabricationYearVal), brandVal, isNewVal, colorVal);
+				return new ExtinguisherID(numberVal, extinguisherTypeVal, EProtectionType.valueOf(protectionTypeVal), Integer.parseInt(fabricationYearVal), brandVal, isNewVal, colorVal);
 			} 
 			if(button == ButtonType.CANCEL) {
 				extinguisherCreator.canceled();

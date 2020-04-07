@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 
 public class Zone {
 	
-	private ZoneID identifiant;
+	private ZoneID id;
 	private Shape shape;
 	private Color rimColor, fillColor;
 	private ArrayList<Extinguisher> extinguishers;	
@@ -21,20 +21,20 @@ public class Zone {
 		this.rimColor = fillColor.darker();
 	}
 	
-	public Zone(ZoneID identifiant, Shape shape, Color rimColor, Color fillColor, ArrayList<Extinguisher> extinguishers) {
-		this.identifiant = identifiant;
+	public Zone(ZoneID id, Shape shape, Color rimColor, Color fillColor, ArrayList<Extinguisher> extinguishers) {
+		this.id = id;
 		this.shape = shape;
 		this.rimColor = rimColor;
 		this.fillColor = fillColor;
 		this.extinguishers = extinguishers;
 	}
 
-	public ZoneID getIdentifiant() {
-		return identifiant;
+	public ZoneID getId() {
+		return id;
 	}
 
-	public void setIdentifiant(ZoneID identifiant) {
-		this.identifiant = identifiant;
+	public void setId(ZoneID id) {
+		this.id = id;
 	}
 
 	public Shape getShape() {
@@ -78,7 +78,7 @@ public class Zone {
 	}
 		
 	public String getDisplayText() {
-		return identifiant.getAreaType() + identifiant.getAreaNumber() + "-i-" + identifiant.getAreaSize() + "m2";
+		return id.getAreaType().toString() + id.getAreaNumber() + "-" + id.getActivityType() + "-" + id.getAreaSize() + "m²";
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Zone {
 		int result = 1;
 		result = prime * result + ((extinguishers == null) ? 0 : extinguishers.hashCode());
 		result = prime * result + ((fillColor == null) ? 0 : fillColor.hashCode());
-		result = prime * result + ((identifiant == null) ? 0 : identifiant.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((rimColor == null) ? 0 : rimColor.hashCode());
 		result = prime * result + ((shape == null) ? 0 : shape.hashCode());
 		return result;
@@ -112,10 +112,10 @@ public class Zone {
 				return false;
 		} else if (!fillColor.equals(other.fillColor))
 			return false;
-		if (identifiant == null) {
-			if (other.identifiant != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!identifiant.equals(other.identifiant))
+		} else if (!id.equals(other.id))
 			return false;
 		if (rimColor == null) {
 			if (other.rimColor != null)

@@ -1,12 +1,12 @@
 package com.projetpaparobin.objects.zones;
 
-public enum EZoneType {
+public enum EActivityType {
 
 	TERTIAIRE("Tertiaire"), INDUSTRIELLE("Industrielle");
 	
 	private String type;
 	
-	private EZoneType(String type) {
+	private EActivityType(String type) {
 		this.type=type;
 	}
 	
@@ -14,8 +14,8 @@ public enum EZoneType {
 		return type;
 	}
 	
-	public static EZoneType getEnum(String value) {
-        for(EZoneType type : values()) {
+	public static EActivityType getEnum(String value) {
+        for(EActivityType type : values()) {
             if(type.getType().equalsIgnoreCase(value)) {
             	return type;
             }        	
