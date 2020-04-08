@@ -60,5 +60,5 @@ public class Shape {
 	public Polygon getArea() {
 		return area;
 	}
-		
+	
 }

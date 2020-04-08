@@ -2,11 +2,14 @@ package com.projetpaparobin.frontend.agents.inputs;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
+import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIExtinguisher;
 import com.projetpaparobin.frontend.elements.UIExtinguisherText;
+import com.projetpaparobin.frontend.elements.UIZone;
 import com.projetpaparobin.frontend.elements.UIZoneText;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
+import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.creators.extinguishers.EExtinguisherEvents;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.extinguishers.IExtinguisherCreatorListener;
@@ -15,6 +18,7 @@ import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
+import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.event.EventHandler;
@@ -31,13 +35,14 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	
 	private static UITextHandler textHandler = UITextHandler.getInstance();
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	private static UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
 	private static UIExtinguisherHandler extinguisherHandler = UIExtinguisherHandler.getInstance();
 	
-	private Zone selectedZone = null;
+	private UIZone selectedZone = null;
 	private UIZoneText selectedZoneText = null;
 	private UIExtinguisher selectedExtinguisher = null;
 	private UIExtinguisherText selectedExtinguisherText = null;
+	private UICorner selectedCorner = null;
 	private double dX = 0;
 	private double dY = 0;
 	
@@ -93,9 +98,18 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 					state = ETypeAction.SELECTED_ZONE_TEXT;
 					break;
 				}
-				selectedZone = layoutHandler.getZone(event.getX(), event.getY());
-				if(selectedZone != null) {
+				selectedCorner = zoneHandler.getCorner(event.getX(), event.getY());
+				if(selectedCorner != null) {
+					dX = event.getX() - selectedCorner.getPosX();
+					dY = event.getY() - selectedCorner.getPosY();
 					state = ETypeAction.SELECTED_CORNER;
+					break;
+				}
+				selectedZone = zoneHandler.getZone(event.getX(), event.getY());
+				if(selectedZone != null) {
+					dX = event.getX() - selectedZone.getPosX();
+					dY = event.getY() - selectedZone.getPosY();
+					state = ETypeAction.SELECTED_ZONE;
 					break;
 				}
 				
@@ -104,10 +118,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				zoneCreator.addPoint(new Point(event.getX(), event.getY()));	
 				break;
 			case CREATING_EXTINGUISHER:
-				selectedZone = layoutHandler.getZone(event.getX(), event.getY());
+				selectedZone = zoneHandler.getZone(event.getX(), event.getY());
 				if(selectedZone != null) {
 					extinguisherCreator.setPosition(new Point(event.getX(), event.getY()));
-					extinguisherCreator.setZone(selectedZone);
+					extinguisherCreator.setZone(selectedZone.getZone());
 				}
 				break;
 			}
@@ -127,7 +141,13 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_CORNER:
-				state = ETypeAction.IDLE;
+				selectedCorner.translateShape(newPosX, newPosY);
+				selectedCorner.getZone().getShape().updateArea();
+				presLayout.updateCanvas();
+				break;
+			case SELECTED_ZONE:
+				selectedZone.translateShape(newPosX, newPosY);
+				presLayout.updateCanvas();
 				break;
 			case SELECTED_ZONE_TEXT:
 				selectedZoneText.translateShape(newPosX, newPosY);
@@ -141,12 +161,15 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			case SELECTED_EXTINGUISHER:
 				state = ETypeAction.IDLE;
 				break;
-			case SELECTED_CORNER:
-				state = ETypeAction.IDLE;
-				break;
 			case SELECTED_EXTINGUISHER_TEXT:
 				state = ETypeAction.IDLE;
 				break;	
+			case SELECTED_CORNER:
+				state = ETypeAction.IDLE;
+				break;
+			case SELECTED_ZONE:
+				state = ETypeAction.IDLE;
+				break;
 			case SELECTED_ZONE_TEXT:
 				state = ETypeAction.IDLE;
 				break;			

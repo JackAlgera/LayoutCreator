@@ -36,5 +36,6 @@ public abstract class UIElement {
 	}
 	
 	public abstract void drawShape();
+	public abstract boolean containsPoint(double posX, double posY);
 	
 }

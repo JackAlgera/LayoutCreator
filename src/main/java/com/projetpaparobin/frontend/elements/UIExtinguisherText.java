@@ -59,7 +59,8 @@ public class UIExtinguisherText extends UIElement {
 		
 		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
 	}
-	
+
+	@Override
 	public boolean containsPoint(double posX, double posY) {
 		return hitbox.contains(posX, posY);
 	}

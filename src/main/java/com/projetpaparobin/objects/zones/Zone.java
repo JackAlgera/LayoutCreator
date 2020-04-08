@@ -76,7 +76,7 @@ public class Zone {
 	public boolean containsPoint(double posX, double posY) {
 		return shape.getArea().contains(posX, posY);
 	}
-		
+
 	public String getDisplayText() {
 		return id.getAreaType().toString() + id.getAreaNumber() + "-" + id.getActivityType() + "-" + id.getAreaSize() + "m²";
 	}

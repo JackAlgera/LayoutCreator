@@ -5,14 +5,14 @@ import javafx.scene.paint.Color;
 public class ExtinguisherID {
 
 	private String number; //from 01 to XX 
-	private EExtinguisherType extinguisherType;
+	private String extinguisherType;
 	private EProtectionType protectionType; 
 	private int fabricationYear;
 	private String brand;
 	private boolean isNew;
 	private Color color; //either blue,red or yellow
 		
-	public ExtinguisherID(String number, EExtinguisherType extinguisherType, EProtectionType protectionType, int fabricationYear,
+	public ExtinguisherID(String number, String extinguisherType, EProtectionType protectionType, int fabricationYear,
 			String brand, boolean isNew, Color color) {
 		super();
 		this.number = number;
@@ -32,11 +32,11 @@ public class ExtinguisherID {
 		this.number = number;
 	}
 
-	public EExtinguisherType getExtinguisherType() {
+	public String getExtinguisherType() {
 		return extinguisherType;
 	}
 
-	public void setExtinguisherType(EExtinguisherType extinguisherType) {
+	public void setExtinguisherType(String extinguisherType) {
 		this.extinguisherType = extinguisherType;
 	}
 

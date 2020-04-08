@@ -81,7 +81,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String numberVal = number.getText();
-				EExtinguisherType extinguisherTypeVal = EExtinguisherType.getEnum(extinguisherType.getText());
+				String extinguisherTypeVal = extinguisherType.getText();
 				String protectionTypeVal = protectionType.getValue();
 				String fabricationYearVal = fabricationYear.getText();
 				String brandVal = brand.getText();

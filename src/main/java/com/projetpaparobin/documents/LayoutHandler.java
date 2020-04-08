@@ -28,15 +28,5 @@ public class LayoutHandler {
 	public ArrayList<Zone> getZones() {
 		return zones;
 	}
-		
-	public Zone getZone(double posX, double posY) {
-		for (Zone zone : zones) {
-			if(zone.containsPoint(posX, posY)) {
-				return zone;
-			}
-		}
-		
-		return null;
-	}
 	
 }

@@ -46,7 +46,8 @@ public class UIExtinguisher extends UIElement {
 		
 		drawnImage = sPane.snapshot(params, null);
 	}
-	
+
+	@Override
 	public boolean containsPoint(double posX, double posY) {
 		return circle.contains(posX, posY);
 	}
@@ -57,4 +58,5 @@ public class UIExtinguisher extends UIElement {
 		circle = new Circle(posX, posY, circle.getRadius());
 		ex.setPos(new Point(newPosX, newPosY));
 	}
+	
 }

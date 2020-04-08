@@ -58,7 +58,7 @@ public class BigBoiFinalFileGenerator {
 		for (Zone zone : layoutHandler.getZones()) {			
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
             for (Extinguisher e: zone.getExtinguishers()) {
-                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType().getName(), e.getId().getFabricationYear());
+                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear());
 
                 if(extinguisherList.containsKey(typeExtinguisher)) {
                     extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
