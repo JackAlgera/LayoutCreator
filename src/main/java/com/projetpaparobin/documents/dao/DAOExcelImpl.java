@@ -7,9 +7,11 @@ public class DAOExcelImpl implements DAOExcel {
 	private static DAOExcelImpl instance;
 
 	private static final String EXCEL_TEMPLATE_PATH = "./COM-Q-50035005-EdK.xlsm";
-	public static final String PARC_INDUSTRIELLE_SHEET_NAME = "Parc activité industrielle";
-	public static final String PARC_TERTIAIRE_SHEET_NAME = "Parc activité tertiaire";
-	
+	public final String PARC_INDUSTRIELLE_SHEET_NAME = "Parc activité industrielle";
+	public final String PARC_TERTIAIRE_SHEET_NAME = "Parc activité tertiaire";
+	public final String NBR_EXTINGUISHERS_SHEET_NAME = "dernière page";
+	public final String RECENSEMENT_SHEET_NAME = "Recensement";
+		
 	private DAOExcelImpl() {
 	}
 	

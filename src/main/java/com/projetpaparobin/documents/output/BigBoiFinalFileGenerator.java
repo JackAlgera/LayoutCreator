@@ -1,26 +1,45 @@
 package com.projetpaparobin.documents.output;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.dao.DAOExcelImpl;
+import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.extinguishers.TypeExtinguisher;
 import com.projetpaparobin.objects.zones.Zone;
 
 public class BigBoiFinalFileGenerator {
 
+	private static ArrayList<String> NOT_MES_CQ_TYPES = new ArrayList<String>(Arrays.asList(
+			EExtinguisherType.E6AEVF.getName(),
+			EExtinguisherType.AL6F.getName(),
+			EExtinguisherType.C2.getName(),
+			EExtinguisherType.C5.getName(),
+			EExtinguisherType.P25.getName(),
+			EExtinguisherType.P25P.getName(),
+			EExtinguisherType.P50.getName(),
+			EExtinguisherType.P50P.getName(),
+			EExtinguisherType.C10.getName(),
+			EExtinguisherType.C20.getName(),
+			EExtinguisherType.E45A.getName(),
+			EExtinguisherType.E45A2T.getName()
+			));
+	
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	private static DAOExcelImpl dao = DAOExcelImpl.getInstance();
 	
@@ -38,7 +57,6 @@ public class BigBoiFinalFileGenerator {
 	}
 	
 	public void generateExcel(String outputTitle) {
-//		createNewExcel(dao.getExcelTemplate(), outputTitle);
 		FileInputStream fileInputStream = null;
 		XSSFWorkbook workbook = null;
 		try {
@@ -49,11 +67,18 @@ public class BigBoiFinalFileGenerator {
 			e1.printStackTrace();
 		}
 		
+		ArrayList<Extinguisher> extinguishers = new ArrayList<Extinguisher>();;
+		
 		XSSFSheet industrielleSheet = workbook.getSheet(dao.PARC_INDUSTRIELLE_SHEET_NAME);
 		XSSFSheet tertiaireSheet = workbook.getSheet(dao.PARC_TERTIAIRE_SHEET_NAME);
+		XSSFSheet nbrExtinguishersSheet = workbook.getSheet(dao.NBR_EXTINGUISHERS_SHEET_NAME);
+		XSSFSheet recensementSheet = workbook.getSheet(dao.RECENSEMENT_SHEET_NAME);
 		
 		int tertiaireRow = 11;
 		int industrielleRow = 11;
+		int recensementRow = 15;
+		
+		ExtinguisherTypePositionHandler positionHandler = new ExtinguisherTypePositionHandler(nbrExtinguishersSheet);
 		
 		for (Zone zone : layoutHandler.getZones()) {			
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
@@ -65,6 +90,8 @@ public class BigBoiFinalFileGenerator {
                 } else {
                     extinguisherList.put(typeExtinguisher, 1);
                 }
+                
+                extinguishers.add(e);
             }
 	            	            
 			switch (zone.getId().getActivityType()) {
@@ -76,7 +103,8 @@ public class BigBoiFinalFileGenerator {
 					fillExcelSheet(industrielleSheet, tertiaireRow, 6, CellType.NUMERIC, extinguisher.getValue());
 					fillExcelSheet(industrielleSheet, tertiaireRow, 7, CellType.STRING, extinguisher.getKey().getType());
 					fillExcelSheet(industrielleSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
-					fillExcelSheet(industrielleSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+					// TODO : Get value for FC
+					fillExcelSheet(industrielleSheet, tertiaireRow, 9, CellType.NUMERIC, 1.0);
 					tertiaireRow++;
 				}
 				break;
@@ -95,8 +123,41 @@ public class BigBoiFinalFileGenerator {
 				break;
 			}
 		}
+
+		for (Extinguisher ex : extinguishers) {
+			fillExtinguisherSheet(ex.getId().getExtinguisherType(), nbrExtinguishersSheet, positionHandler);
+			fillRecensementSheet(recensementRow, recensementSheet, ex);
+			recensementRow++;
+		}
 		
+		System.out.println(workbook.getSheet(dao.NBR_EXTINGUISHERS_SHEET_NAME).getRow(10).getCell(1).getNumericCellValue());
+		for (CellRangeAddress mergedCell : nbrExtinguishersSheet.getMergedRegions()) {
+			if(mergedCell.isInRange(10, 1)) {
+				System.out.println(mergedCell.getNumberOfCells());
+			}
+		}
 		closeProject(fileInputStream, outputTitle, workbook);
+	}
+	
+	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
+		fillExcelSheet(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
+		fillExcelSheet(sheet, row, 10, CellType.NUMERIC, ex.getZone().getShape().getAreaSize());
+		fillExcelSheet(sheet, row, 14, CellType.STRING, ex.getId().getBrand());
+		
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		if(!NOT_MES_CQ_TYPES.contains(ex.getId().getExtinguisherType()) && (year - ex.getId().getFabricationYear()) > 5) {
+			fillExcelSheet(sheet, row, 18, CellType.STRING, "MES+5");
+		}
+		
+	}
+	
+	private void fillExtinguisherSheet(String typeExtinguisher, XSSFSheet sheet, ExtinguisherTypePositionHandler positionHandler) {
+		ExcelPosition pos = positionHandler.getPosition(typeExtinguisher);
+		if(pos != null) {
+			Row row = (sheet.getRow(pos.getRow()) == null) ? sheet.createRow(pos.getRow()) : sheet.getRow(pos.getRow());
+			Cell cell = (row.getCell(pos.getColumn()) == null) ? row.createCell(pos.getColumn()) : row.getCell(pos.getColumn());
+			cell.setCellValue(cell.getNumericCellValue() + 1);
+		}
 	}
 	
 	private void fillExcelSheet(XSSFSheet sheet, int rowNbr, int columnNbr, CellType cellType, Object data) {
@@ -124,27 +185,7 @@ public class BigBoiFinalFileGenerator {
 			break;
 		}
 	}
-	
-	private void createNewExcel(File templateFile, String outputTitle) {
-	    try {
-			FileInputStream fileInputStream = new FileInputStream(templateFile);
-			XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
-			fileInputStream.close();
 			
-		    FileOutputStream fileOutputStream = new FileOutputStream(outputTitle);
-		    workbook.write(fileOutputStream);
-		    workbook.close();
-		    fileOutputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void fileExcelLineRecensement(int line) {
-		// remplie une ligne du fichier excel pour le recensement
-		
-	}
-	
 	private void closeProject(FileInputStream fileInputStream, String outputName, XSSFWorkbook workbook) {
 		try {
 			fileInputStream.close();
