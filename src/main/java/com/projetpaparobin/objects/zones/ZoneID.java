@@ -2,12 +2,14 @@ package com.projetpaparobin.objects.zones;
 
 public class ZoneID {
 
+	private String areaName;
 	private int areaNumber;
 	private EAreaType areaType;
 	private EActivityType activityType;
 	private int areaSize;
 	
-	public ZoneID(EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize) {
+	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize) {
+		this.areaName = areaName;
 		this.areaNumber = areaNumber;
 		this.areaType = areaType;
 		this.activityType = activityType;
@@ -44,6 +46,14 @@ public class ZoneID {
 
 	public void setAreaSize(int areaSize) {
 		this.areaSize = areaSize;
+	}
+
+	public String getAreaName() {
+		return areaName;
+	}
+
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
 	}	
 	
 }

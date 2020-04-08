@@ -10,7 +10,8 @@ import javafx.scene.paint.Color;
 
 public class UIZone extends UIElement {
 
-	private static double POINT_RADIUS = 3.5;
+	private static double POINT_RADIUS = 4;
+	private static double LINE_WIDTH = 2;
 	
 	private ArrayList<UICorner> corners; 
 	private Zone zone;
@@ -34,7 +35,7 @@ public class UIZone extends UIElement {
 		}		
 		
 		canvasGC.setStroke(rimColor);
-		canvasGC.setLineWidth(2.0);
+		canvasGC.setLineWidth(LINE_WIDTH);
 		canvasGC.strokePolygon(pointsX, pointsY, corners.size());
 		
 		canvasGC.setFill(fillColor);

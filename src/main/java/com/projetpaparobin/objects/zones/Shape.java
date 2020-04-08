@@ -5,18 +5,15 @@ import java.util.ArrayList;
 
 public class Shape {
 
-	private int areaSize;
 	private ArrayList<Point> points;
 	private Polygon area;
 	
 	public Shape() {
-		areaSize = 0;
 		points = new ArrayList<Point>();
 		area = new Polygon();
 	}
 	
-	public Shape(int areaSize, ArrayList<Point> points) {
-		this.areaSize = areaSize;
+	public Shape(ArrayList<Point> points) {
 		this.points = points;
 		area = new Polygon();
 		updateArea();
@@ -30,14 +27,6 @@ public class Shape {
 	public void addPoint(Point point) {
 		this.points.add(point);
 		updateArea();
-	}
-
-	public int getAreaSize() {
-		return areaSize;
-	}
-
-	public void setAreaSize(int areaSize) {
-		this.areaSize = areaSize;
 	}
 
 	public ArrayList<Point> getPoints() {

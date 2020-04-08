@@ -1,7 +1,5 @@
 package com.projetpaparobin.frontend.agents.inputs;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,6 +35,9 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		dialogPane.setPrefWidth(width);
 		
+		TextField areaName = new TextField();
+		areaName.setPromptText("Area name");
+		
 		ComboBox<String> areaType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EAreaType.values())
 						.map(val -> val.toString())
 						.collect(Collectors.toList())));	
@@ -57,17 +58,19 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 		areaSizes.setPromptText("Area size");
 		areaSizes.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
-		VBox vbox = new VBox(8, areaType, areaNumber, activityType, areaSizes);
+		VBox vbox = new VBox(8, areaName, areaType, areaNumber, activityType, areaSizes);
 		vbox.setFillWidth(true);
 		
 		dialogPane.setContent(vbox);
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
+				String areaNameVal = areaName.getText();
 				String areaTypeVal = areaType.getValue();
 				String areaNumberVal = areaNumber.getText();
 				String activityTypeVal = activityType.getValue();
 				String areaSizeVal = areaSizes.getText();
 
+				areaName.setText("");
 				areaType.setValue(EAreaType.values()[0].toString());
 				areaNumber.setText("");
 				activityType.setValue(EActivityType.values()[0].toString());
@@ -80,7 +83,7 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 					areaSizeVal = "-1";
 				}
 				
-				return new ZoneID(EAreaType.valueOf(areaTypeVal), Integer.parseInt(areaNumberVal), EActivityType.valueOf(activityTypeVal), Integer.parseInt(areaSizeVal));
+				return new ZoneID(areaNameVal, EAreaType.valueOf(areaTypeVal), Integer.parseInt(areaNumberVal), EActivityType.valueOf(activityTypeVal), Integer.parseInt(areaSizeVal));
 			} 
 			if(button == ButtonType.CANCEL) {
 				zoneCreator.canceled();

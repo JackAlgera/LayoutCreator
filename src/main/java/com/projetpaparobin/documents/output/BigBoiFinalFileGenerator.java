@@ -9,8 +9,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -25,7 +28,7 @@ import com.projetpaparobin.objects.zones.Zone;
 
 public class BigBoiFinalFileGenerator {
 
-	private static ArrayList<String> NOT_MES_CQ_TYPES = new ArrayList<String>(Arrays.asList(
+	private static ArrayList<String> NOT_MES_5_TYPES = new ArrayList<String>(Arrays.asList(
 			EExtinguisherType.E6AEVF.getName(),
 			EExtinguisherType.AL6F.getName(),
 			EExtinguisherType.C2.getName(),
@@ -96,29 +99,41 @@ public class BigBoiFinalFileGenerator {
 	            	            
 			switch (zone.getId().getActivityType()) {
 			case INDUSTRIELLE:				
-				fillExcelSheet(industrielleSheet, tertiaireRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
-				fillExcelSheet(industrielleSheet, tertiaireRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
+				fillExcelSheet(industrielleSheet, industrielleRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
+				fillExcelSheet(industrielleSheet, industrielleRow, 1, CellType.STRING, zone.getId().getAreaName());
+				fillExcelSheet(industrielleSheet, industrielleRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
 				
 				for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {
-					fillExcelSheet(industrielleSheet, tertiaireRow, 6, CellType.NUMERIC, extinguisher.getValue());
-					fillExcelSheet(industrielleSheet, tertiaireRow, 7, CellType.STRING, extinguisher.getKey().getType());
-					fillExcelSheet(industrielleSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+					fillExcelSheet(industrielleSheet, industrielleRow, 6, CellType.NUMERIC, extinguisher.getValue());
+					fillExcelSheet(industrielleSheet, industrielleRow, 7, CellType.STRING, extinguisher.getKey().getType());
+					fillExcelSheet(industrielleSheet, industrielleRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
 					// TODO : Get value for FC
-					fillExcelSheet(industrielleSheet, tertiaireRow, 9, CellType.NUMERIC, 1.0);
-					tertiaireRow++;
+					fillExcelSheet(industrielleSheet, industrielleRow, 9, CellType.NUMERIC, 1.0);
+					industrielleRow++;
+				}
+				if(extinguisherList.size() == 0) {
+					addBottomBorderToCells(industrielleRow, 1, 10, industrielleSheet);
+				} else {
+					addBottomBorderToCells(industrielleRow - 1, 1, 10, industrielleSheet);
 				}
 				break;
 				
 			case TERTIAIRE:
-				fillExcelSheet(tertiaireSheet, industrielleRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
-				fillExcelSheet(tertiaireSheet, industrielleRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
+				fillExcelSheet(tertiaireSheet, tertiaireRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
+				fillExcelSheet(tertiaireSheet, tertiaireRow, 1, CellType.STRING, zone.getId().getAreaName());
+				fillExcelSheet(tertiaireSheet, tertiaireRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
 				
 				for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {
-					fillExcelSheet(tertiaireSheet, industrielleRow, 6, CellType.NUMERIC, extinguisher.getValue());
-					fillExcelSheet(tertiaireSheet, industrielleRow, 7, CellType.STRING, extinguisher.getKey().getType());
-					fillExcelSheet(tertiaireSheet, industrielleRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
-					fillExcelSheet(tertiaireSheet, industrielleRow, 9, CellType.NUMERIC, 1.0);
-					industrielleRow++;
+					fillExcelSheet(tertiaireSheet, tertiaireRow, 6, CellType.NUMERIC, extinguisher.getValue());
+					fillExcelSheet(tertiaireSheet, tertiaireRow, 7, CellType.STRING, extinguisher.getKey().getType());
+					fillExcelSheet(tertiaireSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+					fillExcelSheet(tertiaireSheet, tertiaireRow, 9, CellType.NUMERIC, 1.0);
+					tertiaireRow++;
+				}
+				if(extinguisherList.size() == 0) {
+					addBottomBorderToCells(tertiaireRow, 1, 10, tertiaireSheet);
+				} else {
+					addBottomBorderToCells(tertiaireRow - 1, 1, 10, tertiaireSheet);
 				}
 				break;
 			}
@@ -130,25 +145,32 @@ public class BigBoiFinalFileGenerator {
 			recensementRow++;
 		}
 		
-		System.out.println(workbook.getSheet(dao.NBR_EXTINGUISHERS_SHEET_NAME).getRow(10).getCell(1).getNumericCellValue());
-		for (CellRangeAddress mergedCell : nbrExtinguishersSheet.getMergedRegions()) {
-			if(mergedCell.isInRange(10, 1)) {
-				System.out.println(mergedCell.getNumberOfCells());
-			}
-		}
 		closeProject(fileInputStream, outputTitle, workbook);
 	}
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
 		fillExcelSheet(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
-		fillExcelSheet(sheet, row, 2, CellType.STRING, ex.getZone().getDisplayText());
-		fillExcelSheet(sheet, row, 10, CellType.NUMERIC, ex.getZone().getShape().getAreaSize());
+		fillExcelSheet(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName());
+		
+		switch (ex.getZone().getId().getActivityType()) {
+		case INDUSTRIELLE:
+			fillExcelSheet(sheet, row, 9, CellType.STRING, "I");
+			break;
+		case TERTIAIRE:
+			fillExcelSheet(sheet, row, 9, CellType.STRING, "T");
+			break;
+		}
+		
+		fillExcelSheet(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
 		fillExcelSheet(sheet, row, 12, CellType.STRING, ex.getId().getExtinguisherType());
 		fillExcelSheet(sheet, row, 14, CellType.STRING, ex.getId().getBrand());
+		fillExcelSheet(sheet, row, 16, CellType.NUMERIC, ex.getId().getFabricationYear());
 		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		if(!NOT_MES_CQ_TYPES.contains(ex.getId().getExtinguisherType()) && (year - ex.getId().getFabricationYear()) > 5) {
-			fillExcelSheet(sheet, row, 18, CellType.STRING, "MES+5");
+		if(!NOT_MES_5_TYPES.contains(ex.getId().getExtinguisherType()) && (year - ex.getId().getFabricationYear()) > 5) {
+			fillExcelSheet(sheet, row, 18, CellType.NUMERIC, ex.getId().getFabricationYear() + 5);
+		} else {
+			fillExcelSheet(sheet, row, 18, CellType.NUMERIC, ex.getId().getFabricationYear());
 		}
 		
 	}
@@ -172,6 +194,18 @@ public class BigBoiFinalFileGenerator {
 				break;
 			}
 			cell.setCellValue(val);
+		}
+	}
+	
+	private void addBottomBorderToCells(int rowNbr, int startColumn, int finalColumn, XSSFSheet sheet) {
+		CellStyle style = sheet.getRow(rowNbr).getCell(5).getCellStyle().copy();
+		style.setBorderBottom(BorderStyle.THICK);
+		style.setBottomBorderColor(IndexedColors.BLACK1.getIndex());
+
+		Row row = (sheet.getRow(rowNbr) == null) ? sheet.createRow(rowNbr) : sheet.getRow(rowNbr);
+		for(int i = startColumn; i <= finalColumn; i++) {
+			Cell cell = (row.getCell(i) == null) ? row.createCell(i) : row.getCell(i);
+			cell.setCellStyle(style);
 		}
 	}
 	

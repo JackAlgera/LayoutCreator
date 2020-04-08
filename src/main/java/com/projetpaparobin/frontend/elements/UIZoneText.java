@@ -15,6 +15,8 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Transform;
 
 public class UIZoneText extends UIElement {
+
+	private static double LINE_WIDTH = 2;
 	
 	private Rectangle hitbox;
 	private Zone zone;
@@ -45,7 +47,7 @@ public class UIZoneText extends UIElement {
 		
 		Rectangle whiteRect = new Rectangle(bounds.getWidth() * 1.1, bounds.getHeight() * 1.1);
 		whiteRect.setStroke(rimColor);
-		whiteRect.setStrokeWidth(1);
+		whiteRect.setStrokeWidth(LINE_WIDTH);
 		whiteRect.setFill(Color.WHITE);
 		
 		sPane.getChildren().remove(txt);
