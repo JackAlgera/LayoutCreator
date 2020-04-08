@@ -141,7 +141,9 @@ public class BigBoiFinalFileGenerator {
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
 		fillExcelSheet(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
+		fillExcelSheet(sheet, row, 2, CellType.STRING, ex.getZone().getDisplayText());
 		fillExcelSheet(sheet, row, 10, CellType.NUMERIC, ex.getZone().getShape().getAreaSize());
+		fillExcelSheet(sheet, row, 12, CellType.STRING, ex.getId().getExtinguisherType());
 		fillExcelSheet(sheet, row, 14, CellType.STRING, ex.getId().getBrand());
 		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -156,7 +158,20 @@ public class BigBoiFinalFileGenerator {
 		if(pos != null) {
 			Row row = (sheet.getRow(pos.getRow()) == null) ? sheet.createRow(pos.getRow()) : sheet.getRow(pos.getRow());
 			Cell cell = (row.getCell(pos.getColumn()) == null) ? row.createCell(pos.getColumn()) : row.getCell(pos.getColumn());
-			cell.setCellValue(cell.getNumericCellValue() + 1);
+			double val = 0;
+			switch (cell.getCellType()) {
+			case NUMERIC:
+				val = cell.getNumericCellValue() + 1.0;
+				break;
+			case STRING:
+				if(cell.getStringCellValue().isBlank()) {
+					val = 1.0;
+				} else {
+					val = Double.parseDouble(cell.getStringCellValue()) + 1.0;
+				}
+				break;
+			}
+			cell.setCellValue(val);
 		}
 	}
 	
