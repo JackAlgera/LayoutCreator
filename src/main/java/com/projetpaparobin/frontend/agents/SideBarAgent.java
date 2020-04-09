@@ -5,6 +5,7 @@ import com.projetpaparobin.frontend.agents.inputs.ETypeAction;
 import com.projetpaparobin.frontend.agents.inputs.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
+import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.utils.UIElements;
@@ -25,6 +26,7 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	private Button newExtinguisherButton, newShapeButton, doneEditingShapeButton, createExcelButton, cancelButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
+	private UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
 	
 	public SideBarAgent(int height, int width, PresentationLayoutAgent presLayoutAgent) {
 		super();
@@ -68,6 +70,7 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 				fileGenerator.generateExcel(response + ".xlsm");
 			}
 		} else if(event.getSource().equals(cancelButton)) {
+			zoneHandler.removeSelectedZone();
 			presLayoutAgent.updateCanvas();
 			mouseInputHandler.setState(ETypeAction.IDLE);
 		}
