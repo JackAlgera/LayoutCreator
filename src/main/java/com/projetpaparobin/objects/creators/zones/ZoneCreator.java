@@ -80,6 +80,10 @@ public class ZoneCreator {
 		sendEvent(EZoneEvents.CANCELED);
 	}
 	
+	public void reset() {
+		nbrInstance = 1;
+	}
+	
 	public static int getDefaultZoneNumber() {
 		return nbrInstance;
 	}

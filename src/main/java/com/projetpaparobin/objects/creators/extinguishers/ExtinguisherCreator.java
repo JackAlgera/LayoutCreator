@@ -86,6 +86,10 @@ public class ExtinguisherCreator {
 		sendEvent(EExtinguisherEvents.CANCELED);
 	}
 	
+	public void reset() {
+		nbrInstance = 1;
+	}
+	
 	public void addListener(IExtinguisherCreatorListener listener) {
 		listeners.add(listener);
 	}

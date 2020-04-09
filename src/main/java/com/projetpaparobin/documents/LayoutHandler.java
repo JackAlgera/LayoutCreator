@@ -2,7 +2,14 @@ package com.projetpaparobin.documents;
 
 import java.util.ArrayList;
 
+import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
+import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
+import com.projetpaparobin.frontend.handlers.UITextHandler;
+import com.projetpaparobin.frontend.handlers.UIZoneHandler;
+import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
+import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.zones.Zone;
+import com.projetpaparobin.utils.UIElements;
 
 public class LayoutHandler {
 
@@ -27,6 +34,18 @@ public class LayoutHandler {
 
 	public ArrayList<Zone> getZones() {
 		return zones;
+	}
+	
+	public void fullReset() {
+		zones.clear();
+		ZoneCreator.getInstance().reset();
+		ExtinguisherCreator.getInstance().reset();
+		
+		UIZoneHandler.getInstance().reset();
+		UIExtinguisherHandler.getInstance().reset();
+		UITextHandler.getInstance().reset();
+		
+		UIElements.colorIndex = 1;
 	}
 	
 }

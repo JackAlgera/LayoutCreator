@@ -99,6 +99,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			updateCanvas();		
 			break;
 		case CANCELED:
+			updateShapes();
 			updateCanvas();		
 			break;
 		}		

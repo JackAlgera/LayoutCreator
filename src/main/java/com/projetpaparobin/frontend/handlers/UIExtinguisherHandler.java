@@ -38,4 +38,8 @@ public class UIExtinguisherHandler {
 		extinguishers.add(e);
 	}
 	
+	public void reset() {
+		extinguishers.clear();
+	}
+	
 }

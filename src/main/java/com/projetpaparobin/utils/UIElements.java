@@ -61,7 +61,7 @@ public class UIElements {
 		return integerFilter;		
 	}
 	
-	private static int colorIndex = 0;	
+	public static int colorIndex = 0;	
 	private static ArrayList<Color> DEFAULT_COLORS = new ArrayList<Color>(Arrays.asList(
 			Color.TURQUOISE,
 			Color.BLUE,

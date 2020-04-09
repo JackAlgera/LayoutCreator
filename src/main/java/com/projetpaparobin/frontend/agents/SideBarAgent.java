@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.agents;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.frontend.agents.inputs.ETypeAction;
 import com.projetpaparobin.frontend.agents.inputs.FileGenerationDialogHandler;
@@ -23,13 +24,14 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	private static BigBoiFinalFileGenerator fileGenerator = BigBoiFinalFileGenerator.getInstance();
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
-	private Button newExtinguisherButton, newShapeButton, doneEditingShapeButton, createExcelButton, cancelButton;
+	private Button newExtinguisherButton, newShapeButton, doneEditingShapeButton, createExcelButton, cancelButton, resetButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
+	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
 	public SideBarAgent(int height, int width, PresentationLayoutAgent presLayoutAgent) {
-		super();
+		super(10);
 		this.setBorder(UIElements.BLACK_BORDER);
 		this.setPrefSize(width, height);
 		this.setAlignment(Pos.TOP_CENTER);
@@ -46,8 +48,10 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		createExcelButton.addEventHandler(ActionEvent.ACTION, this);
 		cancelButton = new Button("Annuler");
 		cancelButton.addEventHandler(ActionEvent.ACTION, this);
+		resetButton = new Button("Reset");
+		resetButton.addEventHandler(ActionEvent.ACTION, this);
 		
-		this.getChildren().addAll(newExtinguisherButton, newShapeButton, doneEditingShapeButton, cancelButton, createExcelButton);
+		this.getChildren().addAll(newExtinguisherButton, newShapeButton, doneEditingShapeButton, cancelButton, createExcelButton, resetButton);
 	}
 
 	public void setPresLayoutAgent(PresentationLayoutAgent presLayoutAgent) {
@@ -71,8 +75,10 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 			}
 		} else if(event.getSource().equals(cancelButton)) {
 			zoneHandler.removeSelectedZone();
-			presLayoutAgent.updateCanvas();
-			mouseInputHandler.setState(ETypeAction.IDLE);
+			zoneCreator.canceled();
+		} else if(event.getSource().equals(resetButton)) {
+			layoutHandler.fullReset();
+			zoneCreator.canceled();			
 		}
 	}
 	

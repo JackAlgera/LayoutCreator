@@ -80,4 +80,9 @@ public class UITextHandler {
 		zoneTexts.add(text);
 	}
 	
+	public void reset() {
+		extinguisherTexts.clear();
+		zoneTexts.clear();
+	}
+	
 }

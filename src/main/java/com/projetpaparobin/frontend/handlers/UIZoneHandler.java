@@ -8,10 +8,10 @@ import com.projetpaparobin.frontend.elements.UIZone;
 public class UIZoneHandler {
 	
 	private static UIZoneHandler instance;
-	private ArrayList<UIZone> shapes;
+	private ArrayList<UIZone> zones;
 		
 	private UIZoneHandler() {	
-		shapes = new ArrayList<UIZone>();
+		zones = new ArrayList<UIZone>();
 	}
 	
 	public static UIZoneHandler getInstance() {
@@ -23,18 +23,18 @@ public class UIZoneHandler {
 	}
 	
 	public ArrayList<UIZone> getZones() {
-		return shapes;
+		return zones;
 	}
 	
 	public void add(UIZone zone) {
-		shapes.add(zone);
+		zones.add(zone);
 	}
 	
 	public UIZone getZone(double posX, double posY) {
 		boolean foundZone = false;
 		UIZone theZone = null;
 		
-		for (UIZone zone : shapes) {
+		for (UIZone zone : zones) {
 			if(!foundZone && zone.containsPoint(posX, posY)) {
 				theZone = zone;
 				foundZone = true;
@@ -48,13 +48,13 @@ public class UIZoneHandler {
 	}
 	
 	public void removeSelectedZone() {
-		for (UIZone zone : shapes) {
+		for (UIZone zone : zones) {
 			zone.setShouldDrawCorners(false);
 		}
 	}
 	
 	public UICorner getCorner(double posX, double posY) {
-		for (UIZone zone : shapes) {
+		for (UIZone zone : zones) {
 			if(zone.shouldDrawCorners()) {
 				UICorner corner = zone.getCorner(posX, posY);
 				if(corner != null) {
@@ -64,4 +64,9 @@ public class UIZoneHandler {
 		}
 		return null;
 	}
+	
+	public void reset() {
+		zones.clear();
+	}
+	
 }
