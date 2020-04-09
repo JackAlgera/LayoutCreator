@@ -185,9 +185,7 @@ public class BigBoiFinalFileGenerator {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		if(!NOT_MES_5_TYPES.contains(ex.getId().getExtinguisherType()) && (year - ex.getId().getFabricationYear()) > 5) {
 			fillExcelSheet(sheet, row, 18, CellType.NUMERIC, ex.getId().getFabricationYear() + 5);
-		} else {
-			fillExcelSheet(sheet, row, 18, CellType.NUMERIC, ex.getId().getFabricationYear());
-		}
+		} 
 		
 	}
 	

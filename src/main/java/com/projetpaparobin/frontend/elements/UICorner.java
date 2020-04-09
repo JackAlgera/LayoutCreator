@@ -33,7 +33,7 @@ public class UICorner extends UIElement {
 		}		
 	}
 
-	private void prepareImage(double radius) {		
+	public void prepareImage(double radius) {		
 		circle = new Circle(posX, posY, radius);
 		circle.setStroke(rimColor);
 		circle.setStrokeWidth(0.8);		

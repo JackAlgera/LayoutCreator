@@ -10,7 +10,8 @@ import javafx.scene.paint.Color;
 
 public class UIZone extends UIElement {
 
-	private static double POINT_RADIUS = 4;
+	private static double INIT_POINT_RADIUS = 4;
+	private static double POINT_RADIUS = 6;
 	private static double LINE_WIDTH = 2;
 	
 	private ArrayList<UICorner> corners; 
@@ -18,14 +19,14 @@ public class UIZone extends UIElement {
 	
 	private boolean shouldDrawCorners;
 	
-	public UIZone(Zone zone, Canvas canvas) {
+	public UIZone(Zone zone, Canvas canvas, boolean shouldDrawCorners) {
 		super(zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), zone.getRimColor(), zone.getFillColor(), canvas);
 		this.zone = zone;
 		this.corners = new ArrayList<UICorner>();
 		for (Point point : zone.getShape().getPoints()) {
-			corners.add(new UICorner(zone, point, POINT_RADIUS, Color.BLACK, Color.WHITE, canvasGC.getCanvas()));
+			corners.add(new UICorner(zone, point, INIT_POINT_RADIUS, Color.BLACK, Color.WHITE, canvasGC.getCanvas()));
 		}
-		shouldDrawCorners = false;
+		this.shouldDrawCorners = shouldDrawCorners;
 	}
 
 	@Override
@@ -49,6 +50,12 @@ public class UIZone extends UIElement {
 				corner.drawShape();
 			}
 		}	
+	}
+	
+	public void switchPointRadius() {
+		for (UICorner corner : corners) {
+			corner.prepareImage(POINT_RADIUS);
+		}
 	}
 	
 	public boolean shouldDrawCorners() {

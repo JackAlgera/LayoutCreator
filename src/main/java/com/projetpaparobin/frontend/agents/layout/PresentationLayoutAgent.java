@@ -60,7 +60,9 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		extinguisherHandler.getExtinguishers().clear();
 		
 		for (Zone zone : layoutHandler.getZones()) {
-			zoneHandler.add(new UIZone(zone, view.getCanvas()));
+			UIZone uiZone = new UIZone(zone, view.getCanvas(), false);
+			uiZone.switchPointRadius();
+			zoneHandler.add(uiZone);
 			
 			if(!textHandler.zoneHasText(zone)) {
 				textHandler.addZoneText(new UIZoneText(zone, view.getCanvas()));
@@ -87,7 +89,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			break;
 		case ADDED_POINT:
 			updateCanvas();			
-			UIZone currentZone = new UIZone(zoneCreator.getCurrentZone(), view.getCanvas());
+			UIZone currentZone = new UIZone(zoneCreator.getCurrentZone(), view.getCanvas(), true);
 			currentZone.drawShape();
 			break;
 		case SETTING_NAME:
