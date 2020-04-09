@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -43,6 +46,17 @@ public class BigBoiFinalFileGenerator {
 			EExtinguisherType.E45A2T.getName()
 			));
 	
+	private static ArrayList<String> TYPE_6L = new ArrayList<String>(Arrays.asList(
+			EExtinguisherType.E6A.getName(),
+			EExtinguisherType.E6AEVT.getName(),			
+			EExtinguisherType.E6AEVP.getName(),
+			EExtinguisherType.AL6S_30.getName(),
+			EExtinguisherType.E6AEVF.getName(),
+			EExtinguisherType.AL6F.getName(),
+			EExtinguisherType.P6P.getName(),
+			EExtinguisherType.P6.getName()
+			));
+	
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	private static DAOExcelImpl dao = DAOExcelImpl.getInstance();
 	
@@ -70,7 +84,7 @@ public class BigBoiFinalFileGenerator {
 			e1.printStackTrace();
 		}
 		
-		ArrayList<Extinguisher> extinguishers = new ArrayList<Extinguisher>();;
+		List<Extinguisher> extinguishers = new ArrayList<Extinguisher>();
 		
 		XSSFSheet industrielleSheet = workbook.getSheet(dao.PARC_INDUSTRIELLE_SHEET_NAME);
 		XSSFSheet tertiaireSheet = workbook.getSheet(dao.PARC_TERTIAIRE_SHEET_NAME);
@@ -107,8 +121,9 @@ public class BigBoiFinalFileGenerator {
 					fillExcelSheet(industrielleSheet, industrielleRow, 6, CellType.NUMERIC, extinguisher.getValue());
 					fillExcelSheet(industrielleSheet, industrielleRow, 7, CellType.STRING, extinguisher.getKey().getType());
 					fillExcelSheet(industrielleSheet, industrielleRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
-					// TODO : Get value for FC
-					fillExcelSheet(industrielleSheet, industrielleRow, 9, CellType.NUMERIC, 1.0);
+					
+					double FC = (TYPE_6L.contains(extinguisher.getKey().getType())) ? 0.75 : 1.0;
+					fillExcelSheet(industrielleSheet, industrielleRow, 9, CellType.NUMERIC, FC);
 					industrielleRow++;
 				}
 				
@@ -140,7 +155,14 @@ public class BigBoiFinalFileGenerator {
 				break;
 			}
 		}
-
+		
+		Collections.sort(extinguishers, new Comparator<Extinguisher>() {
+			@Override
+			public int compare(Extinguisher ex1, Extinguisher ex2) {
+				return ex1.getId().getNumber().compareTo(ex2.getId().getNumber());
+			}
+		});
+		
 		for (Extinguisher ex : extinguishers) {
 			fillExtinguisherSheet(ex.getId().getExtinguisherType(), nbrExtinguishersSheet, positionHandler);
 			fillRecensementSheet(recensementRow, recensementSheet, ex);
@@ -154,15 +176,7 @@ public class BigBoiFinalFileGenerator {
 		fillExcelSheet(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
 		fillExcelSheet(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName());
 		
-		switch (ex.getZone().getId().getActivityType()) {
-		case INDUSTRIELLE:
-			fillExcelSheet(sheet, row, 9, CellType.STRING, "I");
-			break;
-		case TERTIAIRE:
-			fillExcelSheet(sheet, row, 9, CellType.STRING, "T");
-			break;
-		}
-		
+		fillExcelSheet(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());		
 		fillExcelSheet(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
 		fillExcelSheet(sheet, row, 12, CellType.STRING, ex.getId().getExtinguisherType());
 		fillExcelSheet(sheet, row, 14, CellType.STRING, ex.getId().getBrand());

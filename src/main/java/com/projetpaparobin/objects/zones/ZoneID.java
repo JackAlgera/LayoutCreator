@@ -17,7 +17,18 @@ public class ZoneID {
 	}
 			
 	public String getDisplayText() {
-		return areaType.toString() + areaNumber + "-" + activityType.toString() + "-" + areaSize + "m²";
+		return areaType.toString() + areaNumber + "-" + getActivityTypeAbbreviation() + "-" + areaSize + "m²";
+	}
+	
+	public String getActivityTypeAbbreviation() {
+		switch (activityType) {
+		case INDUSTRIELLE:
+			return "I";
+		case TERTIAIRE:
+			return "T";
+		default:
+			return "";
+		}
 	}
 	
 	public EAreaType getAreaType() {
