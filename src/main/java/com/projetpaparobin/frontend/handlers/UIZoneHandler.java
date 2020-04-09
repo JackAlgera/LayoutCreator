@@ -31,19 +31,35 @@ public class UIZoneHandler {
 	}
 	
 	public UIZone getZone(double posX, double posY) {
+		boolean foundZone = false;
+		UIZone theZone = null;
+		
 		for (UIZone zone : shapes) {
-			if(zone.containsPoint(posX, posY)) {
-				return zone;
+			if(!foundZone && zone.containsPoint(posX, posY)) {
+				theZone = zone;
+				foundZone = true;
+				theZone.setShouldDrawCorners(true);
+			} else {
+				zone.setShouldDrawCorners(false);
 			}
 		}
-		return null;
+		
+		return theZone;
+	}
+	
+	public void removeSelectedZone() {
+		for (UIZone zone : shapes) {
+			zone.setShouldDrawCorners(false);
+		}
 	}
 	
 	public UICorner getCorner(double posX, double posY) {
 		for (UIZone zone : shapes) {
-			UICorner corner = zone.getCorner(posX, posY);
-			if(corner != null) {
-				return corner;
+			if(zone.shouldDrawCorners()) {
+				UICorner corner = zone.getCorner(posX, posY);
+				if(corner != null) {
+					return corner;
+				}
 			}
 		}
 		return null;

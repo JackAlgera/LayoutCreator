@@ -16,6 +16,8 @@ public class UIZone extends UIElement {
 	private ArrayList<UICorner> corners; 
 	private Zone zone;
 	
+	private boolean shouldDrawCorners;
+	
 	public UIZone(Zone zone, Canvas canvas) {
 		super(zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), zone.getRimColor(), zone.getFillColor(), canvas);
 		this.zone = zone;
@@ -23,6 +25,7 @@ public class UIZone extends UIElement {
 		for (Point point : zone.getShape().getPoints()) {
 			corners.add(new UICorner(zone, point, POINT_RADIUS, Color.BLACK, Color.WHITE, canvasGC.getCanvas()));
 		}
+		shouldDrawCorners = false;
 	}
 
 	@Override
@@ -41,9 +44,19 @@ public class UIZone extends UIElement {
 		canvasGC.setFill(fillColor);
 		canvasGC.fillPolygon(pointsX, pointsY, pointsX.length);
 		
-		for (UICorner corner : corners) {
-			corner.drawShape();
+		if(shouldDrawCorners) {
+			for (UICorner corner : corners) {
+				corner.drawShape();
+			}
 		}	
+	}
+	
+	public boolean shouldDrawCorners() {
+		return shouldDrawCorners;
+	}
+	
+	public void setShouldDrawCorners(boolean shouldDrawCorners) {
+		this.shouldDrawCorners = shouldDrawCorners;
 	}
 	
 	public UICorner getCorner(double posX, double posY) {

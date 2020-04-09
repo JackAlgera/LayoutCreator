@@ -106,9 +106,12 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 					dX = event.getX() - selectedZone.getPosX();
 					dY = event.getY() - selectedZone.getPosY();
 					state = ETypeAction.SELECTED_ZONE;
+					presLayout.updateCanvas();
 					break;
 				}
 				
+				zoneHandler.removeSelectedZone();
+				presLayout.updateCanvas();
 				break;
 			case CREATING_ZONE:
 				zoneCreator.addPoint(new Point(event.getX(), event.getY()));	
