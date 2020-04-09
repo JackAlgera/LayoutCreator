@@ -203,9 +203,12 @@ public class BigBoiFinalFileGenerator {
 				val = (cell.getStringCellValue().isBlank()) ? 1.0 : Double.parseDouble(cell.getStringCellValue()) + 1.0;
 				break;
 			default:
+				val = 1.0;
 				break;
 			}
 			cell.setCellValue(val);
+		} else if(positionHandler.addNewType(sheet, typeExtinguisher)) {
+			fillExtinguisherSheet(typeExtinguisher, sheet, positionHandler);
 		}
 	}
 	
