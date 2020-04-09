@@ -20,8 +20,9 @@ public class UIElements {
 	public static String LETTER_REGEX = "[a-zA-Z]*";
 	public static Random r = new Random();
 	
-	public static Font LAYOUT_FONT = new Font("Monaco", 18);
+	public static Font LAYOUT_FONT = new Font("Arial", 18);
 	public static Font EXTINGUISHER_FONT = new Font("Monaco", 10);
+	public static Font EXTINGUISHER_TEXT_FONT = new Font("Monaco", 13);
 	
 	public static Border BLACK_BORDER = new Border(new BorderStroke(
 			Color.BLACK, 
@@ -30,7 +31,6 @@ public class UIElements {
 			BorderWidths.DEFAULT));
 		
 	public static Color getRandomColor() {
-//		return new Color(r.nextDouble(), r.nextDouble(), r.nextDouble(), 0.5);
 		Color randColor = DEFAULT_COLORS.get(colorIndex);
 		randColor = new Color(randColor.getRed(), randColor.getGreen(), randColor.getBlue(), 0.5);
 		colorIndex = (colorIndex + 1) % DEFAULT_COLORS.size();

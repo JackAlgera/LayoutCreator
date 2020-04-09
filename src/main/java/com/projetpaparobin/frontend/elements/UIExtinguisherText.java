@@ -40,7 +40,7 @@ public class UIExtinguisherText extends UIElement {
 	
 		StackPane sPane = new StackPane();		
 		Text txt = new Text(ex.getDisplayText());
-		txt.setFont(UIElements.LAYOUT_FONT);
+		txt.setFont(UIElements.EXTINGUISHER_TEXT_FONT);
 			
 		sPane.getChildren().addAll(txt);		
 		bounds = sPane.getBoundsInLocal();

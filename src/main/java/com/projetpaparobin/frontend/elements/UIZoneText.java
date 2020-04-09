@@ -16,7 +16,7 @@ import javafx.scene.transform.Transform;
 
 public class UIZoneText extends UIElement {
 
-	private static double LINE_WIDTH = 2;
+	private static double LINE_WIDTH = 1.5;
 	
 	private Rectangle hitbox;
 	private Zone zone;
@@ -41,7 +41,8 @@ public class UIZoneText extends UIElement {
 		StackPane sPane = new StackPane();		
 		Text txt = new Text(zone.getDisplayText());
 		txt.setFont(UIElements.LAYOUT_FONT);
-			
+		txt.setFill(rimColor);	
+		
 		sPane.getChildren().addAll(txt);		
 		bounds = sPane.getBoundsInLocal();
 		
