@@ -14,6 +14,11 @@ public enum EActivityType {
 		return type;
 	}
 	
+	@Override
+	public String toString() {
+		return type;
+	}
+	
 	public static EActivityType getEnum(String value) {
         for(EActivityType type : values()) {
             if(type.getType().equalsIgnoreCase(value)) {

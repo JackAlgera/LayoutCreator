@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -111,11 +112,12 @@ public class BigBoiFinalFileGenerator {
 					fillExcelSheet(industrielleSheet, industrielleRow, 9, CellType.NUMERIC, 1.0);
 					industrielleRow++;
 				}
+				
 				if(extinguisherList.size() == 0) {
-					addBottomBorderToCells(industrielleRow, 1, 10, industrielleSheet);
-				} else {
-					addBottomBorderToCells(industrielleRow - 1, 1, 10, industrielleSheet);
-				}
+					industrielleRow++;
+				} 
+				
+				addTopBorderToCells(industrielleRow, 1, 10, industrielleSheet);
 				break;
 				
 			case TERTIAIRE:
@@ -130,11 +132,12 @@ public class BigBoiFinalFileGenerator {
 					fillExcelSheet(tertiaireSheet, tertiaireRow, 9, CellType.NUMERIC, 1.0);
 					tertiaireRow++;
 				}
+				
 				if(extinguisherList.size() == 0) {
-					addBottomBorderToCells(tertiaireRow, 1, 10, tertiaireSheet);
-				} else {
-					addBottomBorderToCells(tertiaireRow - 1, 1, 10, tertiaireSheet);
-				}
+					tertiaireRow++;
+				} 
+				
+				addTopBorderToCells(tertiaireRow, 1, 10, tertiaireSheet);				
 				break;
 			}
 		}
@@ -186,25 +189,20 @@ public class BigBoiFinalFileGenerator {
 				val = cell.getNumericCellValue() + 1.0;
 				break;
 			case STRING:
-				if(cell.getStringCellValue().isBlank()) {
-					val = 1.0;
-				} else {
-					val = Double.parseDouble(cell.getStringCellValue()) + 1.0;
-				}
+				val = (cell.getStringCellValue().isBlank()) ? 1.0 : Double.parseDouble(cell.getStringCellValue()) + 1.0;
 				break;
 			}
 			cell.setCellValue(val);
 		}
 	}
 	
-	private void addBottomBorderToCells(int rowNbr, int startColumn, int finalColumn, XSSFSheet sheet) {
-		CellStyle style = sheet.getRow(rowNbr).getCell(5).getCellStyle().copy();
-		style.setBorderBottom(BorderStyle.THICK);
-		style.setBottomBorderColor(IndexedColors.BLACK1.getIndex());
-
+	private void addTopBorderToCells(int rowNbr, int startColumn, int finalColumn, XSSFSheet sheet) {
 		Row row = (sheet.getRow(rowNbr) == null) ? sheet.createRow(rowNbr) : sheet.getRow(rowNbr);
 		for(int i = startColumn; i <= finalColumn; i++) {
 			Cell cell = (row.getCell(i) == null) ? row.createCell(i) : row.getCell(i);
+			CellStyle style = ((XSSFCell) cell).getCellStyle().copy();
+			style.setBorderTop(BorderStyle.THICK);
+			style.setTopBorderColor(IndexedColors.BLACK1.getIndex());			
 			cell.setCellStyle(style);
 		}
 	}

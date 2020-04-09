@@ -29,6 +29,7 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 	private Dialog<ZoneID> inputDialog;
 	
 	public ZoneInputDialogHandler() {
+		zoneCreator.addListener(this);
 		inputDialog = new Dialog<ZoneID>();
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
@@ -54,36 +55,29 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 		activityType.setValue(EActivityType.values()[0].toString());
 		activityType.setPrefWidth(width);
 		
-		TextField areaSizes = new TextField();
-		areaSizes.setPromptText("Area size");
-		areaSizes.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
+		TextField areaSize = new TextField();
+		areaSize.setPromptText("Area size");
+		areaSize.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
-		VBox vbox = new VBox(8, areaName, areaType, areaNumber, activityType, areaSizes);
+		VBox vbox = new VBox(8, areaName, areaType, areaNumber, activityType, areaSize);
 		vbox.setFillWidth(true);
 		
 		dialogPane.setContent(vbox);
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String areaNameVal = areaName.getText();
-				String areaTypeVal = areaType.getValue();
-				String areaNumberVal = areaNumber.getText();
-				String activityTypeVal = activityType.getValue();
-				String areaSizeVal = areaSizes.getText();
+				EAreaType areaTypeVal = EAreaType.valueOf(areaType.getValue());
+				int areaNumberVal = (areaNumber.getText().isBlank()) ? ZoneCreator.getDefaultZoneNumber() : Integer.parseInt(areaNumber.getText());
+				EActivityType activityTypeVal = EActivityType.getEnum(activityType.getValue());
+				int areaSizeVal = (areaSize.getText().isBlank()) ? 0 : Integer.parseInt(areaSize.getText());
 
 				areaName.setText("");
 				areaType.setValue(EAreaType.values()[0].toString());
 				areaNumber.setText("");
 				activityType.setValue(EActivityType.values()[0].toString());
-				areaSizes.setText("");
-
-				if(areaNumberVal.isBlank()) {
-					areaNumberVal = "-1";
-				}
-				if(areaSizeVal.isBlank()) {
-					areaSizeVal = "-1";
-				}
+				areaSize.setText("");
 				
-				return new ZoneID(areaNameVal, EAreaType.valueOf(areaTypeVal), Integer.parseInt(areaNumberVal), EActivityType.valueOf(activityTypeVal), Integer.parseInt(areaSizeVal));
+				return new ZoneID(areaNameVal, areaTypeVal, areaNumberVal, activityTypeVal, areaSizeVal);
 			} 
 			if(button == ButtonType.CANCEL) {
 				zoneCreator.canceled();
@@ -93,7 +87,6 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 		});
 		
 		inputDialog.setResizable(false);
-		zoneCreator.addListener(this);
 	}
 
 	@Override

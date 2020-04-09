@@ -63,7 +63,7 @@ public class UIElements {
 	
 	private static int colorIndex = 0;	
 	private static ArrayList<Color> DEFAULT_COLORS = new ArrayList<Color>(Arrays.asList(
-			Color.WHITE,
+			Color.TURQUOISE,
 			Color.BLUE,
 			Color.RED,
 			Color.ORANGE,

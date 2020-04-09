@@ -3,7 +3,6 @@ package com.projetpaparobin.objects.creators.zones;
 import java.util.ArrayList;
 
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.objects.zones.EActivityType;
 import com.projetpaparobin.objects.zones.ZoneID;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
@@ -11,7 +10,7 @@ import com.projetpaparobin.objects.zones.Zone;
 public class ZoneCreator {
 
 	private static ZoneCreator instance;
-	private static int nbrInstance = 0;
+	private static int nbrInstance = 1;
 	
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	private EZoneCreationState zoneState;
@@ -71,6 +70,7 @@ public class ZoneCreator {
 		if(zoneState == EZoneCreationState.SETTING_NAME) {
 			zoneState = EZoneCreationState.FINISHED;
 			layoutHandler.addZone(currentZone);
+			nbrInstance++;
 			sendEvent(EZoneEvents.FINISHED_CREATING_ZONE);
 		}
 	}
@@ -78,6 +78,10 @@ public class ZoneCreator {
 	public void canceled() {
 		zoneState = EZoneCreationState.FINISHED;
 		sendEvent(EZoneEvents.CANCELED);
+	}
+	
+	public static int getDefaultZoneNumber() {
+		return nbrInstance;
 	}
 	
 	public void addListener(IZoneCreatorListener listener) {
