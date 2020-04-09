@@ -11,12 +11,12 @@ public class MainUI extends HBox {
 	private ViewLayoutAgent layoutView;
 	private SideBarAgent sideBar;
 	
-	public MainUI(int height, int width, String layoutPath) {
+	public MainUI(int height, int width, String layoutPath, int imageNbr) {
 		super();
 		this.setPrefSize(width, height);	
 		
 		layoutPres = new PresentationLayoutAgent();
-		layoutView = new ViewLayoutAgent(layoutPath, 1, height, width / 2, layoutPres);
+		layoutView = new ViewLayoutAgent(layoutPath, imageNbr, height, width / 2, layoutPres);
 		layoutPres.setView(layoutView);		
 
 		sideBar = new SideBarAgent(height, width / 2, layoutPres);
