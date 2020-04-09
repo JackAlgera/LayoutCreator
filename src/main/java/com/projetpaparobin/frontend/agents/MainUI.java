@@ -1,6 +1,5 @@
 package com.projetpaparobin.frontend.agents;
 
-import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 
@@ -11,8 +10,6 @@ public class MainUI extends HBox {
 	private PresentationLayoutAgent layoutPres;
 	private ViewLayoutAgent layoutView;
 	private SideBarAgent sideBar;
-	
-	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
 	public MainUI(int height, int width, String layoutPath) {
 		super();

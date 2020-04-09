@@ -39,6 +39,10 @@ public enum EExtinguisherType {
 		return name;
 	}
 	
+	public static String getDefaultExtinguisherType() {
+		return C20.getName();
+	}
+	
 	public static EExtinguisherType getEnum(String value) {
         for(EExtinguisherType type : values()) {
             if(type.getName().equalsIgnoreCase(value)) {

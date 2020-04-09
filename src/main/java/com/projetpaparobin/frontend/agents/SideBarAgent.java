@@ -2,7 +2,6 @@ package com.projetpaparobin.frontend.agents;
 
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.frontend.agents.inputs.FileGenerationDialogHandler;
-import com.projetpaparobin.frontend.agents.inputs.ZoneInputDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;

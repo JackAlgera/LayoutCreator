@@ -78,7 +78,7 @@ public class Zone {
 	}
 
 	public String getDisplayText() {
-		return id.getAreaType().toString() + id.getAreaNumber() + "-" + id.getActivityType() + "-" + id.getAreaSize() + "m²";
+		return id.getDisplayText();
 	}
 
 	@Override

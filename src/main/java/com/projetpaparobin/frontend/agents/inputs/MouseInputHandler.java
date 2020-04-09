@@ -1,6 +1,5 @@
 package com.projetpaparobin.frontend.agents.inputs;
 
-import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIExtinguisher;
@@ -17,9 +16,6 @@ import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.zones.Point;
-import com.projetpaparobin.objects.zones.Zone;
-import com.projetpaparobin.utils.UIColor;
-import com.projetpaparobin.utils.UIElements;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;

@@ -80,10 +80,10 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		dialogPane.setContent(new VBox(8, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
-				String numberVal = number.getText();
-				String extinguisherTypeVal = extinguisherType.getText();
-				String protectionTypeVal = protectionType.getValue();
-				String fabricationYearVal = fabricationYear.getText();
+				String numberVal = (number.getText().isBlank()) ? ExtinguisherCreator.getDefaultZoneNumber() : number.getText();
+				String extinguisherTypeVal = (extinguisherType.getText().isBlank()) ? EExtinguisherType.getDefaultExtinguisherType() : extinguisherType.getText();
+				EProtectionType protectionTypeVal = EProtectionType.getEnum(protectionType.getValue());
+				int fabricationYearVal = (fabricationYear.getText().isBlank()) ? 1995 : Integer.parseInt(fabricationYear.getText());
 				String brandVal = brand.getText();
 				boolean isNewVal = isNew.isSelected();
 				Color colorVal = colorComboBox.getValue().getColor();
@@ -95,13 +95,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 				brand.setText("");
 				isNew.setSelected(false);
 				
-				EProtectionType.valueOf(protectionTypeVal);
-				
-				if(fabricationYearVal.isBlank()) {
-					fabricationYearVal = "-1";
-				}
-				
-				return new ExtinguisherID(numberVal, extinguisherTypeVal, EProtectionType.valueOf(protectionTypeVal), Integer.parseInt(fabricationYearVal), brandVal, isNewVal, colorVal);
+				return new ExtinguisherID(numberVal, extinguisherTypeVal, protectionTypeVal, fabricationYearVal, brandVal, isNewVal, colorVal);
 			} 
 			if(button == ButtonType.CANCEL) {
 				extinguisherCreator.canceled();

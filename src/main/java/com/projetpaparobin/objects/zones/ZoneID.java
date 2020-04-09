@@ -9,13 +9,17 @@ public class ZoneID {
 	private int areaSize;
 	
 	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize) {
-		this.areaName = areaName;
 		this.areaNumber = areaNumber;
 		this.areaType = areaType;
 		this.activityType = activityType;
 		this.areaSize = areaSize;
+		this.areaName = (areaName.isBlank()) ? getDisplayText() : areaName;
 	}
-		
+			
+	public String getDisplayText() {
+		return areaType.toString() + areaNumber + "-" + activityType.toString() + "-" + areaSize + "m²";
+	}
+	
 	public EAreaType getAreaType() {
 		return areaType;
 	}

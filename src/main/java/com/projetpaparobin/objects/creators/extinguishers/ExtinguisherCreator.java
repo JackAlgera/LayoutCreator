@@ -10,7 +10,7 @@ import com.projetpaparobin.objects.zones.Zone;
 public class ExtinguisherCreator {
 	
 	private static ExtinguisherCreator instance;
-	private static int nbrInstance = 0;
+	private static int nbrInstance = 1;
 	
 	private EExtinguisherCreationState state;
 	private ArrayList<IExtinguisherCreatorListener> listeners;
@@ -68,7 +68,16 @@ public class ExtinguisherCreator {
 		if(state == EExtinguisherCreationState.SETTING_NAME) {
 			state = EExtinguisherCreationState.FINISHED;
 			selectedZone.addExtinguisher(currentExtinguisher);
+			nbrInstance++;
 			sendEvent(EExtinguisherEvents.FINISHED_CREATING_EXTINGUISHER);
+		}
+	}
+	
+	public static String getDefaultZoneNumber() {
+		if(nbrInstance < 10) {
+			return "0" + nbrInstance;
+		} else {
+			return "" + nbrInstance;
 		}
 	}
 	
