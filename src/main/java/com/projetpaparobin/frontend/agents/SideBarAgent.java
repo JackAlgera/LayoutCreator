@@ -13,8 +13,10 @@ import com.projetpaparobin.utils.UIElements;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
@@ -24,14 +26,14 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	private static BigBoiFinalFileGenerator fileGenerator = BigBoiFinalFileGenerator.getInstance();
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
-	private Button newExtinguisherButton, newShapeButton, doneEditingShapeButton, createExcelButton, cancelButton, resetButton;
+	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton;
 	private PresentationLayoutAgent presLayoutAgent;
-	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
 	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
 	public SideBarAgent(int height, int width, PresentationLayoutAgent presLayoutAgent) {
-		super(10);
+		super(50);
+		this.setPadding(new Insets(15, 0, 0, 0));
 		this.setBorder(UIElements.BLACK_BORDER);
 		this.setPrefSize(width, height);
 		this.setAlignment(Pos.TOP_CENTER);
@@ -40,10 +42,10 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 
 		newExtinguisherButton = new Button("Nouveau extincteur");
 		newExtinguisherButton.addEventHandler(ActionEvent.ACTION, this);
-		newShapeButton = new Button("Nouvelle zone");
-		newShapeButton.addEventHandler(ActionEvent.ACTION, this);
-		doneEditingShapeButton = new Button("Fin création de zone");
-		doneEditingShapeButton.addEventHandler(ActionEvent.ACTION, this);
+		newZoneButton = new Button("Nouvelle zone");
+		newZoneButton.addEventHandler(ActionEvent.ACTION, this);
+		doneEditingZoneButton = new Button("Fin création de zone");
+		doneEditingZoneButton.addEventHandler(ActionEvent.ACTION, this);
 		createExcelButton = new Button("Générer fichier Excel");
 		createExcelButton.addEventHandler(ActionEvent.ACTION, this);
 		cancelButton = new Button("Annuler");
@@ -51,7 +53,22 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		resetButton = new Button("Reset");
 		resetButton.addEventHandler(ActionEvent.ACTION, this);
 		
-		this.getChildren().addAll(newExtinguisherButton, newShapeButton, doneEditingShapeButton, cancelButton, createExcelButton, resetButton);
+		UIElements.setDefaultButtonStyle(newExtinguisherButton);
+		UIElements.setDefaultButtonStyle(newZoneButton);
+		UIElements.setDefaultButtonStyle(doneEditingZoneButton);
+		UIElements.setDefaultButtonStyle(createExcelButton);
+		UIElements.setDefaultButtonStyle(cancelButton);
+		UIElements.setDefaultButtonStyle(resetButton);
+		
+		VBox zoneBox = new VBox(8, newZoneButton, doneEditingZoneButton);
+		zoneBox.setAlignment(Pos.CENTER);
+		VBox exBox = new VBox(8, newExtinguisherButton, cancelButton);
+		exBox.setAlignment(Pos.CENTER);
+		
+		HBox finalBox = new HBox(8, zoneBox, exBox, createExcelButton);
+		finalBox.setAlignment(Pos.CENTER);
+		
+		this.getChildren().addAll(finalBox, resetButton);
 	}
 
 	public void setPresLayoutAgent(PresentationLayoutAgent presLayoutAgent) {
@@ -63,10 +80,10 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		if(event.getSource().equals(newExtinguisherButton)) {
 			presLayoutAgent.updateCanvas();
 			extinguisherCreator.newExtinguisher();
-		} else if(event.getSource().equals(newShapeButton)) {
+		} else if(event.getSource().equals(newZoneButton)) {
 			presLayoutAgent.updateCanvas();
 			zoneCreator.newZone();
-		} else if(event.getSource().equals(doneEditingShapeButton)) {
+		} else if(event.getSource().equals(doneEditingZoneButton)) {
 			zoneCreator.finishedCreatingShape();
 		} else if(event.getSource().equals(createExcelButton)) {
 			String response = fileGenerationInputDialog.showAndWait();

@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.agents;
 
+import com.projetpaparobin.documents.dao.DAOExcelImpl;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 
@@ -11,9 +12,10 @@ public class MainUI extends HBox {
 	private ViewLayoutAgent layoutView;
 	private SideBarAgent sideBar;
 	
-	public MainUI(int height, int width, String layoutPath, int imageNbr) {
+	public MainUI(int height, int width, String layoutPath, int imageNbr, String excelPath) {
 		super();
 		this.setPrefSize(width, height);	
+		DAOExcelImpl.EXCEL_TEMPLATE_PATH = excelPath;
 		
 		layoutPres = new PresentationLayoutAgent();
 		layoutView = new ViewLayoutAgent(layoutPath, imageNbr, height, width / 2, layoutPres);

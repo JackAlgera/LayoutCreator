@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.UnaryOperator;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -71,5 +72,10 @@ public class UIElements {
 			Color.GREEN,
 			Color.BROWN
 	));
+
+	public static void setDefaultButtonStyle(Button b) {
+		b.setPrefSize(150, 30);
+		b.setFont(new Font("Arial", 13));
+	}
 	
 }
