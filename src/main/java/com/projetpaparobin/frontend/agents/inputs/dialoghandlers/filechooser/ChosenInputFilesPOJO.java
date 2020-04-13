@@ -1,4 +1,4 @@
-package com.projetpaparobin.frontend.agents.inputs.filechooser;
+package com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser;
 
 public class ChosenInputFilesPOJO {
 

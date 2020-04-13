@@ -8,8 +8,9 @@ import javax.imageio.ImageIO;
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.frontend.agents.inputs.ETypeAction;
-import com.projetpaparobin.frontend.agents.inputs.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
@@ -35,6 +36,7 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	private static BigBoiFinalFileGenerator fileGenerator = BigBoiFinalFileGenerator.getInstance();
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
+	private AreYouSureInputDialogHandler areYouSureInputDialog;
 	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	private UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
@@ -48,6 +50,7 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		this.setAlignment(Pos.TOP_CENTER);
 		this.presLayoutAgent = presLayoutAgent;
 		this.fileGenerationInputDialog = new FileGenerationDialogHandler();
+		this.areYouSureInputDialog = new AreYouSureInputDialogHandler("Confirmation De Suppression", "Etes-vous sûr de vouloir tout supprimer ?");
 
 		newExtinguisherButton = new Button("Nouveau extincteur");
 		newExtinguisherButton.addEventHandler(ActionEvent.ACTION, this);
@@ -112,8 +115,10 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 			zoneHandler.removeSelectedZone();
 			zoneCreator.canceled();
 		} else if(event.getSource().equals(resetButton)) {
-			layoutHandler.fullReset();
-			zoneCreator.canceled();			
+			if(areYouSureInputDialog.showAndWait()) {
+				layoutHandler.fullReset();
+				zoneCreator.canceled();			
+			}
 		}
 	}
 	

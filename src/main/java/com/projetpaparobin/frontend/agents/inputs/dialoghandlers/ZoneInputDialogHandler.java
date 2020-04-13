@@ -1,4 +1,4 @@
-package com.projetpaparobin.frontend.agents.inputs;
+package com.projetpaparobin.frontend.agents.inputs.dialoghandlers;
 
 import java.util.Optional;
 import java.util.stream.Collectors;

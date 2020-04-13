@@ -1,4 +1,4 @@
-package com.projetpaparobin.frontend.agents.inputs;
+package com.projetpaparobin.frontend.agents.inputs.dialoghandlers;
 
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;

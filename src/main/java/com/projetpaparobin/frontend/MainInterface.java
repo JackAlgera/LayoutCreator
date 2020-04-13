@@ -1,8 +1,8 @@
 package com.projetpaparobin.frontend;
 
 import com.projetpaparobin.frontend.agents.MainUI;
-import com.projetpaparobin.frontend.agents.inputs.filechooser.ChosenInputFilesPOJO;
-import com.projetpaparobin.frontend.agents.inputs.filechooser.FileChooseInputDialogHandler;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.ChosenInputFilesPOJO;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.FileChooseInputDialogHandler;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import com.projetpaparobin.documents.PDFHandler;
-import com.projetpaparobin.frontend.agents.inputs.ZoneInputDialogHandler;
-import com.projetpaparobin.frontend.agents.inputs.ExtinguisherInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.ExtinguisherInputDialogHandler;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.ZoneInputDialogHandler;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;

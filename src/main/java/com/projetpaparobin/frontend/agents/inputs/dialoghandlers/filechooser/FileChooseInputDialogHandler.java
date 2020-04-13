@@ -1,4 +1,4 @@
-package com.projetpaparobin.frontend.agents.inputs.filechooser;
+package com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser;
 
 import java.io.File;
 
@@ -32,6 +32,9 @@ public class FileChooseInputDialogHandler {
 		
 		Label layoutLabel = new Label("PDF avec plan");
 		TextField layoutPath = new TextField();
+		
+		layoutPath.setText("D:\\Projets Java\\Projet Papa Robin\\image.pdf");
+		
 		layoutPath.setPromptText("Nom fichier");
 		layoutPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
@@ -46,6 +49,9 @@ public class FileChooseInputDialogHandler {
 		
 		Label excelLabel = new Label("Excel");
 		TextField excelPath = new TextField();
+		
+		excelPath.setText("D:\\Projets Java\\Projet Papa Robin\\projetpaparobin\\COM-Q-50035005-EdK.xlsm");
+		
 		excelPath.setPromptText("Nom fichier");
 		excelPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
