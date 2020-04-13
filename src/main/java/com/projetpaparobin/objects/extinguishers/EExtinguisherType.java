@@ -7,7 +7,10 @@ import javafx.scene.paint.Color;
 public enum EExtinguisherType {
 
 	/* Red */
-	C2("C2", UIColor.RED.getColor()), C5("C5", UIColor.RED.getColor()), C10("C10", UIColor.RED.getColor()), C20("C20", UIColor.RED.getColor()), 
+	C2("C2", UIColor.RED.getColor()), 
+	C5("C5", UIColor.RED.getColor()), 
+	C10("C10", UIColor.RED.getColor()), 
+	C20("C20", UIColor.RED.getColor()), 
 	
 	/* Blue */
 	E6A("E6A", UIColor.BLUE.getColor()), E9A("E9A", UIColor.BLUE.getColor()), E6AEVT("E6AEVT", UIColor.BLUE.getColor()), 

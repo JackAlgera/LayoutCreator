@@ -19,6 +19,10 @@ import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Zone;
 
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.WritableImage;
+
 public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguisherCreatorListener {
 
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
@@ -78,6 +82,10 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		} 
 	}
 			
+	public WritableImage getSnapshot(SnapshotParameters params, WritableImage image) {
+		return view.getSnapshot(params, image);
+	}
+	
 	public void setView(IViewLayoutAgent view) {
 		this.view = view;
 	}	

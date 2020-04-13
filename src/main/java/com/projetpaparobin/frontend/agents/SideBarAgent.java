@@ -1,5 +1,10 @@
 package com.projetpaparobin.frontend.agents;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.frontend.agents.inputs.ETypeAction;
@@ -11,13 +16,17 @@ import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.utils.UIElements;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 
@@ -88,6 +97,15 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		} else if(event.getSource().equals(createExcelButton)) {
 			String response = fileGenerationInputDialog.showAndWait();
 			if(!response.isBlank()) {
+				SnapshotParameters sp = new SnapshotParameters();
+			    sp.setFill(Color.TRANSPARENT);
+			    File file = new File("./" + response + ".png");
+		        WritableImage wi = presLayoutAgent.getSnapshot(sp, null);
+			    try {
+					ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", file);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				fileGenerator.generateExcel(response + ".xlsm");
 			}
 		} else if(event.getSource().equals(cancelButton)) {

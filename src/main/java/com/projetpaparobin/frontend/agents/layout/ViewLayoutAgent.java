@@ -10,9 +10,11 @@ import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
@@ -43,7 +45,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		imageView = new ImageView(image);
 		imageView.setPreserveRatio(true);
 		imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInputHandler);
@@ -66,6 +68,10 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		this.getChildren().addAll(imageView ,canvas);		
 	}
 
+	public WritableImage getSnapshot(SnapshotParameters params, WritableImage image) {
+		return this.snapshot(params, image);
+	}
+	
 	public Canvas getCanvas() {
 		return canvas;
 	}
