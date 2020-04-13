@@ -86,10 +86,10 @@ public class BigBoiFinalFileGenerator {
 		
 		List<Extinguisher> extinguishers = new ArrayList<Extinguisher>();
 		
-		XSSFSheet industrielleSheet = workbook.getSheet(dao.PARC_INDUSTRIELLE_SHEET_NAME);
-		XSSFSheet tertiaireSheet = workbook.getSheet(dao.PARC_TERTIAIRE_SHEET_NAME);
-		XSSFSheet nbrExtinguishersSheet = workbook.getSheet(dao.NBR_EXTINGUISHERS_SHEET_NAME);
-		XSSFSheet recensementSheet = workbook.getSheet(dao.RECENSEMENT_SHEET_NAME);
+		XSSFSheet industrielleSheet = workbook.getSheet(dao.getParcIndustrielleSheetName());
+		XSSFSheet tertiaireSheet = workbook.getSheet(dao.getParcTertiaireSheetName());
+		XSSFSheet nbrExtinguishersSheet = workbook.getSheet(dao.getNbrExtinguishersSheetName());
+		XSSFSheet recensementSheet = workbook.getSheet(dao.getRecensementSheetName());
 		
 		int tertiaireRow = 11;
 		int industrielleRow = 11;

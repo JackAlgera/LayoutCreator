@@ -2,26 +2,37 @@ package com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser;
 
 public class ChosenInputFilesPOJO {
 
-	private int pageNbr;
-	private String layoutPath;
-	private String excelPath;
-		
-	public ChosenInputFilesPOJO(int pageNbr, String layoutPath, String excelPath) {
-		this.pageNbr = pageNbr;
-		this.layoutPath = layoutPath;
-		this.excelPath = excelPath;
+	private String excelTemplatePath, layoutPDFPath;
+	private int layoutPageNum;
+
+	public ChosenInputFilesPOJO(String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
+		this.layoutPageNum = layoutPageNum;
+		this.excelTemplatePath = excelTemplatePath;
+		this.layoutPDFPath = layoutPDFPath;
 	}
-	
-	public int getPageNbr() {
-		return pageNbr;
+
+	public String getExcelTemplatePath() {
+		return excelTemplatePath;
 	}
-	
-	public String getLayoutPath() {
-		return layoutPath;
+
+	public void setExcelTemplatePath(String excelTemplatePath) {
+		this.excelTemplatePath = excelTemplatePath;
 	}
-	
-	public String getExcelPath() {
-		return excelPath;
+
+	public String getLayoutPDFPath() {
+		return layoutPDFPath;
+	}
+
+	public void setLayoutPDFPath(String layoutPDFPath) {
+		this.layoutPDFPath = layoutPDFPath;
+	}
+
+	public int getLayoutPageNum() {
+		return layoutPageNum;
+	}
+
+	public void setLayoutPageNum(int layoutPageNum) {
+		this.layoutPageNum = layoutPageNum;
 	}
 
 }

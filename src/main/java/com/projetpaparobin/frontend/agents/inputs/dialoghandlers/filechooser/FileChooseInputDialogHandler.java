@@ -20,6 +20,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 public class FileChooseInputDialogHandler {
+
+	public final String NBR_EXTINGUISHERS_SHEET_NAME = "dernière page";
+	public final String PARC_INDUSTRIELLE_SHEET_NAME = "Parc activité industrielle";
+	public final String PARC_TERTIAIRE_SHEET_NAME = "Parc activité tertiaire";
+	public final String RECENSEMENT_SHEET_NAME = "Recensement";
 	
 	private FileChooser fileChooser;
 	private Dialog<ChosenInputFilesPOJO> inputDialog;
@@ -73,16 +78,20 @@ public class FileChooseInputDialogHandler {
 				int pageNumVal = (pageNum.getText().isBlank()) ? 1 : Integer.parseInt(pageNum.getText());
 				String excelVal = excelPath.getText();
 				
-				daoPrefs.setPrefs(new PreferencesPOJO(excelVal, layoutVal, pageNumVal));
+				daoPrefs.setPrefs(new PreferencesPOJO(excelVal, layoutVal, pageNumVal,
+						 NBR_EXTINGUISHERS_SHEET_NAME, 
+						 PARC_INDUSTRIELLE_SHEET_NAME, 
+						 PARC_TERTIAIRE_SHEET_NAME, 
+						 RECENSEMENT_SHEET_NAME));
 				
 				pageNum.setText("");	
 				layoutPath.setText("");
 				excelPath.setText("");				
 				
-				return new ChosenInputFilesPOJO(pageNumVal, layoutVal, excelVal);
+				return new ChosenInputFilesPOJO(excelVal, layoutVal, pageNumVal);
 			} 
 			if(button == ButtonType.CANCEL) {
-				return new ChosenInputFilesPOJO(-1, "", "");
+				return new ChosenInputFilesPOJO("", "", -1);
 			}
 			return null;
 		});

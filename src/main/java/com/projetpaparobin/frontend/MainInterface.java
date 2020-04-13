@@ -18,12 +18,8 @@ public class MainInterface extends Application {
     	int height = 800;
     	int width = 1000;
     	
-    	if(file != null && !file.getLayoutPath().isBlank() && !file.getExcelPath().isBlank()) {
-	    	int imageNbr = file.getPageNbr();
-			String layoutPath = file.getLayoutPath();
-			String excelPath = file.getExcelPath();
-
-    		MainUI layout = new MainUI(height, width, layoutPath, imageNbr, excelPath);		
+    	if(file != null && !file.getLayoutPDFPath().isBlank() && !file.getExcelTemplatePath().isBlank() && file.getLayoutPageNum() > 0) {
+    		MainUI layout = new MainUI(height, width, file.getExcelTemplatePath(), file.getLayoutPDFPath(), file.getLayoutPageNum());		
     		Scene scene = new Scene(layout);
     		
     		primaryStage.setTitle("Projet papa Robaing");
