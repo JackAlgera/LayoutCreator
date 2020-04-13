@@ -1,7 +1,10 @@
 package com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser;
 
 import java.io.File;
+import java.util.prefs.Preferences;
 
+import com.projetpaparobin.documents.preferences.DAOPreferencesImpl;
+import com.projetpaparobin.documents.preferences.PreferencesPOJO;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.utils.UIElements;
 
@@ -20,8 +23,12 @@ public class FileChooseInputDialogHandler {
 	
 	private FileChooser fileChooser;
 	private Dialog<ChosenInputFilesPOJO> inputDialog;
+	private DAOPreferencesImpl daoPrefs;
 	
 	public FileChooseInputDialogHandler(Window primaryStage) {
+		daoPrefs = new DAOPreferencesImpl();
+		PreferencesPOJO prefs = daoPrefs.getPrefs();
+		
 		fileChooser = new FileChooser();
 		fileChooser.setTitle("Choix fichie");
 		inputDialog = new Dialog<ChosenInputFilesPOJO>();
@@ -31,10 +38,8 @@ public class FileChooseInputDialogHandler {
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		
 		Label layoutLabel = new Label("PDF avec plan");
-		TextField layoutPath = new TextField();
-		
-		layoutPath.setText("D:\\Projets Java\\Projet Papa Robin\\image.pdf");
-		
+		TextField layoutPath = new TextField();		
+		layoutPath.setText(prefs.getLayoutPDFPath());		
 		layoutPath.setPromptText("Nom fichier");
 		layoutPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
@@ -46,12 +51,13 @@ public class FileChooseInputDialogHandler {
 		TextField pageNum = new TextField();
 		pageNum.setPromptText("Num page");
 		pageNum.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
+		if(prefs.getLayoutPageNum() > 0) {
+			pageNum.setText("" + prefs.getLayoutPageNum());
+		}
 		
 		Label excelLabel = new Label("Excel");
-		TextField excelPath = new TextField();
-		
-		excelPath.setText("D:\\Projets Java\\Projet Papa Robin\\projetpaparobin\\COM-Q-50035005-EdK.xlsm");
-		
+		TextField excelPath = new TextField();		
+		excelPath.setText(prefs.getExcelTemplatePath());		
 		excelPath.setPromptText("Nom fichier");
 		excelPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
@@ -66,6 +72,8 @@ public class FileChooseInputDialogHandler {
 				String layoutVal = layoutPath.getText();				
 				int pageNumVal = (pageNum.getText().isBlank()) ? 1 : Integer.parseInt(pageNum.getText());
 				String excelVal = excelPath.getText();
+				
+				daoPrefs.setPrefs(new PreferencesPOJO(excelVal, layoutVal, pageNumVal));
 				
 				pageNum.setText("");	
 				layoutPath.setText("");

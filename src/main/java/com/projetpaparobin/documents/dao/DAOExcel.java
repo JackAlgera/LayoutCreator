@@ -2,8 +2,8 @@ package com.projetpaparobin.documents.dao;
 
 import java.io.File;
 
-public interface DAOExcel {
+public abstract class DAOExcel {
 
-	public File getExcelTemplate();
+	public abstract File getExcelTemplate();
 	
 }

@@ -2,7 +2,7 @@ package com.projetpaparobin.documents.dao;
 
 import java.io.File;
 
-public class DAOExcelImpl implements DAOExcel {
+public class DAOExcelImpl extends DAOExcel {
 
 	private static DAOExcelImpl instance;
 
@@ -23,6 +23,7 @@ public class DAOExcelImpl implements DAOExcel {
 		return instance;
 	}
 	
+	@Override
 	public File getExcelTemplate() {
 		return new File(EXCEL_TEMPLATE_PATH);
 	}
