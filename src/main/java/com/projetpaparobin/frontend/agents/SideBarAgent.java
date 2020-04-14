@@ -6,11 +6,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.projetpaparobin.documents.LayoutHandler;
+import com.projetpaparobin.documents.applicationstate.ApplicationStatePOJO;
+import com.projetpaparobin.documents.applicationstate.ApplicationStatePersister;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.frontend.agents.inputs.ETypeAction;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
@@ -28,6 +31,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 
@@ -37,12 +41,14 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
 	private AreYouSureInputDialogHandler areYouSureInputDialog;
-	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton;
+	private FileSaveInputDialogHandler fileSaveInputDialog;
+	
+	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton, saveButton, loadButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	private UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
 	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
-	public SideBarAgent(int height, int width, PresentationLayoutAgent presLayoutAgent) {
+	public SideBarAgent(Stage primaryStage, int height, int width, PresentationLayoutAgent presLayoutAgent) {
 		super(50);
 		this.setPadding(new Insets(15, 0, 0, 0));
 		this.setBorder(UIElements.BLACK_BORDER);
@@ -51,7 +57,8 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		this.presLayoutAgent = presLayoutAgent;
 		this.fileGenerationInputDialog = new FileGenerationDialogHandler();
 		this.areYouSureInputDialog = new AreYouSureInputDialogHandler("Confirmation De Suppression", "Etes-vous sûr de vouloir tout supprimer ?");
-
+		this.fileSaveInputDialog = new FileSaveInputDialogHandler(primaryStage);
+		
 		newExtinguisherButton = new Button("Nouveau extincteur");
 		newExtinguisherButton.addEventHandler(ActionEvent.ACTION, this);
 		newZoneButton = new Button("Nouvelle zone");
@@ -64,6 +71,10 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		cancelButton.addEventHandler(ActionEvent.ACTION, this);
 		resetButton = new Button("Reset");
 		resetButton.addEventHandler(ActionEvent.ACTION, this);
+		saveButton = new Button("Save");
+		saveButton.addEventHandler(ActionEvent.ACTION, this);
+		loadButton = new Button("Load");
+		loadButton.addEventHandler(ActionEvent.ACTION, this);
 		
 		UIElements.setDefaultButtonStyle(newExtinguisherButton);
 		UIElements.setDefaultButtonStyle(newZoneButton);
@@ -80,7 +91,10 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 		HBox finalBox = new HBox(8, zoneBox, exBox, createExcelButton);
 		finalBox.setAlignment(Pos.CENTER);
 		
-		this.getChildren().addAll(finalBox, resetButton);
+		HBox stateButtons = new HBox(8, saveButton, loadButton);
+		stateButtons.setAlignment(Pos.CENTER);
+		
+		this.getChildren().addAll(finalBox, stateButtons, resetButton);
 	}
 
 	public void setPresLayoutAgent(PresentationLayoutAgent presLayoutAgent) {
@@ -118,6 +132,16 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 			if(areYouSureInputDialog.showAndWait()) {
 				layoutHandler.fullReset();
 				zoneCreator.canceled();			
+			}
+		} else if(event.getSource().equals(saveButton)) {
+			File savefile = fileSaveInputDialog.showSaveDialog();
+			if(savefile != null) {
+				ApplicationStatePersister.saveState(savefile);
+			}
+		} else if(event.getSource().equals(loadButton)) {
+			File loadFile = fileSaveInputDialog.showLoadDialog();
+			if(loadFile != null) {
+				ApplicationStatePersister.loadState(loadFile);
 			}
 		}
 	}

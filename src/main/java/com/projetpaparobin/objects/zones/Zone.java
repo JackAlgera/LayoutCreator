@@ -28,14 +28,6 @@ public class Zone {
 		this.rimColor = fillColor.getColor().darker();
 	}
 	
-	public Zone(ZoneID id, Shape shape, Color rimColor, UIColor fillColor, ArrayList<Extinguisher> extinguishers) {
-		this.id = id;
-		this.shape = shape;
-		this.rimColor = rimColor;
-		this.fillColor = fillColor;
-		this.extinguishers = extinguishers;
-	}
-
 	public ZoneID getId() {
 		return id;
 	}
@@ -52,20 +44,21 @@ public class Zone {
 		this.shape = shape;
 	}
 
-	public Color getRimColor() {
-		return rimColor;
-	}
-
-	public void setRimColor(Color rimColor) {
-		this.rimColor = rimColor;
-	}
-
 	public UIColor getFillColor() {
 		return fillColor;
 	}
-
+	
+	public Color getRimColor() {
+		return rimColor;
+	}
+	
 	public void setFillColor(UIColor fillColor) {
-		this.fillColor = fillColor;
+		if(fillColor == null) {
+			this.fillColor = UIElements.getRandomColor();
+		} else {
+			this.fillColor = fillColor;
+		}
+		this.rimColor = fillColor.getColor().darker();
 	}
 
 	public void addExtinguisher(Extinguisher ex) {

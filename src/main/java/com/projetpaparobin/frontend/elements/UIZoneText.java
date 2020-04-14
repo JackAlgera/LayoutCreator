@@ -26,6 +26,7 @@ public class UIZoneText extends UIElement {
 		
 	public UIZoneText(Zone zone, Canvas canvas) {
 		super(zone.getShape().getArea().getBounds2D().getCenterX(), zone.getShape().getArea().getBounds2D().getMinY(), zone.getRimColor(), zone.getFillColor(), canvas);
+		System.out.println(zone.getShape().getArea().getBounds2D().getCenterX());
 		this.zone = zone;
 		prepareImage(zone);
 	}

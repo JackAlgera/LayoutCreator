@@ -75,8 +75,8 @@ public class UIElements {
 //			Color.PURPLE,
 //			Color.GREEN,
 //			Color.BROWN
-			UIColor.BLUE,
 			UIColor.GREEN,
+			UIColor.BLUE,
 			UIColor.RED,
 			UIColor.YELLOW,
 			UIColor.BROWN,

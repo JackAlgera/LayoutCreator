@@ -19,7 +19,6 @@ public class ZoneCreator {
 	
 	private ZoneCreator() {
 		zoneState = EZoneCreationState.NEW_ZONE;
-		currentZone = new Zone();
 		listeners = new ArrayList<IZoneCreatorListener>();
 	}
 	

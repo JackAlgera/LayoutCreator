@@ -1,6 +1,7 @@
 package com.projetpaparobin.objects.extinguishers;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIColor;
@@ -31,6 +32,7 @@ public class Extinguisher {
 		this.pos = pos;
 	}
 
+	@JsonIgnore
 	public String getDisplayText() {
 		return id.getDisplayText();
 	}

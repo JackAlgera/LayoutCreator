@@ -4,6 +4,7 @@ import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 public class MainUI extends HBox {
 
@@ -11,7 +12,7 @@ public class MainUI extends HBox {
 	private ViewLayoutAgent layoutView;
 	private SideBarAgent sideBar;
 
-	public MainUI(int height, int width, String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
+	public MainUI(Stage primaryStage, int height, int width, String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
 		super();
 		this.setPrefSize(width, height);	
 		
@@ -19,7 +20,7 @@ public class MainUI extends HBox {
 		layoutView = new ViewLayoutAgent(layoutPDFPath, layoutPageNum, height, width / 2, layoutPres);
 		layoutPres.setView(layoutView);		
 
-		sideBar = new SideBarAgent(height, width / 2, layoutPres);
+		sideBar = new SideBarAgent(primaryStage, height, width / 2, layoutPres);
 				
 		this.getChildren().addAll(layoutView, sideBar);
 	}	

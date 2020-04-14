@@ -41,18 +41,5 @@ public enum UIColor {
 	public String toString() {
 		return colorName;
 	}
-
-	@JsonIgnore
-	public static UIColor getEnum(Color color) {
-		if(color.equals(RED.getColor())) {
-			return RED;
-		} else if(color.equals(BLUE.getColor())) {
-			return BLUE;
-		} else if(color.equals(YELLOW.getColor())) {
-			return YELLOW;
-		} else {
-			return GREEN;
-		}
-	}
 	
 }

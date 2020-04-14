@@ -32,6 +32,10 @@ public class LayoutHandler {
 		zones.add(newZone);
 	}	
 
+	public void setZones(ArrayList<Zone> zones) {
+		this.zones = zones;
+	}
+	
 	public ArrayList<Zone> getZones() {
 		return zones;
 	}

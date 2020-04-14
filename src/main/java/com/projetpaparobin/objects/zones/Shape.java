@@ -3,19 +3,18 @@ package com.projetpaparobin.objects.zones;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Shape {
 
 	private ArrayList<Point> points;
+	
+	@JsonIgnore
 	private Polygon area;
 	
 	public Shape() {
-		points = new ArrayList<Point>();
-		area = new Polygon();
-	}
-	
-	public Shape(ArrayList<Point> points) {
-		this.points = points;
-		area = new Polygon();
+		this.points = new ArrayList<Point>();
+		this.area = new Polygon();
 		updateArea();
 	}
 	
@@ -28,11 +27,16 @@ public class Shape {
 		this.points.add(point);
 		updateArea();
 	}
-
+		
 	public ArrayList<Point> getPoints() {
 		return points;
 	}
-	
+
+	public void setPoints(ArrayList<Point> points) {
+		this.points = points;
+		updateArea();
+	}
+
 	public void updateArea() {
 		int[] xPoints = new int[points.size()];
 		int[] yPoints = new int[points.size()];
