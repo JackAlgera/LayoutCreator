@@ -1,16 +1,19 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.utils.UIColor;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public abstract class UIElement {
 
-	protected Color rimColor, fillColor;
+	protected UIColor fillColor;
+	protected Color rimColor;
 	protected GraphicsContext canvasGC;
 	protected double posX, posY;
 	
-	public UIElement(double posX, double posY, Color rimColor, Color fillColor, Canvas canvas) {
+	public UIElement(double posX, double posY, Color rimColor, UIColor fillColor, Canvas canvas) {
 		this.posX = posX;
 		this.posY = posY;
 		this.rimColor = rimColor;

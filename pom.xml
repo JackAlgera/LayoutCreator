@@ -19,7 +19,6 @@
 
   <build>
 	<plugins>
-		<!-- download source code in Eclipse, best practice -->
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-eclipse-plugin</artifactId>
@@ -30,7 +29,6 @@
 			</configuration>
 		</plugin>
 
-		<!-- Set a compiler level -->
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
@@ -52,17 +50,14 @@
             </configuration>
         </plugin>
 
-		<!-- Maven Assembly Plugin -->
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-assembly-plugin</artifactId>
 			<version>2.4.1</version>
 			<configuration>
-				<!-- get all project dependencies -->
 				<descriptorRefs>
 					<descriptorRef>jar-with-dependencies</descriptorRef>
 				</descriptorRefs>
-				<!-- MainClass in mainfest make a executable jar -->
 				<archive>
 				  <manifest>
 					<mainClass>com.projetpaparobin.Launcher</mainClass>
@@ -73,7 +68,6 @@
 			<executions>
 			  <execution>
 				<id>make-assembly</id>
-                                       <!-- bind to the packaging phase -->
 				<phase>package</phase> 
 				<goals>
 					<goal>single</goal>
@@ -136,6 +130,11 @@
     	<groupId>org.apache.poi</groupId>
     	<artifactId>poi-scratchpad</artifactId>
     <version>4.1.2</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.11.0.rc1</version>
 	</dependency>
   </dependencies>
 </project>

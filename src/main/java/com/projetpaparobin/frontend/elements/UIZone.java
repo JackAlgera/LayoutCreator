@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
+import com.projetpaparobin.utils.UIColor;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
@@ -24,7 +25,7 @@ public class UIZone extends UIElement {
 		this.zone = zone;
 		this.corners = new ArrayList<UICorner>();
 		for (Point point : zone.getShape().getPoints()) {
-			corners.add(new UICorner(zone, point, INIT_POINT_RADIUS, Color.BLACK, Color.WHITE, canvasGC.getCanvas()));
+			corners.add(new UICorner(zone, point, INIT_POINT_RADIUS, Color.BLACK, UIColor.WHITE, canvasGC.getCanvas()));
 		}
 		this.shouldDrawCorners = shouldDrawCorners;
 	}
@@ -42,7 +43,7 @@ public class UIZone extends UIElement {
 		canvasGC.setLineWidth(LINE_WIDTH);
 		canvasGC.strokePolygon(pointsX, pointsY, corners.size());
 		
-		canvasGC.setFill(fillColor);
+		canvasGC.setFill(fillColor.getColor());
 		canvasGC.fillPolygon(pointsX, pointsY, pointsX.length);
 		
 		if(shouldDrawCorners) {

@@ -1,20 +1,22 @@
 package com.projetpaparobin.objects.extinguishers;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
-
-import javafx.scene.paint.Color;
+import com.projetpaparobin.utils.UIColor;
 
 public class Extinguisher {
 
 	private ExtinguisherID id;
 	private Point pos;
+	
+	@JsonBackReference
 	private Zone zone;
 	
 	public Extinguisher() {
 	}
 	
-	public Extinguisher(String number, String extinguisherType, EProtectionType protectionType, Color color,
+	public Extinguisher(String number, String extinguisherType, EProtectionType protectionType, UIColor color,
 			Point pos, boolean isNew, Zone zone,int anneeMiseEnService,String marque) {
 		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color);
 		this.pos = pos;

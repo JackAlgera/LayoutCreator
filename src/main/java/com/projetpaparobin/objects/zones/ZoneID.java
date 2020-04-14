@@ -1,5 +1,7 @@
 package com.projetpaparobin.objects.zones;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ZoneID {
 
 	private String areaName;
@@ -8,6 +10,9 @@ public class ZoneID {
 	private EActivityType activityType;
 	private int areaSize;
 	
+	public ZoneID() {
+	}
+	
 	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize) {
 		this.areaNumber = areaNumber;
 		this.areaType = areaType;
@@ -15,11 +20,13 @@ public class ZoneID {
 		this.areaSize = areaSize;
 		this.areaName = (areaName.isBlank()) ? getDisplayText() : areaName;
 	}
-			
+
+	@JsonIgnore
 	public String getDisplayText() {
 		return areaType.toString() + areaNumber + "-" + getActivityTypeAbbreviation() + "-" + areaSize + "m²";
 	}
 	
+	@JsonIgnore
 	public String getActivityTypeAbbreviation() {
 		switch (activityType) {
 		case INDUSTRIELLE:

@@ -2,7 +2,10 @@ package com.projetpaparobin.objects.zones;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
+import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.scene.paint.Color;
@@ -11,17 +14,21 @@ public class Zone {
 	
 	private ZoneID id;
 	private Shape shape;
-	private Color rimColor, fillColor;
+	private UIColor fillColor;
+	@JsonIgnore
+	private Color rimColor;
+	
+	@JsonManagedReference
 	private ArrayList<Extinguisher> extinguishers;	
 	
 	public Zone() {
 		this.shape = new Shape();
 		this.extinguishers = new ArrayList<Extinguisher>();
 		this.fillColor = UIElements.getRandomColor();
-		this.rimColor = fillColor.darker();
+		this.rimColor = fillColor.getColor().darker();
 	}
 	
-	public Zone(ZoneID id, Shape shape, Color rimColor, Color fillColor, ArrayList<Extinguisher> extinguishers) {
+	public Zone(ZoneID id, Shape shape, Color rimColor, UIColor fillColor, ArrayList<Extinguisher> extinguishers) {
 		this.id = id;
 		this.shape = shape;
 		this.rimColor = rimColor;
@@ -53,11 +60,11 @@ public class Zone {
 		this.rimColor = rimColor;
 	}
 
-	public Color getFillColor() {
+	public UIColor getFillColor() {
 		return fillColor;
 	}
 
-	public void setFillColor(Color fillColor) {
+	public void setFillColor(UIColor fillColor) {
 		this.fillColor = fillColor;
 	}
 
@@ -77,6 +84,7 @@ public class Zone {
 		return shape.getArea().contains(posX, posY);
 	}
 
+	@JsonIgnore
 	public String getDisplayText() {
 		return id.getDisplayText();
 	}

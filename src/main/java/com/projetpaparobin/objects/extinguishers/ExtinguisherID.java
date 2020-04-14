@@ -1,6 +1,7 @@
 package com.projetpaparobin.objects.extinguishers;
 
-import javafx.scene.paint.Color;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projetpaparobin.utils.UIColor;
 
 public class ExtinguisherID {
 
@@ -10,11 +11,13 @@ public class ExtinguisherID {
 	private int fabricationYear;
 	private String brand;
 	private boolean isNew;
-	private Color color; //either blue,red or yellow
+	private UIColor color;
 		
+	public ExtinguisherID() {
+	}
+	
 	public ExtinguisherID(String number, String extinguisherType, EProtectionType protectionType, int fabricationYear,
-			String brand, boolean isNew, Color color) {
-		super();
+			String brand, boolean isNew, UIColor color) {
 		this.number = number;
 		this.extinguisherType = extinguisherType;
 		this.protectionType = protectionType;
@@ -23,7 +26,7 @@ public class ExtinguisherID {
 		this.isNew = isNew;
 		this.color = color;
 	}
-
+	
 	public String getNumber() {
 		return number;
 	}
@@ -48,22 +51,6 @@ public class ExtinguisherID {
 		this.protectionType = protectionType;
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}	
-
-	public boolean isNew() {
-		return isNew;
-	}
-
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
-	}
-
 	public int getFabricationYear() {
 		return fabricationYear;
 	}
@@ -79,7 +66,24 @@ public class ExtinguisherID {
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
-	
+
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
+	public UIColor getColor() {
+		return color;
+	}
+
+	public void setColor(UIColor color) {
+		this.color = color;
+	}
+
+	@JsonIgnore
 	public String getDisplayText() {
 		return extinguisherType + "/" + protectionType;
 	}

@@ -45,8 +45,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		number.setPromptText("Number");
 		number.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		
-		ComboBox<UIColor> colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(Stream.of(UIColor.values())
-				.collect(Collectors.toList())));
+		ComboBox<UIColor> colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_EXTINGUISHER_COLORS));
 		colorComboBox.setValue(UIColor.RED);
 		colorComboBox.setPrefWidth(width);		
 		
@@ -56,7 +55,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		extinguisherType.textProperty().addListener((observable, oldValue, newValue) -> {
 			EExtinguisherType type = EExtinguisherType.getEnum(newValue);
 			if(type != EExtinguisherType.OTHER) {
-				colorComboBox.setValue(UIColor.getEnum(type.getColor()));
+				colorComboBox.setValue(type.getColor());
 			}
 		});
 		
@@ -74,8 +73,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		brand.setPromptText("Brand");
 		brand.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
 		
-		CheckBox isNew = new CheckBox("Is new");
-	
+		CheckBox isNew = new CheckBox("Is new");	
 		
 		dialogPane.setContent(new VBox(8, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
 		inputDialog.setResultConverter((ButtonType button) -> {
@@ -86,7 +84,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 				int fabricationYearVal = (fabricationYear.getText().isBlank()) ? 1995 : Integer.parseInt(fabricationYear.getText());
 				String brandVal = brand.getText();
 				boolean isNewVal = isNew.isSelected();
-				Color colorVal = colorComboBox.getValue().getColor();
+				UIColor colorVal = colorComboBox.getValue();
 				
 				number.setText("");
 				extinguisherType.setText("");

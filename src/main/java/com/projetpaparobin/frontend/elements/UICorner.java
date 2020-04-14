@@ -2,6 +2,7 @@ package com.projetpaparobin.frontend.elements;
 
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
+import com.projetpaparobin.utils.UIColor;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
@@ -14,7 +15,7 @@ public class UICorner extends UIElement {
 	private Zone zone;
 	private static double lineWidth = 1.0;
 	
-	public UICorner(Zone zone, Point p, double radius, Color rimColor, Color fillColor, Canvas canvas) {
+	public UICorner(Zone zone, Point p, double radius, Color rimColor, UIColor fillColor, Canvas canvas) {
 		super(p.getX(), p.getY(), rimColor, fillColor, canvas);
 		this.point = p;
 		this.zone = zone;
@@ -28,7 +29,7 @@ public class UICorner extends UIElement {
 		canvasGC.strokeOval(posX - circle.getRadius(), posY - circle.getRadius(), circle.getRadius() * 2, circle.getRadius() * 2);
 		
 		if(fillColor != null) {
-			canvasGC.setFill(fillColor);
+			canvasGC.setFill(fillColor.getColor());
 			canvasGC.fillOval(posX - circle.getRadius(), posY - circle.getRadius(), circle.getRadius() * 2, circle.getRadius() * 2);
 		}		
 	}

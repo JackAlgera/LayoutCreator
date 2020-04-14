@@ -32,7 +32,7 @@ public class UIExtinguisher extends UIElement {
 	private void prepareImage() {
 		StackPane sPane = new StackPane();
 		
-		circle = new Circle(posX, posY, UIElements.EXTINGUISHER_FONT.getSize(), ex.getId().getColor());
+		circle = new Circle(posX, posY, UIElements.EXTINGUISHER_FONT.getSize(), ex.getId().getColor().getColor());
 		circle.setStroke(rimColor);
 		circle.setStrokeWidth(0.8);		
 		

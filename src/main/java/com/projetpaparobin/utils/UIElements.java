@@ -17,6 +17,11 @@ import javafx.scene.text.Font;
 
 public class UIElements {
 
+	public static final String SAVE_BUTTON_TEXT = "Enregistrer";
+	public static final String CANCEL_BUTTON_TEXT = "Annuler";
+	public static final String DONE_BUTTON_TEXT = "OK";
+
+	
 	public static String NUMBER_REGEX = "[0-9]*";
 	public static String LETTER_REGEX = "[a-zA-Z]*";
 	public static Random r = new Random();
@@ -31,10 +36,9 @@ public class UIElements {
 			CornerRadii.EMPTY, 
 			BorderWidths.DEFAULT));
 		
-	public static Color getRandomColor() {
-		Color randColor = DEFAULT_COLORS.get(colorIndex);
-		randColor = new Color(randColor.getRed(), randColor.getGreen(), randColor.getBlue(), 0.5);
-		colorIndex = (colorIndex + 1) % DEFAULT_COLORS.size();
+	public static UIColor getRandomColor() {
+		UIColor randColor = DEFAULT_ZONE_COLORS.get(colorIndex);
+		colorIndex = (colorIndex + 1) % DEFAULT_ZONE_COLORS.size();
 		return randColor;
 	}
 	
@@ -63,14 +67,27 @@ public class UIElements {
 	}
 	
 	public static int colorIndex = 0;	
-	private static ArrayList<Color> DEFAULT_COLORS = new ArrayList<Color>(Arrays.asList(
-			Color.TURQUOISE,
-			Color.BLUE,
-			Color.RED,
-			Color.ORANGE,
-			Color.PURPLE,
-			Color.GREEN,
-			Color.BROWN
+	private static ArrayList<UIColor> DEFAULT_ZONE_COLORS = new ArrayList<UIColor>(Arrays.asList(
+//			Color.TURQUOISE,
+//			Color.BLUE,
+//			Color.RED,
+//			Color.ORANGE,
+//			Color.PURPLE,
+//			Color.GREEN,
+//			Color.BROWN
+			UIColor.BLUE,
+			UIColor.GREEN,
+			UIColor.RED,
+			UIColor.YELLOW,
+			UIColor.BROWN,
+			UIColor.ORANGE
+	));
+	
+	public static ArrayList<UIColor> DEFAULT_EXTINGUISHER_COLORS = new ArrayList<UIColor>(Arrays.asList(
+			UIColor.LIGHTBLUE,
+			UIColor.LIGHTGREEN,
+			UIColor.LIGHTRED,
+			UIColor.LIGHTYELLOW
 	));
 
 	public static void setDefaultButtonStyle(Button b) {
