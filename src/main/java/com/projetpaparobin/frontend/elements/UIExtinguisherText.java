@@ -1,6 +1,7 @@
 package com.projetpaparobin.frontend.elements;
 
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
+import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.geometry.Bounds;
@@ -25,7 +26,9 @@ public class UIExtinguisherText extends UIElement {
 	private Bounds bounds;
 		
 	public UIExtinguisherText(Extinguisher ex, Canvas canvas) {
-		super(ex.getPos().getX(), ex.getPos().getY() + Y_OFFSET, Color.BLACK, null, canvas);
+		super(	(ex.getTextAreaPosition() == null) ? ex.getPos().getX() : ex.getTextAreaPosition().getX(),
+				(ex.getTextAreaPosition() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPosition().getY(),
+				Color.BLACK, null, canvas);
 		this.ex = ex;
 		prepareImage(ex);
 	}
@@ -72,6 +75,7 @@ public class UIExtinguisherText extends UIElement {
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
 		super.translateShape(newPosX, newPosY);
+		ex.setTextAreaPosition(new Point(newPosX, newPosY));
 		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
 	}
 	

@@ -18,7 +18,7 @@ public class FileSaveInputDialogHandler {
 		fileChooser.setTitle("Enregistrer sous");
 		
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"),
+				new FileChooser.ExtensionFilter("JCK files (*.jck)", "*.jck"),
 				new FileChooser.ExtensionFilter("Tout", "*"));
 				
 		fileChooser.setInitialDirectory(Paths.get(".").toAbsolutePath().normalize().toFile());

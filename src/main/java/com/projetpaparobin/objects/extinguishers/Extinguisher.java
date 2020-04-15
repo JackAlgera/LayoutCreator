@@ -10,6 +10,7 @@ public class Extinguisher {
 
 	private ExtinguisherID id;
 	private Point pos;
+	private Point textAreaPosition;
 	
 	@JsonBackReference
 	private Zone zone;
@@ -24,6 +25,14 @@ public class Extinguisher {
 		this.zone = zone;
 	}
 	
+	public Point getTextAreaPosition() {
+		return textAreaPosition;
+	}
+
+	public void setTextAreaPosition(Point textAreaPosition) {
+		this.textAreaPosition = textAreaPosition;
+	}
+
 	public Point getPos() {
 		return pos;
 	}

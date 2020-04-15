@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIElements;
 
@@ -25,7 +26,9 @@ public class UIZoneText extends UIElement {
 	private Bounds bounds;
 		
 	public UIZoneText(Zone zone, Canvas canvas) {
-		super(zone.getShape().getArea().getBounds2D().getCenterX(), zone.getShape().getArea().getBounds2D().getMinY(), zone.getRimColor(), zone.getFillColor(), canvas);
+		super(	(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBounds2D().getCenterX() : zone.getTextAreaPosition().getX(),
+				(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBounds2D().getMinY() : zone.getTextAreaPosition().getY(),
+				zone.getRimColor(), zone.getFillColor(), canvas);
 		System.out.println(zone.getShape().getArea().getBounds2D().getCenterX());
 		this.zone = zone;
 		prepareImage(zone);
@@ -80,6 +83,7 @@ public class UIZoneText extends UIElement {
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
 		super.translateShape(newPosX, newPosY);
+		zone.setTextAreaPosition(new Point(newPosX, newPosY));
 		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
 	}
 }
