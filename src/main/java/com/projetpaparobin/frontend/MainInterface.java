@@ -1,6 +1,7 @@
 package com.projetpaparobin.frontend;
 
 import com.projetpaparobin.frontend.agents.MainUI;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.ConfirmCloseEventHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.ChosenInputFilesPOJO;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.FileChooseInputDialogHandler;
 
@@ -14,7 +15,9 @@ public class MainInterface extends Application {
 	public void start(Stage primaryStage) throws Exception {		
 		FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
 		ChosenInputFilesPOJO file = fileChooser.showAndWait();
-				
+		
+		primaryStage.setOnCloseRequest(new ConfirmCloseEventHandler(primaryStage).getConfirmCloseEventHandler());
+		
     	int height = 800;
     	int width = 1000;
     	

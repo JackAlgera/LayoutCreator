@@ -3,6 +3,8 @@ package com.projetpaparobin.frontend.agents.inputs.dialoghandlers;
 import java.io.File;
 import java.nio.file.Paths;
 
+import com.projetpaparobin.documents.applicationstate.ApplicationStatePersister;
+
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -24,15 +26,19 @@ public class FileSaveInputDialogHandler {
 		fileChooser.setInitialDirectory(Paths.get(".").toAbsolutePath().normalize().toFile());
 	}
 	
-	public File showSaveDialog() {
+	public void showSaveDialog() {
 		fileChooser.setTitle("Enregistrer sous");
-		return fileChooser.showSaveDialog(primaryStage);
+		File saveFile = fileChooser.showSaveDialog(primaryStage);
+		if(saveFile != null) {
+			ApplicationStatePersister.saveState(saveFile);
+		}
 	}
 	
-	public File showLoadDialog() {
+	public void showLoadDialog() {
 		fileChooser.setTitle("Ouvrir");
-		return fileChooser.showOpenDialog(primaryStage);
+		File loadFile = fileChooser.showOpenDialog(primaryStage);
+		if(loadFile != null) {
+			ApplicationStatePersister.loadState(loadFile);
+		}
 	}
-	
-	
 }

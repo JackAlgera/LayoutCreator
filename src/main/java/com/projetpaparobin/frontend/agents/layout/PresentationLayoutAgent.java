@@ -20,7 +20,6 @@ import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Zone;
 
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.WritableImage;
 
 public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguisherCreatorListener {

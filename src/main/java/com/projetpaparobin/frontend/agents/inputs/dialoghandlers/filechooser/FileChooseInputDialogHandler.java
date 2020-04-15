@@ -1,11 +1,9 @@
 package com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser;
 
 import java.io.File;
-import java.util.prefs.Preferences;
 
 import com.projetpaparobin.documents.preferences.DAOPreferencesImpl;
 import com.projetpaparobin.documents.preferences.PreferencesPOJO;
-import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.scene.control.ButtonType;

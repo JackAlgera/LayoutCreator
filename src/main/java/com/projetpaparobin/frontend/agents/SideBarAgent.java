@@ -134,15 +134,9 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 				zoneCreator.canceled();			
 			}
 		} else if(event.getSource().equals(saveButton)) {
-			File savefile = fileSaveInputDialog.showSaveDialog();
-			if(savefile != null) {
-				ApplicationStatePersister.saveState(savefile);
-			}
+			fileSaveInputDialog.showSaveDialog();
 		} else if(event.getSource().equals(loadButton)) {
-			File loadFile = fileSaveInputDialog.showLoadDialog();
-			if(loadFile != null) {
-				ApplicationStatePersister.loadState(loadFile);
-			}
+			fileSaveInputDialog.showLoadDialog();
 		}
 	}
 	

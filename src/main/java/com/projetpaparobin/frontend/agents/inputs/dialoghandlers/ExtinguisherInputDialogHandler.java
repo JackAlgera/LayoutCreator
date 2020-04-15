@@ -24,7 +24,6 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListener {
 
