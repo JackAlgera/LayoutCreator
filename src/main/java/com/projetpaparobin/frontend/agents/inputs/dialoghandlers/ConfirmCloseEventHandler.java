@@ -19,8 +19,10 @@ public class ConfirmCloseEventHandler {
 		fileSaveInputDialog = new FileSaveInputDialogHandler(primaryStage);
 		
 		confirmCloseEventHandler = event -> {
-			Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous sauvegarder votre travail avant de quitter ?");
-
+			Alert closeConfirmation = new Alert(Alert.AlertType.NONE);
+			closeConfirmation.setTitle("Quitter l'application");
+			closeConfirmation.setHeaderText("Voulez-vous sauvegarder votre travail avant de quitter l'application ?");
+			
 			ButtonType exitButton = new ButtonType("Quitter", ButtonBar.ButtonData.OK_DONE);
 			ButtonType saveAndExitButton = new ButtonType("Enregistrer", ButtonBar.ButtonData.NO);
 			ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);			
@@ -30,7 +32,6 @@ public class ConfirmCloseEventHandler {
 			closeConfirmation.getButtonTypes().add(exitButton);	
 			closeConfirmation.getButtonTypes().add(cancelButton);			
 			
-			closeConfirmation.setHeaderText("Quitter l'application");
 			closeConfirmation.initModality(Modality.APPLICATION_MODAL);
 			closeConfirmation.initOwner(primaryStage);
 			
