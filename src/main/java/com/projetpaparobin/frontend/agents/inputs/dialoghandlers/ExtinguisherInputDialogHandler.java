@@ -144,7 +144,6 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 	}
 	
 	private void updateFields() {
-		System.out.println(extinguisherCreator.getCurrentExtinguisher().getZone().getId().getAreaType());
 		switch (extinguisherCreator.getCurrentExtinguisher().getZone().getId().getAreaType()) {
 		case ZB:
 			protectionType.setValue(EProtectionType.PG.toString());

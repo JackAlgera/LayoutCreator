@@ -29,7 +29,6 @@ public class UIZoneText extends UIElement {
 		super(	(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBounds2D().getCenterX() : zone.getTextAreaPosition().getX(),
 				(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBounds2D().getMinY() : zone.getTextAreaPosition().getY(),
 				zone.getRimColor(), zone.getFillColor(), canvas);
-		System.out.println(zone.getShape().getArea().getBounds2D().getCenterX());
 		this.zone = zone;
 		prepareImage(zone);
 	}

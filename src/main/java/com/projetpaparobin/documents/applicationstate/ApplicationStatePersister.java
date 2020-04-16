@@ -37,7 +37,7 @@ public class ApplicationStatePersister {
 	
 	public static void saveState(File file) {
 		ApplicationStatePOJO state = new ApplicationStatePOJO(layoutHandler.getZones());
-		System.out.println(file.getAbsolutePath());
+		System.out.println("Saved file at : " + file.getAbsolutePath());
 		try {
 			mapper.writeValue(file, state);
 		} catch (IOException e) {
