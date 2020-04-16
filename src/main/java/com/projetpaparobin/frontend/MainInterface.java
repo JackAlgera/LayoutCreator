@@ -30,7 +30,7 @@ public class MainInterface extends Application {
     		primaryStage.setScene(scene);
     		primaryStage.show();
     		
-    		ApplicationStatePersister.startAutomaticSaver(5);
+    		ApplicationStatePersister.startAutomaticSaver(1);
     	} 
 	}
 	
