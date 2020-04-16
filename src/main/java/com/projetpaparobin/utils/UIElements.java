@@ -21,6 +21,7 @@ public class UIElements {
 	public static final String CANCEL_BUTTON_TEXT = "Annuler";
 	public static final String DONE_BUTTON_TEXT = "OK";
 
+	public static String SAVE_FILE_TYPE = "jck";
 	
 	public static String NUMBER_REGEX = "[0-9]*";
 	public static String LETTER_REGEX = "[a-zA-Z]*";

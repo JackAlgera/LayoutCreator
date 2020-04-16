@@ -4,12 +4,13 @@ import java.io.File;
 import java.nio.file.Paths;
 
 import com.projetpaparobin.documents.applicationstate.ApplicationStatePersister;
+import com.projetpaparobin.utils.UIElements;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class FileSaveInputDialogHandler {
-	
+		
 	private FileChooser fileChooser;
 	private Stage primaryStage;
 	
@@ -20,7 +21,7 @@ public class FileSaveInputDialogHandler {
 		fileChooser.setTitle("Enregistrer sous");
 		
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("JCK files (*.jck)", "*.jck"),
+				new FileChooser.ExtensionFilter(UIElements.SAVE_FILE_TYPE.toUpperCase() + " files (*." + UIElements.SAVE_FILE_TYPE + ")", "*." + UIElements.SAVE_FILE_TYPE),
 				new FileChooser.ExtensionFilter("Tout", "*"));
 				
 		fileChooser.setInitialDirectory(Paths.get(".").toAbsolutePath().normalize().toFile());

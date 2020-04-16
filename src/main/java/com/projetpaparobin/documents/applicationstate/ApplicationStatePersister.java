@@ -9,9 +9,6 @@ import java.io.InputStreamReader;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
-import com.projetpaparobin.frontend.handlers.UITextHandler;
-import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 
@@ -21,11 +18,22 @@ public class ApplicationStatePersister {
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	
-	private static UIExtinguisherHandler extinguisherHandler = UIExtinguisherHandler.getInstance();
-	private static UITextHandler uiTextHandler = UITextHandler.getInstance();
-	private static UIZoneHandler uiZoneHandler = UIZoneHandler.getInstance();
-	
 	private static JsonMapper mapper = new JsonMapper();
+	
+	private static AutomaticApplicationStateSaver automaticSaver;
+	
+	public static void startAutomaticSaver(int nbrMinutesBTWSaves) {
+		stopAutomaticSaver();
+		
+		automaticSaver = new AutomaticApplicationStateSaver(nbrMinutesBTWSaves);
+		automaticSaver.start();
+	}
+	
+	public static void stopAutomaticSaver() {
+		if(automaticSaver != null) {
+			automaticSaver.stopThread();
+		}
+	}
 	
 	public static void saveState(File file) {
 		ApplicationStatePOJO state = new ApplicationStatePOJO(layoutHandler.getZones());

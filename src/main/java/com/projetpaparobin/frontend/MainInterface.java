@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend;
 
+import com.projetpaparobin.documents.applicationstate.ApplicationStatePersister;
 import com.projetpaparobin.frontend.agents.MainUI;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.ConfirmCloseEventHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.ChosenInputFilesPOJO;
@@ -28,6 +29,8 @@ public class MainInterface extends Application {
     		primaryStage.setTitle("Projet papa Robaing");
     		primaryStage.setScene(scene);
     		primaryStage.show();
+    		
+    		ApplicationStatePersister.startAutomaticSaver(5);
     	} 
 	}
 	
