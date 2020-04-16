@@ -8,6 +8,7 @@ import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.Fil
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainInterface extends Application {
@@ -28,6 +29,7 @@ public class MainInterface extends Application {
     		
     		primaryStage.setTitle("Projet papa Robaing");
     		primaryStage.setScene(scene);
+    		primaryStage.getIcons().add(new Image("file:icon.png"));
     		primaryStage.show();
     		
     		ApplicationStatePersister.startAutomaticSaver(1);
