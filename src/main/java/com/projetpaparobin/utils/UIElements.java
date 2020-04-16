@@ -17,6 +17,8 @@ import javafx.scene.text.Font;
 
 public class UIElements {
 
+	public static final String DEFAULT_BRAND = "DE";
+	
 	public static final String SAVE_BUTTON_TEXT = "Enregistrer";
 	public static final String CANCEL_BUTTON_TEXT = "Annuler";
 	public static final String DONE_BUTTON_TEXT = "OK";
