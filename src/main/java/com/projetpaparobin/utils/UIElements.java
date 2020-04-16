@@ -17,6 +17,8 @@ import javafx.scene.text.Font;
 
 public class UIElements {
 
+	public static final long MIN_FABRICATION_YEAR = 1970;
+	public static final long MAX_FABRICATION_YEAR = 2050;
 	public static final String DEFAULT_BRAND = "DE";
 	
 	public static final String SAVE_BUTTON_TEXT = "Enregistrer";
@@ -44,7 +46,7 @@ public class UIElements {
 		colorIndex = (colorIndex + 1) % DEFAULT_ZONE_COLORS.size();
 		return randColor;
 	}
-	
+		
 	public static UnaryOperator<Change> getLetterFilter() {
 		UnaryOperator<Change> integerFilter = change -> {
 			String input = change.getText();
