@@ -51,7 +51,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		number.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		
 		colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_EXTINGUISHER_COLORS));
-		colorComboBox.setValue(UIColor.RED);
+		colorComboBox.setValue(UIColor.LIGHTRED);
 		colorComboBox.setPrefWidth(width);		
 		
 		extinguisherType = new TextField();
@@ -179,9 +179,6 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 			} else {
 				setErrorStyle(false, fabricationYear);
 			}
-		} else {
-			setErrorStyle(true, fabricationYear);
-			allValuesOk = false;
 		}
 		
 		return allValuesOk;
