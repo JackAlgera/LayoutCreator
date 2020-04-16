@@ -32,6 +32,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	
 	private Dialog<ExtinguisherID> inputDialog;
+	private ComboBox<String> protectionType;
 	
 	public ExtinguisherInputDialogHandler() {
 		inputDialog = new Dialog<ExtinguisherID>();
@@ -58,10 +59,9 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 			}
 		});
 		
-		ComboBox<String> protectionType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EProtectionType.values())
+		protectionType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EProtectionType.values())
 				.map(val -> val.toString())
 				.collect(Collectors.toList())));	
-		protectionType.setValue(EProtectionType.values()[0].toString());
 		protectionType.setPrefWidth(width);
 		
 		TextField fabricationYear = new TextField();
@@ -111,6 +111,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		case CREATING_NEW_EXTINGUISHER:
 			break;
 		case SETTING_NAME:
+			updateFields();
 			Optional<ExtinguisherID> response = inputDialog.showAndWait();
 			if(!response.isEmpty()) {
 				extinguisherCreator.setExtinguisherID(response.get());
@@ -122,6 +123,18 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 			break;
 		}
 
+	}
+	
+	private void updateFields() {
+		System.out.println(extinguisherCreator.getCurrentExtinguisher().getZone().getId().getAreaType());
+		switch (extinguisherCreator.getCurrentExtinguisher().getZone().getId().getAreaType()) {
+		case ZB:
+			protectionType.setValue(EProtectionType.PG.toString());
+			break;
+		case ZIP:
+			protectionType.setValue(EProtectionType.PIP.toString());
+			break;
+		}
 	}
 	
 }

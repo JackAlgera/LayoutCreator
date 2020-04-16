@@ -19,7 +19,6 @@ public class ExtinguisherCreator {
 	
 	private ExtinguisherCreator() {
 		state = EExtinguisherCreationState.FINISHED;
-		currentExtinguisher = new Extinguisher();
 		listeners = new ArrayList<IExtinguisherCreatorListener>();
 	}
 	
@@ -51,7 +50,7 @@ public class ExtinguisherCreator {
 		if(zone != null && state == EExtinguisherCreationState.NEW_EXTINGUISHER) {
 			selectedZone = zone;
 			currentExtinguisher.setZone(zone);
-			state =EExtinguisherCreationState.SETTING_NAME; 
+			state = EExtinguisherCreationState.SETTING_NAME; 
 			sendEvent(EExtinguisherEvents.SETTING_NAME);
 		}
 	}
