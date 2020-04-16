@@ -27,12 +27,14 @@ public class FileSaveInputDialogHandler {
 		fileChooser.setInitialDirectory(Paths.get(".").toAbsolutePath().normalize().toFile());
 	}
 	
-	public void showSaveDialog() {
+	public boolean showSaveDialog() {
 		fileChooser.setTitle("Enregistrer sous");
 		File saveFile = fileChooser.showSaveDialog(primaryStage);
 		if(saveFile != null) {
 			ApplicationStatePersister.saveState(saveFile);
+			return true;
 		}
+		return false;
 	}
 	
 	public void showLoadDialog() {

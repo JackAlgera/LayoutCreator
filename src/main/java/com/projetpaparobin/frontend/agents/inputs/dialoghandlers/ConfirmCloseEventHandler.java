@@ -2,6 +2,8 @@ package com.projetpaparobin.frontend.agents.inputs.dialoghandlers;
 
 import java.util.Optional;
 
+import com.projetpaparobin.documents.applicationstate.ApplicationStatePersister;
+
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -36,11 +38,15 @@ public class ConfirmCloseEventHandler {
 			closeConfirmation.initOwner(primaryStage);
 			
 			Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-			System.out.println(closeResponse.get().getText());
 			if(closeResponse.get() == saveAndExitButton) {
-				fileSaveInputDialog.showSaveDialog();
+				if(!fileSaveInputDialog.showSaveDialog()) {
+					event.consume();
+				} else {
+					ApplicationStatePersister.stopAutomaticSaver();
+				}
 				return;
 			} if(closeResponse.get() == exitButton) {
+				ApplicationStatePersister.stopAutomaticSaver();
 				return;
 			} if(closeResponse.get() == cancelButton) {
 				event.consume();
