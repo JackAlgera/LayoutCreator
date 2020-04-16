@@ -51,7 +51,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		number.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		
 		colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_EXTINGUISHER_COLORS));
-		colorComboBox.setValue(UIColor.LIGHTRED);
+		colorComboBox.setValue(EExtinguisherType.getDefaultExtinguisherType().getColor());
 		colorComboBox.setPrefWidth(width);		
 		
 		extinguisherType = new TextField();
@@ -76,8 +76,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 			if(!newValue.isBlank()) {
 				long intVal = Long.parseLong(newValue);
 				setErrorStyle((intVal < UIElements.MIN_FABRICATION_YEAR || intVal > UIElements.MAX_FABRICATION_YEAR), fabricationYear);
-			}
-			
+			}			
 		});		
 		
 		brand = new TextField();
@@ -100,7 +99,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String numberVal = (number.getText().isBlank()) ? ExtinguisherCreator.getDefaultZoneNumber() : number.getText();
-				String extinguisherTypeVal = (extinguisherType.getText().isBlank()) ? EExtinguisherType.getDefaultExtinguisherType() : extinguisherType.getText();
+				String extinguisherTypeVal = (extinguisherType.getText().isBlank()) ? EExtinguisherType.getDefaultExtinguisherType().getName() : extinguisherType.getText();
 				EProtectionType protectionTypeVal = EProtectionType.getEnum(protectionType.getValue());
 				int fabricationYearVal = (fabricationYear.getText().isBlank()) ? 1995 : Integer.parseInt(fabricationYear.getText());
 				String brandVal = (brand.getText().strip().isBlank()) ? UIElements.DEFAULT_BRAND : brand.getText().strip().toUpperCase();
@@ -140,7 +139,6 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		case CANCELED:
 			break;
 		}
-
 	}
 	
 	private void updateFields() {
@@ -161,6 +159,7 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 		brand.setText("");
 		protectionType.setValue(EProtectionType.values()[0].toString());
 		isNew.setSelected(false);
+		colorComboBox.setValue(EExtinguisherType.getDefaultExtinguisherType().getColor());
 		
 		setErrorStyle(false, fabricationYear);
 		setErrorStyle(false, number);

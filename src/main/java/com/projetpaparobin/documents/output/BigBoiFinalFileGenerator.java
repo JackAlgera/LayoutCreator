@@ -100,7 +100,7 @@ public class BigBoiFinalFileGenerator {
 		for (Zone zone : layoutHandler.getZones()) {			
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
             for (Extinguisher e: zone.getExtinguishers()) {
-                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear());
+                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear(), e.getId().getProtectionType());
 
                 if(extinguisherList.containsKey(typeExtinguisher)) {
                     extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
@@ -113,45 +113,11 @@ public class BigBoiFinalFileGenerator {
 	            	            
 			switch (zone.getId().getActivityType()) {
 			case INDUSTRIELLE:				
-				fillExcelSheet(industrielleSheet, industrielleRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
-				fillExcelSheet(industrielleSheet, industrielleRow, 1, CellType.STRING, zone.getId().getAreaName());
-				fillExcelSheet(industrielleSheet, industrielleRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
-				
-				for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {
-					fillExcelSheet(industrielleSheet, industrielleRow, 6, CellType.NUMERIC, extinguisher.getValue());
-					fillExcelSheet(industrielleSheet, industrielleRow, 7, CellType.STRING, extinguisher.getKey().getType());
-					fillExcelSheet(industrielleSheet, industrielleRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
-					
-					double FC = (TYPE_6L.contains(extinguisher.getKey().getType())) ? 0.75 : 1.0;
-					fillExcelSheet(industrielleSheet, industrielleRow, 9, CellType.NUMERIC, FC);
-					industrielleRow++;
-				}
-				
-				if(extinguisherList.size() == 0) {
-					industrielleRow++;
-				} 
-				
-				addTopBorderToCells(industrielleRow, 1, 10, industrielleSheet);
+				industrielleRow = fillActivitySheet(industrielleSheet, industrielleRow, zone, extinguisherList);
 				break;
 				
 			case TERTIAIRE:
-				fillExcelSheet(tertiaireSheet, tertiaireRow, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
-				fillExcelSheet(tertiaireSheet, tertiaireRow, 1, CellType.STRING, zone.getId().getAreaName());
-				fillExcelSheet(tertiaireSheet, tertiaireRow, 5, CellType.NUMERIC, zone.getId().getAreaSize());
-				
-				for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {
-					fillExcelSheet(tertiaireSheet, tertiaireRow, 6, CellType.NUMERIC, extinguisher.getValue());
-					fillExcelSheet(tertiaireSheet, tertiaireRow, 7, CellType.STRING, extinguisher.getKey().getType());
-					fillExcelSheet(tertiaireSheet, tertiaireRow, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
-					fillExcelSheet(tertiaireSheet, tertiaireRow, 9, CellType.NUMERIC, 1.0);
-					tertiaireRow++;
-				}
-				
-				if(extinguisherList.size() == 0) {
-					tertiaireRow++;
-				} 
-				
-				addTopBorderToCells(tertiaireRow, 1, 10, tertiaireSheet);				
+				tertiaireRow = fillActivitySheet(tertiaireSheet, tertiaireRow, zone, extinguisherList);		
 				break;
 			}
 		}
@@ -173,18 +139,18 @@ public class BigBoiFinalFileGenerator {
 	}
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
-		fillExcelSheet(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
-		fillExcelSheet(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName());
+		fillExcelCell(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
+		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName());
 		
-		fillExcelSheet(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());		
-		fillExcelSheet(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
-		fillExcelSheet(sheet, row, 12, CellType.STRING, ex.getId().getExtinguisherType());
-		fillExcelSheet(sheet, row, 14, CellType.STRING, ex.getId().getBrand());
-		fillExcelSheet(sheet, row, 16, CellType.NUMERIC, ex.getId().getFabricationYear());
+		fillExcelCell(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());		
+		fillExcelCell(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
+		fillExcelCell(sheet, row, 12, CellType.STRING, ex.getId().getExtinguisherType());
+		fillExcelCell(sheet, row, 14, CellType.STRING, ex.getId().getBrand());
+		fillExcelCell(sheet, row, 16, CellType.NUMERIC, ex.getId().getFabricationYear());
 		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		if(!NOT_MES_5_TYPES.contains(ex.getId().getExtinguisherType()) && (year - ex.getId().getFabricationYear()) > 5) {
-			fillExcelSheet(sheet, row, 18, CellType.NUMERIC, ex.getId().getFabricationYear() + 5);
+			fillExcelCell(sheet, row, 18, CellType.NUMERIC, ex.getId().getFabricationYear() + 5);
 		} 
 		
 	}
@@ -223,7 +189,45 @@ public class BigBoiFinalFileGenerator {
 		}
 	}
 	
-	private void fillExcelSheet(XSSFSheet sheet, int rowNbr, int columnNbr, CellType cellType, Object data) {
+	private int fillActivitySheet(XSSFSheet sheet, int rowNbr, Zone zone, HashMap<TypeExtinguisher, Integer> extinguisherList) {
+		int rowNbrPC = rowNbr;
+		int rowNbrPG = rowNbr;
+		
+		fillExcelCell(sheet, rowNbrPG, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
+		fillExcelCell(sheet, rowNbrPG, 1, CellType.STRING, zone.getId().getAreaName());
+		fillExcelCell(sheet, rowNbrPG, 5, CellType.NUMERIC, zone.getId().getAreaSize());
+		
+		for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {		
+			switch (extinguisher.getKey().getProtectionType()) {
+			case PC:
+			case PIP:
+				double FC = (TYPE_6L.contains(extinguisher.getKey().getType())) ? 0.75 : 1.0;
+				fillExcelCell(sheet, rowNbrPC, 6, CellType.NUMERIC, extinguisher.getValue());
+				fillExcelCell(sheet, rowNbrPC, 7, CellType.STRING, extinguisher.getKey().getType());
+				fillExcelCell(sheet, rowNbrPC, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+				fillExcelCell(sheet, rowNbrPC, 9, CellType.NUMERIC, FC);
+				rowNbrPC++;
+				break;
+			case PG:
+				fillExcelCell(sheet, rowNbrPG, 17, CellType.NUMERIC, extinguisher.getValue());
+				fillExcelCell(sheet, rowNbrPG, 18, CellType.STRING, extinguisher.getKey().getType());
+				fillExcelCell(sheet, rowNbrPG, 20, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
+				rowNbrPG++;
+				break;
+			}			
+		}
+		
+		if(extinguisherList.size() == 0) {
+			rowNbrPG++;
+			rowNbrPC++;
+		} 
+		
+		int maxRow = Math.max(rowNbrPC, rowNbrPG);
+		addTopBorderToCells(maxRow, 1, 20, sheet);
+		return maxRow;
+	}
+	
+	private void fillExcelCell(XSSFSheet sheet, int rowNbr, int columnNbr, CellType cellType, Object data) {
 		Row row = (sheet.getRow(rowNbr) == null) ? sheet.createRow(rowNbr) : sheet.getRow(rowNbr);
 		Cell cell = (row.getCell(columnNbr) == null) ? row.createCell(columnNbr) : row.getCell(columnNbr);
 		

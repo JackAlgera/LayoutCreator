@@ -52,8 +52,8 @@ public enum EExtinguisherType {
 		return name;
 	}
 	
-	public static String getDefaultExtinguisherType() {
-		return C20.getName();
+	public static EExtinguisherType getDefaultExtinguisherType() {
+		return C20;
 	}
 	
 	public static EExtinguisherType getEnum(String value) {
