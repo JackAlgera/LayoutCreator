@@ -36,12 +36,12 @@ public class BigBoiFinalFileGenerator {
 			EExtinguisherType.AL6F.getName(),
 			EExtinguisherType.C2.getName(),
 			EExtinguisherType.C5.getName(),
+			EExtinguisherType.C10.getName(),
+			EExtinguisherType.C20.getName(),
 			EExtinguisherType.P25.getName(),
 			EExtinguisherType.P25P.getName(),
 			EExtinguisherType.P50.getName(),
 			EExtinguisherType.P50P.getName(),
-			EExtinguisherType.C10.getName(),
-			EExtinguisherType.C20.getName(),
 			EExtinguisherType.E45A.getName(),
 			EExtinguisherType.E45A2T.getName()
 			));
@@ -50,9 +50,9 @@ public class BigBoiFinalFileGenerator {
 			EExtinguisherType.E6A.getName(),
 			EExtinguisherType.E6AEVT.getName(),			
 			EExtinguisherType.E6AEVP.getName(),
-			EExtinguisherType.AL6S_30.getName(),
 			EExtinguisherType.E6AEVF.getName(),
 			EExtinguisherType.AL6F.getName(),
+			EExtinguisherType.AL6S_30.getName(),
 			EExtinguisherType.P6P.getName(),
 			EExtinguisherType.P6.getName()
 			));

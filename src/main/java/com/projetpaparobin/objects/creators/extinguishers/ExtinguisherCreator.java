@@ -2,6 +2,7 @@ package com.projetpaparobin.objects.creators.extinguishers;
 
 import java.util.ArrayList;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.extinguishers.ExtinguisherID;
 import com.projetpaparobin.objects.zones.Point;
@@ -10,6 +11,7 @@ import com.projetpaparobin.objects.zones.Zone;
 public class ExtinguisherCreator {
 	
 	private static ExtinguisherCreator instance;
+	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	private static int nbrInstance = 1;
 	
 	private EExtinguisherCreationState state;
@@ -66,6 +68,7 @@ public class ExtinguisherCreator {
 		if(state == EExtinguisherCreationState.SETTING_NAME) {
 			state = EExtinguisherCreationState.FINISHED;
 			selectedZone.addExtinguisher(currentExtinguisher);
+			layoutHandler.addExtinguisher(currentExtinguisher);
 			nbrInstance++;
 			sendEvent(EExtinguisherEvents.FINISHED_CREATING_EXTINGUISHER);
 		}

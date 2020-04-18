@@ -33,6 +33,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 	public ViewLayoutAgent(String imagePath, int pageNum, int height, int width, PresentationLayoutAgent pres) {
 		super();
 		this.setMaxSize(width, height);
+		this.setPrefSize(width, height);
 		this.setAlignment(Pos.CENTER);
 		this.pres = pres;		
 		zoneInputDialog = new ZoneInputDialogHandler();

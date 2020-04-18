@@ -62,6 +62,35 @@ public class Extinguisher {
 		return id;
 	}
 
+	@JsonIgnore
+	public String getNumber() {
+		return id.getNumber();
+	}
+	@JsonIgnore
+	public String getExtinguisherType() {
+		return id.getExtinguisherType();
+	}
+	@JsonIgnore
+	public EProtectionType getProtectionType() {
+		return id.getProtectionType();
+	}
+	@JsonIgnore
+	public int getFabricationYear() {
+		return id.getFabricationYear();
+	}
+	@JsonIgnore
+	public String getBrand() {
+		return id.getBrand();
+	}
+	@JsonIgnore
+	public boolean getIsNew() {
+		return id.isNew();
+	}
+	@JsonIgnore
+	public String getColor() {
+		return id.getColor().getColorName();
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

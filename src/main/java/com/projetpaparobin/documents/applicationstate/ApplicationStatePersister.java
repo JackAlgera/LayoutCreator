@@ -53,6 +53,7 @@ public class ApplicationStatePersister {
 
 			layoutHandler.fullReset();
 			layoutHandler.setZones(state.getZones());
+			layoutHandler.setExtinguishers(state.getExtinguishers());
 			zoneCreator.canceled();			
 			extinguisherCreator.canceled();
 			

@@ -2,22 +2,27 @@ package com.projetpaparobin.documents;
 
 import java.util.ArrayList;
 
-import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
+import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIElements;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class LayoutHandler {
 
 	private static LayoutHandler instance;
-	private ArrayList<Zone> zones;
+	private ObservableList<Zone> zones;
+	private ObservableList<Extinguisher> extinguishers;
 	
 	private LayoutHandler() {		
-		zones = new ArrayList<Zone>();
+		zones = FXCollections.observableArrayList();
+		extinguishers = FXCollections.observableArrayList();
 	}
 	
 	public static LayoutHandler getInstance() {
@@ -31,17 +36,36 @@ public class LayoutHandler {
 	public void addZone(Zone newZone) {
 		zones.add(newZone);
 	}	
-
+	
 	public void setZones(ArrayList<Zone> zones) {
-		this.zones = zones;
+		this.zones.clear();
+		for (Zone zone : zones) {
+			addZone(zone);
+		}
 	}
 	
-	public ArrayList<Zone> getZones() {
+	public void addExtinguisher(Extinguisher ex) {
+		extinguishers.add(ex);
+	}
+	
+	public void setExtinguishers(ArrayList<Extinguisher> extinguishers) {
+		this.extinguishers.clear();
+		for (Extinguisher ex : extinguishers) {
+			addExtinguisher(ex);
+		}
+	}
+	
+	public ObservableList<Zone> getZones() {
 		return zones;
+	}
+	
+	public ObservableList<Extinguisher> getExtinguishers() {
+		return extinguishers;
 	}
 	
 	public void fullReset() {
 		zones.clear();
+		extinguishers.clear();
 		ZoneCreator.getInstance().reset();
 		ExtinguisherCreator.getInstance().reset();
 		

@@ -92,6 +92,27 @@ public class Zone {
 		return id.getDisplayText();
 	}
 
+	@JsonIgnore
+	public String getAreaName() {
+		return id.getAreaName();
+	}	
+	@JsonIgnore
+	public int getAreaNumber() {
+		return id.getAreaNumber();
+	}
+	@JsonIgnore
+	public String getAreaType() {
+		return id.getAreaType().toString();
+	}
+	@JsonIgnore
+	public String getActivityType() {
+		return id.getActivityType().toString();
+	}
+	@JsonIgnore
+	public int getAreaSize() {
+		return id.getAreaSize();
+	}
+		
 	@Override
 	public int hashCode() {
 		final int prime = 31;

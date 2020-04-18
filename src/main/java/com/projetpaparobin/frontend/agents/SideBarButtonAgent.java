@@ -6,11 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.documents.applicationstate.ApplicationStatePOJO;
-import com.projetpaparobin.documents.applicationstate.ApplicationStatePersister;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
-import com.projetpaparobin.frontend.agents.inputs.ETypeAction;
-import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDialogHandler;
@@ -33,7 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
+public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent> {
 
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
@@ -48,10 +44,9 @@ public class SideBarAgent extends VBox implements EventHandler<ActionEvent> {
 	private UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
 	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
-	public SideBarAgent(Stage primaryStage, int height, int width, PresentationLayoutAgent presLayoutAgent) {
+	public SideBarButtonAgent(Stage primaryStage, int height, int width, PresentationLayoutAgent presLayoutAgent) {
 		super(50);
-		this.setPadding(new Insets(15, 0, 0, 0));
-		this.setBorder(UIElements.BLACK_BORDER);
+		this.setPadding(new Insets(10, 10, 10, 10));
 		this.setPrefSize(width, height);
 		this.setAlignment(Pos.TOP_CENTER);
 		this.presLayoutAgent = presLayoutAgent;
