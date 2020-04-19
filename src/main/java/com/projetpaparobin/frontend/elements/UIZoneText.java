@@ -30,7 +30,7 @@ public class UIZoneText extends UIElement {
 				(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBounds2D().getMinY() : zone.getTextAreaPosition().getY(),
 				zone.getRimColor(), zone.getFillColor(), canvas);
 		this.zone = zone;
-		prepareImage(zone);
+		prepareImage();
 	}
 	
 	@Override
@@ -38,19 +38,23 @@ public class UIZoneText extends UIElement {
 		canvasGC.drawImage(drawnImage, posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0));	
 	}
 	
-	private void prepareImage(Zone zone) {
+	public void update() {
+		prepareImage();
+	}
+	
+	private void prepareImage() {
 		int scale = 5;
 	
 		StackPane sPane = new StackPane();		
-		Text txt = new Text(zone.getDisplayText());
+		Text txt = new Text(zone.getAreaName());
 		txt.setFont(UIElements.LAYOUT_FONT);
-		txt.setFill(rimColor);	
+		txt.setFill(zone.getRimColor());	
 		
 		sPane.getChildren().addAll(txt);		
 		bounds = sPane.getBoundsInLocal();
 		
 		Rectangle whiteRect = new Rectangle(bounds.getWidth() * 1.1, bounds.getHeight() * 1.1);
-		whiteRect.setStroke(rimColor);
+		whiteRect.setStroke(zone.getRimColor());
 		whiteRect.setStrokeWidth(LINE_WIDTH);
 		whiteRect.setFill(Color.WHITE);
 		

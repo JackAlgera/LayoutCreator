@@ -79,6 +79,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 				}	
 			}
 		} 
+		updateCanvas();
 	}
 			
 	public WritableImage getSnapshot(SnapshotParameters params, WritableImage image) {
@@ -103,11 +104,9 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			break;
 		case FINISHED_CREATING_ZONE:
 			updateShapes();
-			updateCanvas();		
 			break;
 		case CANCELED:
 			updateShapes();
-			updateCanvas();		
 			break;
 		}		
 	}
@@ -121,7 +120,6 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			break;
 		case FINISHED_CREATING_EXTINGUISHER:
 			updateShapes();
-			updateCanvas();	
 			break;
 		case CANCELED:
 			updateCanvas();	

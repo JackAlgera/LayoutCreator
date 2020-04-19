@@ -39,6 +39,7 @@ public class UITextHandler {
 	public boolean zoneHasText(Zone zone) {
 		for (UIZoneText text : zoneTexts) {
 			if(text.getZone().equals(zone)) {
+				text.update();
 				return true;
 			}
 		}

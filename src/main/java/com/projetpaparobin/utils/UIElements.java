@@ -72,7 +72,7 @@ public class UIElements {
 	}
 	
 	public static int colorIndex = 0;	
-	private static ArrayList<UIColor> DEFAULT_ZONE_COLORS = new ArrayList<UIColor>(Arrays.asList(
+	public static ArrayList<UIColor> DEFAULT_ZONE_COLORS = new ArrayList<UIColor>(Arrays.asList(
 //			Color.TURQUOISE,
 //			Color.BLUE,
 //			Color.RED,

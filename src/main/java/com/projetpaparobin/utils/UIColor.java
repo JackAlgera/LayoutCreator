@@ -1,6 +1,7 @@
 package com.projetpaparobin.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projetpaparobin.objects.zones.EActivityType;
 
 import javafx.scene.paint.Color;
 
@@ -41,5 +42,15 @@ public enum UIColor {
 	public String toString() {
 		return colorName;
 	}
+	
+	public static UIColor getEnum(String colorName) {
+        for(UIColor type : values()) {
+            if(type.getColorName().equalsIgnoreCase(colorName)) {
+            	return type;
+            }        	
+        }
+
+        return BLUE;
+    }
 	
 }

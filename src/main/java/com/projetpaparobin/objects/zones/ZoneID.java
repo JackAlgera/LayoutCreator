@@ -18,7 +18,7 @@ public class ZoneID {
 		this.areaType = areaType;
 		this.activityType = activityType;
 		this.areaSize = areaSize;
-		this.areaName = (areaName.isBlank()) ? getDisplayText() : areaName;
+		this.areaName = areaName;
 	}
 
 	@JsonIgnore
@@ -71,7 +71,7 @@ public class ZoneID {
 	}
 
 	public String getAreaName() {
-		return areaName;
+		return ((areaName.isBlank()) ? getDisplayText() : areaName);
 	}
 
 	public void setAreaName(String areaName) {

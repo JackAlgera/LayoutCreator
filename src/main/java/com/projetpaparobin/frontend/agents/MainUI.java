@@ -28,7 +28,7 @@ public class MainUI extends HBox {
 		layoutPres.setView(layoutView);		
 
 		sideBarButtonAgent = new SideBarButtonAgent(primaryStage, (int) (height * heightRatio), (int) (width * (1.0 - widthRatio)) , layoutPres);				
-		sideBarRecapAgent = new SideBarRecapAgent((int) (height * (1.0 - heightRatio)), (int) (width * (1.0 - widthRatio)));
+		sideBarRecapAgent = new SideBarRecapAgent(layoutPres, (int) (height * (1.0 - heightRatio)), (int) (width * (1.0 - widthRatio)));
 		
 		VBox sideBox = new VBox(8, sideBarButtonAgent, sideBarRecapAgent);
 		sideBox.setBorder(UIElements.BLACK_BORDER);
