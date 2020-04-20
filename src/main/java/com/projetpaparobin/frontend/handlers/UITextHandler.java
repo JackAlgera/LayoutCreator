@@ -29,6 +29,7 @@ public class UITextHandler {
 	public boolean extinguisherHasText(Extinguisher ex) {
 		for (UIExtinguisherText text : extinguisherTexts) {
 			if(text.getExtinguisher().equals(ex)) {
+				text.update();
 				return true;
 			}
 		}

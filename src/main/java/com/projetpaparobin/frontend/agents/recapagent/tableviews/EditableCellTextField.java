@@ -1,4 +1,4 @@
-package com.projetpaparobin.frontend.agents.recapagent;
+package com.projetpaparobin.frontend.agents.recapagent.tableviews;
 
 import java.util.function.UnaryOperator;
 

@@ -87,7 +87,7 @@ public class Extinguisher {
 		return id.isNew();
 	}
 	@JsonIgnore
-	public String getColor() {
+	public String getFillColor() {
 		return id.getColor().getColorName();
 	}
 	

@@ -1,4 +1,4 @@
-package com.projetpaparobin.frontend.agents.recapagent;
+package com.projetpaparobin.frontend.agents.recapagent.tableviews;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,17 +16,11 @@ import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-public class ZoneTableView extends TableView<Zone> {
+public class ZoneTableView extends UITableViewAbs<Zone> {
 
-	private static double CELL_SIZE = 28;
-	
-	private PresentationLayoutAgent presLayout;
 	private TableColumn<Zone, String> areaNameColumn;
 	private TableColumn<Zone, EActivityType> activityTypeColumn;
 	private TableColumn<Zone, EAreaType> areaTypeColumn;
@@ -35,9 +29,7 @@ public class ZoneTableView extends TableView<Zone> {
 	
 	@SuppressWarnings("unchecked")
 	public ZoneTableView(PresentationLayoutAgent presLayout, double width) {
-		super();
-		this.presLayout = presLayout;
-		prepareTable(width);
+		super(presLayout, width);
 		
 		width = width * 0.97;
 		double nbrColumns = 6;
@@ -51,32 +43,6 @@ public class ZoneTableView extends TableView<Zone> {
 		
 		this.getColumns().addAll(areaNameColumn, areaNumberColumn, areaTypeColumn, activityTypeColumn, areaSizeColumn, colorColumn); 
 		this.setItems(LayoutHandler.getInstance().getZones());
-	}
-	
-	private void prepareTable(double width) {
-		this.setMaxWidth(width);
-		this.setMinWidth(width);
-		this.setFixedCellSize(CELL_SIZE);
-//		this.prefHeightProperty().bind(Bindings.size(LayoutHandler.getInstance().getZones()).multiply(this.getFixedCellSize()).add(26));
-		
-		this.setEditable(true);				
-		this.getSelectionModel().cellSelectionEnabledProperty().set(true);
-		
-		this.setOnKeyPressed(event -> {
-			if(event.getCode() == KeyCode.ESCAPE) {
-				this.getSelectionModel().clearSelection();
-			}
-		});
-		
-	}
-	
-	private <T> TableColumn<Zone, T> createColumn(String header, String getterName, double maxWidth) {
-		TableColumn<Zone, T> column = new TableColumn<Zone, T>(header);
-		column.setCellValueFactory(new PropertyValueFactory<Zone, T>(getterName));
-		column.setMaxWidth(maxWidth);
-		column.setMinWidth(maxWidth);
-		column.setStyle("-fx-alignment: CENTER;");
-		return column;
 	}
 	
 	private void setAreaNameColumn(double maxWidth) {

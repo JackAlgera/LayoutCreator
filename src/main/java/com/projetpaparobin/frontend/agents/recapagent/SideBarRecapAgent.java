@@ -1,6 +1,8 @@
 package com.projetpaparobin.frontend.agents.recapagent;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
+import com.projetpaparobin.frontend.agents.recapagent.tableviews.ExtinguishersTableView;
+import com.projetpaparobin.frontend.agents.recapagent.tableviews.ZoneTableView;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,7 +20,7 @@ public class SideBarRecapAgent extends VBox {
 		this.setAlignment(Pos.TOP_CENTER);
 		
 		zoneTableView = new ZoneTableView(presLayout, width);
-		extinguisherTableView = new ExtinguishersTableView(width);
+		extinguisherTableView = new ExtinguishersTableView(presLayout, width);
 		
 		this.getChildren().addAll(zoneTableView, extinguisherTableView);
 	}

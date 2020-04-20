@@ -30,7 +30,7 @@ public class UIExtinguisherText extends UIElement {
 				(ex.getTextAreaPosition() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPosition().getY(),
 				Color.BLACK, null, canvas);
 		this.ex = ex;
-		prepareImage(ex);
+		prepareImage();
 	}
 	
 	@Override
@@ -38,7 +38,11 @@ public class UIExtinguisherText extends UIElement {
 		canvasGC.drawImage(drawnImage, posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0));	
 	}
 	
-	private void prepareImage(Extinguisher ex) {
+	public void update() {
+		prepareImage();
+	}
+	
+	private void prepareImage() {
 		int scale = 5;
 	
 		StackPane sPane = new StackPane();		
