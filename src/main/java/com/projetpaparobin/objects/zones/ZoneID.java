@@ -71,7 +71,7 @@ public class ZoneID {
 	}
 
 	public String getAreaName() {
-		return areaName;
+		return (areaName.isBlank() ? getDisplayText() : areaName);
 	}
 
 	public void setAreaName(String areaName) {
