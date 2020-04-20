@@ -46,7 +46,7 @@ public class UIZoneText extends UIElement {
 		int scale = 5;
 	
 		StackPane sPane = new StackPane();		
-		Text txt = new Text(zone.getAreaName());
+		Text txt = new Text(zone.getDisplayText());
 		txt.setFont(UIElements.LAYOUT_FONT);
 		txt.setFill(zone.getRimColor());	
 		
