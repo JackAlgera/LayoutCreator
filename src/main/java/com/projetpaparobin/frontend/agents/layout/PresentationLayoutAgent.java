@@ -61,22 +61,18 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 	public void updateShapes() {
 		zoneHandler.getZones().clear();
 		extinguisherHandler.getExtinguishers().clear();
+		textHandler.getExtinguisherTexts().clear();
+		textHandler.getZoneTexts().clear();
 		
 		for (Zone zone : layoutHandler.getZones()) {
 			UIZone uiZone = new UIZone(zone, view.getCanvas(), false);
 			uiZone.switchPointRadius();
 			zoneHandler.add(uiZone);
+			textHandler.addZoneText(new UIZoneText(zone, view.getCanvas()));
 			
-			if(!textHandler.zoneHasText(zone)) {
-				textHandler.addZoneText(new UIZoneText(zone, view.getCanvas()));
-			}		
-
 			for (Extinguisher ex : zone.getExtinguishers()) {
 				extinguisherHandler.addExtinguisher(new UIExtinguisher(ex, view.getCanvas()));
-				
-				if(!textHandler.extinguisherHasText(ex)) {
-					textHandler.addExtinguisherText(new UIExtinguisherText(ex, view.getCanvas()));
-				}	
+				textHandler.addExtinguisherText(new UIExtinguisherText(ex, view.getCanvas()));
 			}
 		} 
 		updateCanvas();

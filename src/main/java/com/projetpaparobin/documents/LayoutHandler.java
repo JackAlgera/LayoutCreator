@@ -37,11 +37,19 @@ public class LayoutHandler {
 		zones.add(newZone);
 	}	
 	
+	public void removeZone(Zone zone) {
+		zones.remove(zone);
+	}
+	
 	public void setZones(ArrayList<Zone> zones) {
 		this.zones.clear();
 		for (Zone zone : zones) {
 			addZone(zone);
 		}
+	}
+	
+	public ObservableList<Zone> getZones() {
+		return zones;
 	}
 	
 	public void addExtinguisher(Extinguisher ex) {
@@ -55,14 +63,10 @@ public class LayoutHandler {
 		}
 	}
 	
-	public ObservableList<Zone> getZones() {
-		return zones;
-	}
-	
 	public ObservableList<Extinguisher> getExtinguishers() {
 		return extinguishers;
 	}
-	
+		
 	public void fullReset() {
 		zones.clear();
 		extinguishers.clear();

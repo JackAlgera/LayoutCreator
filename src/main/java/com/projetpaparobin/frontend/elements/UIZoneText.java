@@ -89,4 +89,16 @@ public class UIZoneText extends UIElement {
 		zone.setTextAreaPosition(new Point(newPosX, newPosY));
 		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
 	}
+	
+	@Override
+	public void setIsSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	@Override
+	public void removeSelf() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

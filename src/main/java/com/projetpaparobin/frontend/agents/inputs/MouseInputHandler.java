@@ -2,10 +2,8 @@ package com.projetpaparobin.frontend.agents.inputs;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
-import com.projetpaparobin.frontend.elements.UIExtinguisher;
-import com.projetpaparobin.frontend.elements.UIExtinguisherText;
+import com.projetpaparobin.frontend.elements.UIElement;
 import com.projetpaparobin.frontend.elements.UIZone;
-import com.projetpaparobin.frontend.elements.UIZoneText;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
@@ -34,11 +32,9 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	private static UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
 	private static UIExtinguisherHandler extinguisherHandler = UIExtinguisherHandler.getInstance();
 	
+	private UIElement selectedUIElement = null;
+	
 	private UIZone selectedZone = null;
-	private UIZoneText selectedZoneText = null;
-	private UIExtinguisher selectedExtinguisher = null;
-	private UIExtinguisherText selectedExtinguisherText = null;
-	private UICorner selectedCorner = null;
 	private double dX = 0;
 	private double dY = 0;
 	
@@ -70,51 +66,41 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 
 		switch (event.getEventType().getName()) {
 		case "MOUSE_PRESSED":
+			if(selectedUIElement != null) {
+				selectedUIElement.setIsSelected(false);
+			}
+			
 			switch (state) {
 			case IDLE:
-				selectedExtinguisher = extinguisherHandler.getExtinguisher(event.getX(), event.getY());
-				
-				if(selectedExtinguisher != null) {
-					dX = event.getX() - selectedExtinguisher.getPosX();
-					dY = event.getY() - selectedExtinguisher.getPosY();
-					state = ETypeAction.SELECTED_EXTINGUISHER;
+				selectedUIElement = extinguisherHandler.getExtinguisher(event.getX(), event.getY());				
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, event);
 					break;
 				}
-				selectedExtinguisherText = textHandler.getExtinguisherText(event.getX(), event.getY());
-				if(selectedExtinguisherText != null) {
-					dX = event.getX() - selectedExtinguisherText.getPosX();
-					dY = event.getY() - selectedExtinguisherText.getPosY();
-					state = ETypeAction.SELECTED_EXTINGUISHER_TEXT;
+				selectedUIElement = textHandler.getExtinguisherText(event.getX(), event.getY());
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT, event);
 					break;
 				}
-				selectedZoneText = textHandler.getZoneText(event.getX(), event.getY());
-				if(selectedZoneText != null) {
-					dX = event.getX() - selectedZoneText.getPosX();
-					dY = event.getY() - selectedZoneText.getPosY();
-					state = ETypeAction.SELECTED_ZONE_TEXT;
+				selectedUIElement = textHandler.getZoneText(event.getX(), event.getY());
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT, event);
 					break;
 				}
-				selectedCorner = zoneHandler.getCorner(event.getX(), event.getY());
-				if(selectedCorner != null) {
-					dX = event.getX() - selectedCorner.getPosX();
-					dY = event.getY() - selectedCorner.getPosY();
-					state = ETypeAction.SELECTED_CORNER;
+				selectedUIElement = zoneHandler.getCorner(event.getX(), event.getY());
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_CORNER, event);
 					break;
 				}
-				selectedZone = zoneHandler.getZone(event.getX(), event.getY());
-				if(selectedZone != null) {
-					dX = event.getX() - selectedZone.getPosX();
-					dY = event.getY() - selectedZone.getPosY();
-					state = ETypeAction.SELECTED_ZONE;
-					presLayout.updateCanvas();
+				selectedUIElement = zoneHandler.getZone(event.getX(), event.getY());
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_ZONE, event);
 					break;
 				}
 				
-				zoneHandler.removeSelectedZone();
 				presLayout.updateCanvas();
 				break;
 			case CREATING_ZONE:
-				zoneHandler.removeSelectedZone();
 				zoneCreator.addPoint(new Point(event.getX(), event.getY()));	
 				break;
 			case CREATING_EXTINGUISHER:
@@ -133,26 +119,26 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			
 			switch (state) {
 			case SELECTED_EXTINGUISHER:
-				selectedExtinguisher.translateShape(newPosX, newPosY);
+				selectedUIElement.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_EXTINGUISHER_TEXT:
-				selectedExtinguisherText.translateShape(newPosX, newPosY);
+				selectedUIElement.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_CORNER:
-				selectedCorner.translateShape(newPosX, newPosY);
-				selectedCorner.getZone().getShape().updateArea();
+				selectedUIElement.translateShape(newPosX, newPosY);
+				((UICorner) selectedUIElement).getZone().getShape().updateArea();
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_ZONE:
-				selectedZone.translateShape(newPosX, newPosY);
+				selectedUIElement.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_ZONE_TEXT:
-				selectedZoneText.translateShape(newPosX, newPosY);
+				selectedUIElement.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
-				break;			
+				break;		
 			}
 			break;			
 
@@ -180,6 +166,30 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 		}
 	}
 
+	private void selectUIElement(ETypeAction actionType, MouseEvent event) {
+		if(selectedUIElement != null) {
+			dX = event.getX() - selectedUIElement.getPosX();
+			dY = event.getY() - selectedUIElement.getPosY();
+			state = actionType;
+			selectedUIElement.setIsSelected(true);
+			presLayout.updateCanvas();
+		}
+	}
+	
+	public void cancelSelection() {
+		if(selectedUIElement != null) {
+			selectedUIElement.setIsSelected(false);
+		}
+	}
+	
+	public void deleteSelectedElement() {
+		if(selectedUIElement != null) {
+			selectedUIElement.removeSelf();
+			selectedUIElement = null;
+			presLayout.updateShapes();
+		}
+	}
+	
 	@Override
 	public void handleZoneCreatorEvent(EZoneEvents event) {
 		switch (event) {

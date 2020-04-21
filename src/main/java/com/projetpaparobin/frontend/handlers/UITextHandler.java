@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.projetpaparobin.frontend.elements.UIExtinguisherText;
 import com.projetpaparobin.frontend.elements.UIZoneText;
-import com.projetpaparobin.objects.extinguishers.Extinguisher;
-import com.projetpaparobin.objects.zones.Zone;
 
 public class UITextHandler {
 
@@ -24,28 +22,6 @@ public class UITextHandler {
 		}
 		
 		return instance;
-	}
-	
-	public boolean extinguisherHasText(Extinguisher ex) {
-		for (UIExtinguisherText text : extinguisherTexts) {
-			if(text.getExtinguisher().equals(ex)) {
-				text.update();
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	public boolean zoneHasText(Zone zone) {
-		for (UIZoneText text : zoneTexts) {
-			if(text.getZone().equals(zone)) {
-				text.update();
-				return true;
-			}
-		}
-		
-		return false;
 	}
 	
 	public UIExtinguisherText getExtinguisherText(double posX, double posY) {

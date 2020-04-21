@@ -58,5 +58,16 @@ public class UIExtinguisher extends UIElement {
 		circle = new Circle(posX, posY, circle.getRadius());
 		ex.setPos(new Point(newPosX, newPosY));
 	}
+
+	@Override
+	public void setIsSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	@Override
+	public void removeSelf() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

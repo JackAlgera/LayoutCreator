@@ -7,11 +7,11 @@ import javax.imageio.ImageIO;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
+import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
-import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.utils.UIElements;
@@ -41,7 +41,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	
 	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton, saveButton, loadButton;
 	private PresentationLayoutAgent presLayoutAgent;
-	private UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
+	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
 	public SideBarButtonAgent(Stage primaryStage, int height, int width, PresentationLayoutAgent presLayoutAgent) {
@@ -121,7 +121,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 				fileGenerator.generateExcel(response + ".xlsm");
 			}
 		} else if(event.getSource().equals(cancelButton)) {
-			zoneHandler.removeSelectedZone();
+			mouseInputHandler.cancelSelection();
 			zoneCreator.canceled();
 		} else if(event.getSource().equals(resetButton)) {
 			if(areYouSureInputDialog.showAndWait()) {

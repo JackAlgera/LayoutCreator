@@ -56,4 +56,15 @@ public class UICorner extends UIElement {
 	public Zone getZone() {
 		return zone;
 	}
+
+	@Override
+	public void setIsSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	@Override
+	public void removeSelf() {
+		// TODO Auto-generated method stub
+		
+	}
 }

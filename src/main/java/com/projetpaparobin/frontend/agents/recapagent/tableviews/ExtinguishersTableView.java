@@ -69,6 +69,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	private void setExtinguisherTypeColumn(double maxWidth) {
 		extinguisherTypeColumn = createColumn("Extinguisher type", "extinguisherType", maxWidth);
 		extinguisherTypeColumn.setCellFactory(EditableCellComboBox.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), FXCollections.observableArrayList(Stream.of(EExtinguisherType.values())
+				.filter(type -> !type.equals(EExtinguisherType.OTHER))
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
 		

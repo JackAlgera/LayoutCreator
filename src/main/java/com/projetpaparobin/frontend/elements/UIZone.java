@@ -10,7 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
 public class UIZone extends UIElement {
-
+	
 	private static double INIT_POINT_RADIUS = 4;
 	private static double POINT_RADIUS = 6;
 	private static double LINE_WIDTH = 2;
@@ -18,16 +18,14 @@ public class UIZone extends UIElement {
 	private ArrayList<UICorner> corners; 
 	private Zone zone;
 	
-	private boolean shouldDrawCorners;
-	
-	public UIZone(Zone zone, Canvas canvas, boolean shouldDrawCorners) {
+	public UIZone(Zone zone, Canvas canvas, boolean isSelected) {
 		super(zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), zone.getRimColor(), zone.getFillColor(), canvas);
 		this.zone = zone;
 		this.corners = new ArrayList<UICorner>();
 		for (Point point : zone.getShape().getPoints()) {
 			corners.add(new UICorner(zone, point, INIT_POINT_RADIUS, Color.BLACK, UIColor.WHITE, canvasGC.getCanvas()));
 		}
-		this.shouldDrawCorners = shouldDrawCorners;
+		this.setIsSelected(isSelected);
 	}
 
 	@Override
@@ -46,7 +44,7 @@ public class UIZone extends UIElement {
 		canvasGC.setFill(fillColor.getColor());
 		canvasGC.fillPolygon(pointsX, pointsY, pointsX.length);
 		
-		if(shouldDrawCorners) {
+		if(isSelected) {
 			for (UICorner corner : corners) {
 				corner.drawShape();
 			}
@@ -58,15 +56,7 @@ public class UIZone extends UIElement {
 			corner.prepareImage(POINT_RADIUS);
 		}
 	}
-	
-	public boolean shouldDrawCorners() {
-		return shouldDrawCorners;
-	}
-	
-	public void setShouldDrawCorners(boolean shouldDrawCorners) {
-		this.shouldDrawCorners = shouldDrawCorners;
-	}
-	
+			
 	public UICorner getCorner(double posX, double posY) {
 		for (UICorner corner : corners) {
 			if(corner.containsPoint(posX, posY)) {
@@ -94,6 +84,16 @@ public class UIZone extends UIElement {
 	
 	public Zone getZone() {
 		return zone;
+	}
+	
+	@Override
+	public void setIsSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	@Override
+	public void removeSelf() {
+		layoutHandler.removeZone(zone);
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.projetpaparobin.frontend;
 
 import com.projetpaparobin.documents.applicationstate.ApplicationStatePersister;
 import com.projetpaparobin.frontend.agents.MainUI;
+import com.projetpaparobin.frontend.agents.inputs.KeyboardInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.ConfirmCloseEventHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.ChosenInputFilesPOJO;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.FileChooseInputDialogHandler;
@@ -25,6 +26,7 @@ public class MainInterface extends Application {
     	
     	if(file != null && !file.getLayoutPDFPath().isBlank() && !file.getExcelTemplatePath().isBlank() && file.getLayoutPageNum() > 0) {
     		MainUI layout = new MainUI(primaryStage, height, width, file.getExcelTemplatePath(), file.getLayoutPDFPath(), file.getLayoutPageNum());		
+    		layout.setOnKeyPressed(KeyboardInputHandler.getInstance());
     		Scene scene = new Scene(layout);
     		
     		primaryStage.setTitle("Projet papa Robaing");
