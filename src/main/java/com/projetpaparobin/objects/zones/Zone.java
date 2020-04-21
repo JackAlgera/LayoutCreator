@@ -63,6 +63,10 @@ public class Zone {
 		this.rimColor = fillColor.getColor().darker();
 	}
 
+	public void removeExtinguisher(Extinguisher ex) {
+		extinguishers.remove(ex);
+	}
+	
 	public void addExtinguisher(Extinguisher ex) {
 		extinguishers.add(ex);
 	}

@@ -56,6 +56,10 @@ public class LayoutHandler {
 		extinguishers.add(ex);
 	}
 	
+	public void removeExtinguisher(Extinguisher ex) {
+		extinguishers.remove(ex);
+	}
+	
 	public void setExtinguishers(ArrayList<Extinguisher> extinguishers) {
 		this.extinguishers.clear();
 		for (Extinguisher ex : extinguishers) {

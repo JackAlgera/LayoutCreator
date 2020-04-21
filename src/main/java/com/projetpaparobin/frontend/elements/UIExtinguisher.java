@@ -32,9 +32,15 @@ public class UIExtinguisher extends UIElement {
 	private void prepareImage() {
 		StackPane sPane = new StackPane();
 		
-		circle = new Circle(posX, posY, UIElements.EXTINGUISHER_FONT.getSize(), ex.getId().getColor().getColor());
-		circle.setStroke(rimColor);
-		circle.setStrokeWidth(0.8);		
+		if(isSelected) {
+			circle = new Circle(posX, posY, UIElements.EXTINGUISHER_FONT.getSize() + 3, Color.CYAN);
+			circle.setStroke(Color.GRAY);
+			circle.setStrokeWidth(1.1);	
+		} else {
+			circle = new Circle(posX, posY, UIElements.EXTINGUISHER_FONT.getSize(), ex.getId().getColor().getColor());
+			circle.setStroke(rimColor);
+			circle.setStrokeWidth(0.8);	
+		}	
 		
 		Text nbrText = new Text("" + ex.getId().getNumber());
 		nbrText.setFont(UIElements.EXTINGUISHER_FONT);
@@ -62,12 +68,13 @@ public class UIExtinguisher extends UIElement {
 	@Override
 	public void setIsSelected(boolean isSelected) {
 		this.isSelected = isSelected;
+		prepareImage();
 	}
 
 	@Override
 	public void removeSelf() {
-		// TODO Auto-generated method stub
-		
+		ex.getZone().removeExtinguisher(ex);
+		layoutHandler.removeExtinguisher(ex);
 	}
 	
 }
