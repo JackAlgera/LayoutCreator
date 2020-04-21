@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.projetpaparobin.objects.Comment;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Zone;
 
@@ -14,13 +15,15 @@ public class ApplicationStatePOJO {
 
 	private ArrayList<Zone> zones;
 	private ArrayList<Extinguisher> extinguishers;
+	private ArrayList<Comment> comments;
 
 	public ApplicationStatePOJO() {
 		this.zones = new ArrayList<Zone>();
 		this.extinguishers = new ArrayList<Extinguisher>();
+		this.comments = new ArrayList<Comment>();
 	}
 	
-	public ApplicationStatePOJO(ObservableList<Zone> zones) {
+	public ApplicationStatePOJO(ObservableList<Zone> zones, ObservableList<Comment> comments) {
 		this.zones = new ArrayList<Zone>();
 		this.extinguishers = new ArrayList<Extinguisher>();
 		for (Zone zone : zones) {
@@ -28,6 +31,11 @@ public class ApplicationStatePOJO {
 			for (Extinguisher ex : zone.getExtinguishers()) {
 				extinguishers.add(ex);
 			}
+		}
+		
+		this.comments = new ArrayList<Comment>();
+		for (Comment comment : comments) {
+			this.comments.add(comment);
 		}
 	}
 
@@ -44,6 +52,14 @@ public class ApplicationStatePOJO {
 		}
 	}
 
+	public ArrayList<Comment> getComments() {
+		return comments;
+	}
+	
+	public void setComments(ArrayList<Comment> comments) {
+		this.comments = comments;
+	}
+	
 	@JsonIgnore
 	public ArrayList<Extinguisher> getExtinguishers() {
 		return extinguishers;

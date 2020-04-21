@@ -9,14 +9,17 @@ import java.io.InputStreamReader;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.projetpaparobin.documents.LayoutHandler;
+import com.projetpaparobin.objects.creators.comments.CommentCreator;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 
 public class ApplicationStatePersister {
 
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
+	private static CommentCreator commentCreator = CommentCreator.getInstance();
 	
 	private static JsonMapper mapper = new JsonMapper();
 	
@@ -36,7 +39,7 @@ public class ApplicationStatePersister {
 	}
 	
 	public static void saveState(File file) {
-		ApplicationStatePOJO state = new ApplicationStatePOJO(layoutHandler.getZones());
+		ApplicationStatePOJO state = new ApplicationStatePOJO(layoutHandler.getZones(), layoutHandler.getComments());
 		System.out.println("Saved file at : " + file.getAbsolutePath());
 		try {
 			mapper.writeValue(file, state);
@@ -54,8 +57,11 @@ public class ApplicationStatePersister {
 			layoutHandler.fullReset();
 			layoutHandler.setZones(state.getZones());
 			layoutHandler.setExtinguishers(state.getExtinguishers());
+			layoutHandler.setComments(state.getComments());
+			
 			zoneCreator.canceled();			
 			extinguisherCreator.canceled();
+			commentCreator.canceled();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
