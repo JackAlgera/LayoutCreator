@@ -33,14 +33,13 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		width = width * 0.97;
 		double nbrColumns = 6;
 
-		setNumberColumn(width / nbrColumns);		
-		setFabricationYearColumn(width / nbrColumns);		
+		setNumberColumn(width / nbrColumns);				
 		setExtinguisherTypeColumn(width / nbrColumns);		
-		setProtectionTypeColumn(width / nbrColumns);		
+		setProtectionTypeColumn(width / nbrColumns);	
+		setFabricationYearColumn(width / nbrColumns);	
 		setBrandColumn(width / nbrColumns);
 		setColorColumn(width / nbrColumns);
-		
-		this.getColumns().addAll(numberColumn, fabricationYearColumn, extinguisherTypeColumn, protectionTypeColumn, brandColumn, colorColumn); 
+		this.getColumns().addAll(numberColumn, extinguisherTypeColumn, protectionTypeColumn, fabricationYearColumn, brandColumn, colorColumn); 
 		this.setItems(LayoutHandler.getInstance().getExtinguishers());
 	}	
 	

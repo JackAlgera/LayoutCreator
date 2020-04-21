@@ -35,13 +35,13 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 		double nbrColumns = 6;
 		
 		setAreaNameColumn(width / nbrColumns);
-		setNumberColumn(width / nbrColumns);
 		setAreaTypeColumn(width / nbrColumns);
+		setNumberColumn(width / nbrColumns);
 		setActivityTypeColumn(width / nbrColumns);
 		setAreaSizeColumn(width / nbrColumns);
 		setColorColumn(width / nbrColumns);
 		
-		this.getColumns().addAll(areaNameColumn, areaNumberColumn, areaTypeColumn, activityTypeColumn, areaSizeColumn, colorColumn); 
+		this.getColumns().addAll(areaNameColumn, areaTypeColumn, areaNumberColumn, activityTypeColumn, areaSizeColumn, colorColumn); 
 		this.setItems(LayoutHandler.getInstance().getZones());
 	}
 	
