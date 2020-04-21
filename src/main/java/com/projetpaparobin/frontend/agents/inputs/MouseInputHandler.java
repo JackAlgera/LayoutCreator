@@ -7,6 +7,9 @@ import com.projetpaparobin.frontend.elements.UIZone;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
+import com.projetpaparobin.objects.creators.comments.CommentCreator;
+import com.projetpaparobin.objects.creators.comments.ECommentEvent;
+import com.projetpaparobin.objects.creators.comments.ICommentCreatorListener;
 import com.projetpaparobin.objects.creators.extinguishers.EExtinguisherEvents;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.extinguishers.IExtinguisherCreatorListener;
@@ -18,7 +21,7 @@ import com.projetpaparobin.objects.zones.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCreatorListener, EventHandler<MouseEvent> {
+public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCreatorListener, ICommentCreatorListener, EventHandler<MouseEvent> {
 
 	private static MouseInputHandler instance;
 	
@@ -27,6 +30,7 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
+	private static CommentCreator commentCreator = CommentCreator.getInstance();
 	
 	private static UITextHandler textHandler = UITextHandler.getInstance();
 	private static UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
@@ -40,8 +44,9 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	
 	private MouseInputHandler() {	
 		state = ETypeAction.IDLE;
-		ZoneCreator.getInstance().addListener(this);
-		ExtinguisherCreator.getInstance().addListener(this);
+		zoneCreator.addListener(this);
+		extinguisherCreator.addListener(this);
+		commentCreator.addListener(this);
 	}
 	
 	public static MouseInputHandler getInstance() {
@@ -109,6 +114,8 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 					extinguisherCreator.setPosition(new Point(event.getX(), event.getY()));
 					extinguisherCreator.setZone(selectedZone.getZone());
 				}
+			case CREATING_COMMENT:
+				commentCreator.setPosition(new Point(event.getX(), event.getY()));
 				break;
 			}
 			break;
@@ -218,6 +225,23 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 		case SETTING_NAME:
 			break;
 		case FINISHED_CREATING_EXTINGUISHER:
+			state = ETypeAction.IDLE;
+			break;
+		case CANCELED:
+			state = ETypeAction.IDLE;
+			break;
+		}
+	}
+
+	@Override
+	public void handleCommentCreatorEvent(ECommentEvent event) {
+		switch (event) {
+		case CREATING_NEW_COMMENT:
+			state = ETypeAction.CREATING_COMMENT;
+			break;
+		case SETTING_TEXT:
+			break;
+		case FINISHED_CREATING_COMMENT:
 			state = ETypeAction.IDLE;
 			break;
 		case CANCELED:

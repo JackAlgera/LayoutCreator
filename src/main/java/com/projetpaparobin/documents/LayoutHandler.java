@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
+import com.projetpaparobin.objects.Comment;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
@@ -19,10 +20,12 @@ public class LayoutHandler {
 	private static LayoutHandler instance;
 	private ObservableList<Zone> zones;
 	private ObservableList<Extinguisher> extinguishers;
+	private ObservableList<Comment> comments;
 	
 	private LayoutHandler() {		
 		zones = FXCollections.observableArrayList();
 		extinguishers = FXCollections.observableArrayList();
+		comments = FXCollections.observableArrayList();
 	}
 	
 	public static LayoutHandler getInstance() {
@@ -71,9 +74,29 @@ public class LayoutHandler {
 		return extinguishers;
 	}
 		
+	public void addComment(Comment comment) {
+		comments.add(comment);
+	}	
+	
+	public void removeComment(Comment comment) {
+		comments.remove(comment);
+	}
+	
+	public void setComments(ArrayList<Comment> comments) {
+		this.comments.clear();
+		for (Comment comment : comments) {
+			addComment(comment);
+		}
+	}
+	
+	public ObservableList<Comment> getComments() {
+		return comments;
+	}
+	
 	public void fullReset() {
 		zones.clear();
 		extinguishers.clear();
+		comments.clear();
 		ZoneCreator.getInstance().reset();
 		ExtinguisherCreator.getInstance().reset();
 		

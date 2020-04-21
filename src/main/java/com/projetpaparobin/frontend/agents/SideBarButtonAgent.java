@@ -12,6 +12,7 @@ import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInput
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
+import com.projetpaparobin.objects.creators.comments.CommentCreator;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.utils.UIElements;
@@ -31,15 +32,17 @@ import javafx.stage.Stage;
 
 public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent> {
 
+	private static BigBoiFinalFileGenerator fileGenerator = BigBoiFinalFileGenerator.getInstance();
+	
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private static BigBoiFinalFileGenerator fileGenerator = BigBoiFinalFileGenerator.getInstance();
+	private static CommentCreator commentCreator = CommentCreator.getInstance();
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
 	private AreYouSureInputDialogHandler areYouSureInputDialog;
 	private FileSaveInputDialogHandler fileSaveInputDialog;
 	
-	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton, saveButton, loadButton;
+	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton, saveButton, loadButton, createCommentButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
@@ -70,6 +73,8 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		saveButton.addEventHandler(ActionEvent.ACTION, this);
 		loadButton = new Button("Load");
 		loadButton.addEventHandler(ActionEvent.ACTION, this);
+		createCommentButton = new Button("Nouveau commentaire");
+		createCommentButton.addEventHandler(ActionEvent.ACTION, this);
 		
 		UIElements.setDefaultButtonStyle(newExtinguisherButton);
 		UIElements.setDefaultButtonStyle(newZoneButton);
@@ -77,10 +82,13 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		UIElements.setDefaultButtonStyle(createExcelButton);
 		UIElements.setDefaultButtonStyle(cancelButton);
 		UIElements.setDefaultButtonStyle(resetButton);
+		UIElements.setDefaultButtonStyle(saveButton);
+		UIElements.setDefaultButtonStyle(loadButton);
+		UIElements.setDefaultButtonStyle(createCommentButton);
 		
 		VBox zoneBox = new VBox(8, newZoneButton, doneEditingZoneButton);
 		zoneBox.setAlignment(Pos.CENTER);
-		VBox exBox = new VBox(8, newExtinguisherButton, cancelButton);
+		VBox exBox = new VBox(8, newExtinguisherButton, createCommentButton, cancelButton);
 		exBox.setAlignment(Pos.CENTER);
 		
 		HBox finalBox = new HBox(8, zoneBox, exBox, createExcelButton);
@@ -104,6 +112,8 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		} else if(event.getSource().equals(newZoneButton)) {
 			presLayoutAgent.updateCanvas();
 			zoneCreator.newZone();
+		} else if(event.getSource().equals(createCommentButton)) {
+			commentCreator.newComment();
 		} else if(event.getSource().equals(doneEditingZoneButton)) {
 			zoneCreator.finishedCreatingShape();
 		} else if(event.getSource().equals(createExcelButton)) {

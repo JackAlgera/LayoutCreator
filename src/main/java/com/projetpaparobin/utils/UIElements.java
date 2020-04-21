@@ -34,6 +34,7 @@ public class UIElements {
 	public static Font LAYOUT_FONT = new Font("Arial", 18);
 	public static Font EXTINGUISHER_FONT = new Font("Monaco", 10);
 	public static Font EXTINGUISHER_TEXT_FONT = new Font("Monaco", 13);
+	public static Font COMMENT_TEXT_FONT = new Font("Monaco", 13);
 	
 	public static Border BLACK_BORDER = new Border(new BorderStroke(
 			Color.BLACK, 
