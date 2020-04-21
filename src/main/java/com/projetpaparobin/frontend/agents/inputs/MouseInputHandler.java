@@ -4,6 +4,7 @@ import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIElement;
 import com.projetpaparobin.frontend.elements.UIZone;
+import com.projetpaparobin.frontend.handlers.UICommentHandler;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
 import com.projetpaparobin.frontend.handlers.UIZoneHandler;
@@ -35,6 +36,7 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	private static UITextHandler textHandler = UITextHandler.getInstance();
 	private static UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
 	private static UIExtinguisherHandler extinguisherHandler = UIExtinguisherHandler.getInstance();
+	private static UICommentHandler commentHandler = UICommentHandler.getInstance();
 	
 	private UIElement selectedUIElement = null;
 	
@@ -77,6 +79,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			
 			switch (state) {
 			case IDLE:
+				selectedUIElement = commentHandler.getComment(event.getX(), event.getY());
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_COMMENT, event);
+					break;
+				}
 				selectedUIElement = extinguisherHandler.getExtinguisher(event.getX(), event.getY());				
 				if(selectedUIElement != null) {
 					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, event);
@@ -146,6 +153,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				selectedUIElement.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
 				break;		
+			case SELECTED_COMMENT:
+				selectedUIElement.translateShape(newPosX, newPosY);
+				presLayout.updateCanvas();
+				break;
 			}
 			break;			
 
@@ -165,7 +176,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				break;
 			case SELECTED_ZONE_TEXT:
 				state = ETypeAction.IDLE;
-				break;			
+				break;		
+			case SELECTED_COMMENT:
+				state = ETypeAction.IDLE;
+				break;	
 			}
 			break;
 		default:
