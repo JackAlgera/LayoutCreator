@@ -8,12 +8,15 @@ import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.Cho
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.FileChooseInputDialogHandler;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainInterface extends Application {
 
+	private MainUI layout;
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {		
 		FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
@@ -21,21 +24,33 @@ public class MainInterface extends Application {
 		
 		primaryStage.setOnCloseRequest(new ConfirmCloseEventHandler(primaryStage).getConfirmCloseEventHandler());
 		
-    	int height = 800;
-    	int width = 1000;
+    	double height = 800;
+    	double width = 1000;
     	
     	if(file != null && !file.getLayoutPDFPath().isBlank() && !file.getExcelTemplatePath().isBlank() && file.getLayoutPageNum() > 0) {
-    		MainUI layout = new MainUI(primaryStage, height, width, file.getExcelTemplatePath(), file.getLayoutPDFPath(), file.getLayoutPageNum());		
+    		layout = new MainUI(primaryStage, width, height, file.getExcelTemplatePath(), file.getLayoutPDFPath(), file.getLayoutPageNum());		
     		layout.setOnKeyPressed(KeyboardInputHandler.getInstance());
     		Scene scene = new Scene(layout);
     		
     		primaryStage.setTitle("Projet papa Robaing");
+    		primaryStage.setMaximized(false);
+    		primaryStage.setResizable(true);
     		primaryStage.setScene(scene);
     		primaryStage.getIcons().add(new Image("file:icon.png"));
+    		addResizeListener(primaryStage);
     		primaryStage.show();
     		
     		ApplicationStatePersister.startAutomaticSaver(1);
     	} 
+	}
+	
+	private void addResizeListener(Stage primaryStage) {
+		ChangeListener<Number> sizeListener = (observable, oldValue, newValue) -> {
+			layout.resizePanel(primaryStage.getWidth(), primaryStage.getHeight());
+		};
+		
+		primaryStage.widthProperty().addListener(sizeListener);
+		primaryStage.heightProperty().addListener(sizeListener);
 	}
 	
     public static void main( String[] args )

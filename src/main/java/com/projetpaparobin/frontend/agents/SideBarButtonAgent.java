@@ -25,6 +25,11 @@ import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -47,11 +52,17 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
-	public SideBarButtonAgent(Stage primaryStage, int height, int width, PresentationLayoutAgent presLayoutAgent) {
+	public SideBarButtonAgent(PresentationLayoutAgent presLayoutAgent, Stage primaryStage, double width, double height) {
 		super(50);
 		this.setPadding(new Insets(10, 10, 10, 10));
-		this.setPrefSize(width, height);
+		this.setMaxSize(width, height);
+		this.setMinSize(width, height);
 		this.setAlignment(Pos.TOP_CENTER);
+		this.setBorder(new Border(new BorderStroke(
+				Color.GREEN, 
+				BorderStrokeStyle.SOLID, 
+				CornerRadii.EMPTY, 
+				BorderWidths.DEFAULT)));
 		this.presLayoutAgent = presLayoutAgent;
 		this.fileGenerationInputDialog = new FileGenerationDialogHandler();
 		this.areYouSureInputDialog = new AreYouSureInputDialogHandler("Confirmation De Suppression", "Etes-vous sûr de vouloir tout supprimer ?");
@@ -143,6 +154,11 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		} else if(event.getSource().equals(loadButton)) {
 			fileSaveInputDialog.showLoadDialog();
 		}
+	}
+	
+	public void resizePanel(double width, double height) {
+		this.setMaxSize(width, height);
+		this.setMinSize(width, height);
 	}
 	
 }

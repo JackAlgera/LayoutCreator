@@ -43,6 +43,25 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		this.setItems(LayoutHandler.getInstance().getExtinguishers());
 	}	
 	
+	public void resizePanel(double width, double height) {
+		this.setMaxWidth(width);
+		this.setMinWidth(width);
+		width = width * 0.97;
+		double nbrColumns = 6;
+		fabricationYearColumn.setMaxWidth(width / nbrColumns);
+		fabricationYearColumn.setMinWidth(width / nbrColumns);
+		protectionTypeColumn.setMaxWidth(width / nbrColumns);
+		protectionTypeColumn.setMinWidth(width / nbrColumns);
+		brandColumn.setMaxWidth(width / nbrColumns);
+		brandColumn.setMinWidth(width / nbrColumns);
+		numberColumn.setMaxWidth(width / nbrColumns);
+		numberColumn.setMinWidth(width / nbrColumns);
+		extinguisherTypeColumn.setMaxWidth(width / nbrColumns);
+		extinguisherTypeColumn.setMinWidth(width / nbrColumns);
+		colorColumn.setMaxWidth(width / nbrColumns);
+		colorColumn.setMinWidth(width / nbrColumns);
+	}
+	
 	private void setNumberColumn(double maxWidth) {
 		numberColumn = createColumn("Number", "number", maxWidth);
 		numberColumn.setCellFactory(EditableCellTextField.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), UIElements.getNumberFilter()));

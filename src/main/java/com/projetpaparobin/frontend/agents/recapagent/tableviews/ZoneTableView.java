@@ -45,6 +45,25 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 		this.setItems(LayoutHandler.getInstance().getZones());
 	}
 	
+	public void resizePanel(double width, double height) {
+		this.setMaxWidth(width);
+		this.setMinWidth(width);
+		width = width * 0.97;
+		double nbrColumns = 6;
+		areaNameColumn.setMaxWidth(width / nbrColumns);
+		areaNameColumn.setMinWidth(width / nbrColumns);
+		activityTypeColumn.setMaxWidth(width / nbrColumns);
+		activityTypeColumn.setMinWidth(width / nbrColumns);
+		areaTypeColumn.setMaxWidth(width / nbrColumns);
+		areaTypeColumn.setMinWidth(width / nbrColumns);
+		colorColumn.setMaxWidth(width / nbrColumns);
+		colorColumn.setMinWidth(width / nbrColumns);
+		areaNumberColumn.setMaxWidth(width / nbrColumns);
+		areaNumberColumn.setMinWidth(width / nbrColumns);
+		areaSizeColumn.setMaxWidth(width / nbrColumns);
+		areaSizeColumn.setMinWidth(width / nbrColumns);
+	}
+	
 	private void setAreaNameColumn(double maxWidth) {
 		areaNameColumn = createColumn("Area name", "areaName", maxWidth);
 		areaNameColumn.setCellFactory(EditableCellTextField.<Zone, String>forTableColumn(new DefaultStringConverter(), null));

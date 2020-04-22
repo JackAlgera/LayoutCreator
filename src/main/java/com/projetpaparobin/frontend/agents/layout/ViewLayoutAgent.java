@@ -17,7 +17,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 
@@ -32,10 +38,10 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 	
 	private PresentationLayoutAgent pres;
 	
-	public ViewLayoutAgent(String imagePath, int pageNum, int height, int width, PresentationLayoutAgent pres) {
+	public ViewLayoutAgent(String imagePath, int pageNum, double width, double height, PresentationLayoutAgent pres) {
 		super();
 		this.setMaxSize(width, height);
-		this.setPrefSize(width, height);
+		this.setMinSize(width, height);
 		this.setAlignment(Pos.CENTER);
 		this.pres = pres;		
 		zoneInputDialog = new ZoneInputDialogHandler();
@@ -55,6 +61,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInputHandler);
 		imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseInputHandler);
 		imageView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseInputHandler);
+		
 		double heightRatio = image.getHeight() / height;
 		double widthRatio = image.getWidth() / width;
 		double aspectRatio = image.getWidth() / image.getHeight();
@@ -83,6 +90,28 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 	@Override
 	public void cleanCanvas() {
 		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+	}
+	
+	public void resizePanel(double width, double height) {
+		this.setMaxSize(width, height);
+		this.setMinSize(width, height);
+		
+		double heightRatio = image.getHeight() / height;
+		double widthRatio = image.getWidth() / width;
+		double aspectRatio = image.getWidth() / image.getHeight();
+		
+		if(heightRatio > widthRatio) {
+			imageView.setFitHeight(height);
+			imageView.setFitWidth(-1);
+			canvas.resize(height * aspectRatio, height);
+		} else {
+			imageView.setFitHeight(-1);
+			imageView.setFitWidth(width);
+			canvas.resize(width, width / aspectRatio);
+		}
+		canvas.setMouseTransparent(true);
+		
+		this.getChildren().setAll(imageView ,canvas);	
 	}
 
 }

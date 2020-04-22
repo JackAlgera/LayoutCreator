@@ -13,16 +13,24 @@ public class SideBarRecapAgent extends VBox {
 	private ZoneTableView zoneTableView;
 	private ExtinguishersTableView extinguisherTableView;	
 	
-	public SideBarRecapAgent(PresentationLayoutAgent presLayout, int height, int width) {
+	public SideBarRecapAgent(PresentationLayoutAgent presLayout, double width, double height) {
 		super();
+		this.setMaxSize(width, height);
+		this.setMinSize(width, height);
 		this.setPadding(new Insets(10, 10, 10, 10));
-		this.setPrefSize(width, height);
-		this.setAlignment(Pos.TOP_CENTER);
+		this.setAlignment(Pos.CENTER);
 		
 		zoneTableView = new ZoneTableView(presLayout, width);
 		extinguisherTableView = new ExtinguishersTableView(presLayout, width);
 		
 		this.getChildren().addAll(zoneTableView, extinguisherTableView);
 	}
-		
+			
+	public void resizePanel(double width, double height) {
+		this.setMaxSize(width, height);
+		this.setMinSize(width, height);
+		zoneTableView.resizePanel(width, height);
+		extinguisherTableView.resizePanel(width, height);
+	}
+	
 }

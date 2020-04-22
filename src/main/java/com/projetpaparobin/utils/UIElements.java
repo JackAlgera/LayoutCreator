@@ -97,7 +97,7 @@ public class UIElements {
 	));
 
 	public static void setDefaultButtonStyle(Button b) {
-		b.setPrefSize(150, 30);
+//		b.setPrefSize(150, 30);
 		b.setFont(new Font("Arial", 13));
 	}
 	

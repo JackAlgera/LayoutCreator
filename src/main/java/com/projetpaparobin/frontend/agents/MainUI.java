@@ -5,6 +5,7 @@ import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.frontend.agents.recapagent.SideBarRecapAgent;
 import com.projetpaparobin.utils.UIElements;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,22 +19,36 @@ public class MainUI extends HBox {
 	private ViewLayoutAgent layoutView;
 	private SideBarButtonAgent sideBarButtonAgent;
 	private SideBarRecapAgent sideBarRecapAgent;
+	
+	private VBox sideBox;
 
-	public MainUI(Stage primaryStage, int height, int width, String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
-		super();
-		this.setPrefSize(width, height);	
-		
+	public MainUI(Stage primaryStage, double width, double height, String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
+		super();		
 		layoutPres = new PresentationLayoutAgent();
-		layoutView = new ViewLayoutAgent(layoutPDFPath, layoutPageNum, height, (int) (width * widthRatio), layoutPres);
+		layoutView = new ViewLayoutAgent(layoutPDFPath, layoutPageNum, width * widthRatio, height, layoutPres);
 		layoutPres.setView(layoutView);		
 
-		sideBarButtonAgent = new SideBarButtonAgent(primaryStage, (int) (height * heightRatio), (int) (width * (1.0 - widthRatio)) , layoutPres);				
-		sideBarRecapAgent = new SideBarRecapAgent(layoutPres, (int) (height * (1.0 - heightRatio)), (int) (width * (1.0 - widthRatio)));
+		sideBarButtonAgent = new SideBarButtonAgent(layoutPres, primaryStage, width * (1.0 - widthRatio), height * heightRatio);				
+		sideBarRecapAgent = new SideBarRecapAgent(layoutPres, width * (1.0 - widthRatio), height * (1.0 - heightRatio));
 		
-		VBox sideBox = new VBox(8, sideBarButtonAgent, sideBarRecapAgent);
+		sideBox = new VBox(8, sideBarButtonAgent, sideBarRecapAgent);
+		sideBox.setAlignment(Pos.CENTER);
+		sideBox.setMaxSize(width * (1.0 - widthRatio), height);
+		sideBox.setMinSize(width * (1.0 - widthRatio), height);
 		sideBox.setBorder(UIElements.BLACK_BORDER);
 		
 		this.getChildren().addAll(layoutView, sideBox);
 	}	
 
+	public void resizePanel(double width, double height) {
+		height -= 27;
+		sideBox.setMaxSize(width * (1.0 - widthRatio), height);
+		sideBox.setMinSize(width * (1.0 - widthRatio), height);
+		
+		layoutView.resizePanel((int) (width * widthRatio), height);
+		sideBarButtonAgent.resizePanel(width * (1.0 - widthRatio), height * heightRatio);
+		sideBarRecapAgent.resizePanel(width * (1.0 - widthRatio), height * (1.0 - heightRatio));
+		layoutPres.updateCanvas();
+	}
+	
 }
