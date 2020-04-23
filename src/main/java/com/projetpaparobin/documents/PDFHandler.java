@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -27,12 +26,9 @@ public class PDFHandler {
 	}
 	
 	public BufferedImage getImageFromPDF(String path, int pageNum) throws IOException {
-		File file = new File(path);
-		
-		PDDocument document = PDDocument.load(file);
-		PDFRenderer pdfRenderer = new PDFRenderer(document);						
-		BufferedImage image = pdfRenderer.renderImageWithDPI(pageNum - 1, 300, ImageType.RGB);
-		
+		PDDocument document = PDDocument.load(new File(path));
+		PDFRenderer pdfRenderer = new PDFRenderer(document);			
+		BufferedImage image = pdfRenderer.renderImage(pageNum - 1);
 		document.close();					
 		return image;		
 	}
