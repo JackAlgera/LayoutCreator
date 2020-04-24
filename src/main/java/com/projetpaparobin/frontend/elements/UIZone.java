@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
+import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIColor;
@@ -95,6 +96,9 @@ public class UIZone extends UIElement {
 	@Override
 	public void removeSelf() {
 		layoutHandler.removeZone(zone);
+		for (Extinguisher ex : zone.getExtinguishers()) {
+			layoutHandler.removeExtinguisher(ex);
+		}
 	}
 	
 }
