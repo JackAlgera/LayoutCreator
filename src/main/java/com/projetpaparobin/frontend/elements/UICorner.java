@@ -11,12 +11,12 @@ import javafx.scene.shape.Circle;
 public class UICorner extends UIElement {
 	
 	private Circle circle;		
-	private Zone zone;
+	private UIZone uiZone;
 	private static double lineWidth = 1.0;
 	
-	public UICorner(Zone zone, Point p, double radius, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
+	public UICorner(UIZone uiZone, Point p, double radius, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
 		super(p.getX(), p.getY(), rimColor, fillColor, viewLayoutAgent);
-		this.zone = zone;
+		this.uiZone = uiZone;
 		prepareImage(radius);
 	}
 
@@ -52,13 +52,13 @@ public class UICorner extends UIElement {
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
 		super.translateShape(newPosX, newPosY);
-		circle = new Circle(posX * viewLayoutAgent.getCanvasWidth(), posY * viewLayoutAgent.getCanvasHeight(), circle.getRadius());
+		circle = new Circle(posX, posY, circle.getRadius());
 	}
 	
-	public Zone getZone() {
-		return zone;
+	public UIZone getUiZone() {
+		return uiZone;
 	}
-
+	
 	@Override
 	public void setIsSelected(boolean isSelected) {
 		this.isSelected = isSelected;

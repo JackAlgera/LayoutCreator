@@ -25,7 +25,7 @@ public class UIZone extends UIElement {
 		this.zone = zone;
 		this.corners = new ArrayList<UICorner>();
 		for (Point point : zone.getShape().getPoints()) {
-			corners.add(new UICorner(zone, point, INIT_POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent));
+			corners.add(new UICorner(this, point, INIT_POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent));
 		}
 		this.setIsSelected(isSelected);
 	}
@@ -81,6 +81,10 @@ public class UIZone extends UIElement {
 		for (UICorner corner : corners) {
 			corner.translateShape(corner.getPosX() + deltaX, corner.getPosY() + deltaY);
 		}
+		updateZone();
+	}
+	
+	public void updateZone() {
 		zone.getShape().setPoints(corners.stream().map(c -> new Point(c.getPosX(), c.getPosY())).collect(Collectors.toCollection(ArrayList::new)));
 	}
 	

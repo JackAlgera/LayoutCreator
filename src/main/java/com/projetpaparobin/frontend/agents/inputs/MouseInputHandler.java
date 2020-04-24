@@ -21,8 +21,6 @@ import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.zones.Point;
 
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCreatorListener, ICommentCreatorListener, EventHandler<MouseEvent> {
@@ -43,6 +41,7 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	
 	private ViewLayoutAgent viewLayoutAgent;
 	private UIElement selectedUIElement = null;
+	private UIElement prevSelectedElement = null;
 	
 	private UIZone selectedZone = null;
 	private double dX = 0;
@@ -84,43 +83,44 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 		
 		switch (event.getEventType().getName()) {
 		case "MOUSE_PRESSED":
-			if(selectedUIElement != null) {
-				selectedUIElement.setIsSelected(false);
-			}
+			prevSelectedElement = selectedUIElement;
 			
 			switch (state) {
 			case IDLE:
 				selectedUIElement = commentHandler.getComment(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_COMMENT, mouseX, mouseY);
+					selectUIElement(ETypeAction.SELECTED_COMMENT, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
 				selectedUIElement = extinguisherHandler.getExtinguisher(mouseX, mouseY);				
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, mouseX, mouseY);
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
 				selectedUIElement = textHandler.getExtinguisherText(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT, mouseX, mouseY);
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
 				selectedUIElement = textHandler.getZoneText(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT, mouseX, mouseY);
+					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
 				selectedUIElement = zoneHandler.getCorner(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_CORNER, mouseX, mouseY);
+					selectUIElement(ETypeAction.SELECTED_CORNER, mouseX, mouseY, prevSelectedElement, false);
 					break;
 				}
 				selectedUIElement = zoneHandler.getZone(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_ZONE, mouseX, mouseY);
+					selectUIElement(ETypeAction.SELECTED_ZONE, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
-				
+
+				if(prevSelectedElement != null) {
+					prevSelectedElement.setIsSelected(false);
+				}
 				presLayout.updateCanvas();
 				break;
 			case CREATING_ZONE:
@@ -153,7 +153,7 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				break;
 			case SELECTED_CORNER:
 				selectedUIElement.translateShape(newPosX, newPosY);
-				((UICorner) selectedUIElement).getZone().getShape().updateArea();
+				((UICorner) selectedUIElement).getUiZone().updateZone();
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_ZONE:
@@ -181,6 +181,12 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				break;	
 			case SELECTED_CORNER:
 				state = ETypeAction.IDLE;
+				System.out.println("HERE");
+				if(prevSelectedElement != null) {
+					selectedUIElement = prevSelectedElement;
+//					prevSelectedElement.setIsSelected(false);
+//					presLayout.updateCanvas();
+				}
 				break;
 			case SELECTED_ZONE:
 				state = ETypeAction.IDLE;
@@ -198,8 +204,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 		}
 	}
 
-	private void selectUIElement(ETypeAction actionType, double mouseX, double mouseY) {
+	private void selectUIElement(ETypeAction actionType, double mouseX, double mouseY, UIElement prevSelectedElement, boolean shouldDeselect) {
 		if(selectedUIElement != null) {
+			if(prevSelectedElement != null && shouldDeselect) {
+				prevSelectedElement.setIsSelected(false);
+			}
 			dX = mouseX - selectedUIElement.getPosX();
 			dY = mouseY - selectedUIElement.getPosY();
 			state = actionType;
