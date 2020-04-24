@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -134,7 +135,8 @@ public class BigBoiFinalFileGenerator {
 			fillRecensementSheet(recensementRow, recensementSheet, ex);
 			recensementRow++;
 		}
-		
+
+		XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
 		closeProject(fileInputStream, outputTitle, workbook);
 	}
 	
