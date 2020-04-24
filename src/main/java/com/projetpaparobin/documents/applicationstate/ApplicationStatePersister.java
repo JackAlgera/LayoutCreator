@@ -1,11 +1,17 @@
 package com.projetpaparobin.documents.applicationstate;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Base64;
+
+import javax.imageio.ImageIO;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.projetpaparobin.documents.LayoutHandler;
@@ -39,7 +45,7 @@ public class ApplicationStatePersister {
 	}
 	
 	public static void saveState(File file) {
-		ApplicationStatePOJO state = new ApplicationStatePOJO(layoutHandler.getZones(), layoutHandler.getComments());
+		ApplicationStatePOJO state = new ApplicationStatePOJO(layoutHandler.getZones(), layoutHandler.getComments(), layoutHandler.getBufImage());
 		System.out.println("Saved file at : " + file.getAbsolutePath());
 		try {
 			mapper.writeValue(file, state);
@@ -58,6 +64,10 @@ public class ApplicationStatePersister {
 			layoutHandler.setZones(state.getZones());
 			layoutHandler.setExtinguishers(state.getExtinguishers());
 			layoutHandler.setComments(state.getComments());
+			
+			if(state.getBase64Image() != null && !state.getBase64Image().isBlank()) {
+				layoutHandler.setBufImage(ApplicationStatePersister.decodeToImage(state.getBase64Image()));
+			}
 			
 			zoneCreator.canceled();			
 			extinguisherCreator.canceled();
@@ -79,5 +89,35 @@ public class ApplicationStatePersister {
 	    br.close();
 	    return sb.toString();
 	}
+
+	public static String encoretoString(BufferedImage bufImage) {
+        String imageString = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+ 
+        try {
+            ImageIO.write(bufImage, "png", bos);
+            byte[] imageBytes = bos.toByteArray();
+ 
+            imageString = Base64.getEncoder().encodeToString(imageBytes);
+ 
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imageString;
+	}
 	
+	public static BufferedImage decodeToImage(String base64Image) {
+        BufferedImage image = null;
+        byte[] imageByte;
+        try {
+            imageByte = Base64.getDecoder().decode(base64Image);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            image = ImageIO.read(bis);
+            bis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return image;
+	}
 }

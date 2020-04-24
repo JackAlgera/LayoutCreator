@@ -58,6 +58,7 @@ public class Shape {
 		return area.contains(posX, posY);
 	}
 	
+	@JsonIgnore
 	public boolean isEmpty() {
 		return area.getPoints().isEmpty();
 	}

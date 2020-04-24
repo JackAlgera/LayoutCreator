@@ -1,5 +1,6 @@
 package com.projetpaparobin.documents;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
@@ -15,17 +16,24 @@ import com.projetpaparobin.utils.UIElements;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class LayoutHandler {
+public class LayoutHandler implements ILayoutHandlerListener {
 
 	private static LayoutHandler instance;
+
 	private ObservableList<Zone> zones;
 	private ObservableList<Extinguisher> extinguishers;
 	private ObservableList<Comment> comments;
+
+	private BufferedImage bufImage;
+	
+	private ArrayList<ILayoutHandlerListener> listeners;
 	
 	private LayoutHandler() {		
 		zones = FXCollections.observableArrayList();
 		extinguishers = FXCollections.observableArrayList();
 		comments = FXCollections.observableArrayList();
+		bufImage = null;
+		listeners = new ArrayList<ILayoutHandlerListener>();
 	}
 	
 	public static LayoutHandler getInstance() {
@@ -34,6 +42,15 @@ public class LayoutHandler {
 		}
 		
 		return instance;
+	}
+	
+	public void setBufImage(BufferedImage bufImage) {
+		this.bufImage = bufImage;
+		layoutImageUpdated();
+	}
+	
+	public BufferedImage getBufImage() {
+		return bufImage;
 	}
 	
 	public void addZone(Zone newZone) {
@@ -105,6 +122,21 @@ public class LayoutHandler {
 		UITextHandler.getInstance().reset();
 		
 		UIElements.colorIndex = 1;
+	}
+
+	public void addListener(ILayoutHandlerListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void removeListener(ILayoutHandlerListener listener) {
+		listeners.remove(listener);
+	}
+	
+	@Override
+	public void layoutImageUpdated() {
+		for (ILayoutHandlerListener listener : listeners) {
+			listener.layoutImageUpdated();
+		}
 	}
 	
 }

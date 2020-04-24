@@ -3,6 +3,8 @@ package com.projetpaparobin.frontend.agents.layout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import com.projetpaparobin.documents.ILayoutHandlerListener;
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.PDFHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.CommentInputDialogHandler;
@@ -17,18 +19,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
-public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
+public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILayoutHandlerListener {
 
 	private static MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private static PDFHandler pdfHandler = PDFHandler.getInstance();
+	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	
 	private Image image;
 	private ImageView imageView;
 	private Canvas canvas;
@@ -37,7 +35,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 	private CommentInputDialogHandler commentInputDialog;
 	
 	private PresentationLayoutAgent pres;
-	
+		
 	public ViewLayoutAgent(String imagePath, int pageNum, double width, double height, PresentationLayoutAgent pres) {
 		super();
 		this.setMaxSize(width, height);
@@ -51,6 +49,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		try {
 			BufferedImage bufImage = pdfHandler.getImageFromPDF(imagePath, pageNum);
 			image = SwingFXUtils.toFXImage(bufImage, null);
+			layoutHandler.setBufImage(bufImage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,7 +76,27 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		canvas.setMouseTransparent(true);
 		
 		mouseInputHandler.setViewLayoutAgent(this);
+		layoutHandler.addListener(this);
 		this.getChildren().addAll(imageView ,canvas);		
+	}
+	
+	public void updateLayoutImage() {		
+		if(layoutHandler.getBufImage() == null) {
+			return;
+		}
+		
+		image = SwingFXUtils.toFXImage(layoutHandler.getBufImage(), null);
+
+		double prevHeight = this.getHeight();
+		double prevWidth = this.getWidth();
+		
+		imageView = new ImageView(image);
+		imageView.setPreserveRatio(true);
+		imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInputHandler);
+		imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseInputHandler);
+		imageView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseInputHandler);
+		
+		resizePanel(prevWidth, prevHeight);
 	}
 
 	public WritableImage getSnapshot(SnapshotParameters params, WritableImage image) {
@@ -122,6 +141,11 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		canvas.setMouseTransparent(true);
 		
 		this.getChildren().setAll(imageView ,canvas);	
+	}
+
+	@Override
+	public void layoutImageUpdated() {
+		updateLayoutImage();
 	}
 
 }

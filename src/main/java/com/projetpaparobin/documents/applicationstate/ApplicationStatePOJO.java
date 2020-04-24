@@ -1,5 +1,6 @@
 package com.projetpaparobin.documents.applicationstate;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,14 +17,17 @@ public class ApplicationStatePOJO {
 	private ArrayList<Zone> zones;
 	private ArrayList<Extinguisher> extinguishers;
 	private ArrayList<Comment> comments;
+	
+	private String base64Image;
 
 	public ApplicationStatePOJO() {
 		this.zones = new ArrayList<Zone>();
 		this.extinguishers = new ArrayList<Extinguisher>();
 		this.comments = new ArrayList<Comment>();
+		this.base64Image = null;
 	}
 	
-	public ApplicationStatePOJO(ObservableList<Zone> zones, ObservableList<Comment> comments) {
+	public ApplicationStatePOJO(ObservableList<Zone> zones, ObservableList<Comment> comments, BufferedImage bufImage) {
 		this.zones = new ArrayList<Zone>();
 		this.extinguishers = new ArrayList<Extinguisher>();
 		for (Zone zone : zones) {
@@ -37,6 +41,18 @@ public class ApplicationStatePOJO {
 		for (Comment comment : comments) {
 			this.comments.add(comment);
 		}
+		
+		if(bufImage != null) {
+			base64Image = ApplicationStatePersister.encoretoString(bufImage);
+		}
+	}
+	
+	public String getBase64Image() {
+		return base64Image;
+	}
+
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
 	}
 
 	public ArrayList<Zone> getZones() {
