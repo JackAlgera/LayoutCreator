@@ -41,7 +41,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 	private static UIExtinguisherHandler extinguisherHandler = UIExtinguisherHandler.getInstance();
 	private static UICommentHandler commentHandler = UICommentHandler.getInstance();
 	
-	private IViewLayoutAgent view;
+	private ViewLayoutAgent view;
 	
 	public PresentationLayoutAgent() {
 		zoneCreator.addListener(this);
@@ -79,19 +79,19 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		commentHandler.getComments().clear();
 		
 		for (Zone zone : layoutHandler.getZones()) {
-			UIZone uiZone = new UIZone(zone, view.getCanvas(), false);
+			UIZone uiZone = new UIZone(zone, view, false);
 			uiZone.switchPointRadius();
 			zoneHandler.add(uiZone);
-			textHandler.addZoneText(new UIZoneText(zone, view.getCanvas()));
+			textHandler.addZoneText(new UIZoneText(zone, view));
 			
 			for (Extinguisher ex : zone.getExtinguishers()) {
-				extinguisherHandler.addExtinguisher(new UIExtinguisher(ex, view.getCanvas()));
-				textHandler.addExtinguisherText(new UIExtinguisherText(ex, view.getCanvas()));
+				extinguisherHandler.addExtinguisher(new UIExtinguisher(ex, view));
+				textHandler.addExtinguisherText(new UIExtinguisherText(ex, view));
 			}
 		} 
 		
 		for (Comment comment : layoutHandler.getComments()) {
-			commentHandler.addComment(new UIComment(comment, view.getCanvas()));
+			commentHandler.addComment(new UIComment(comment, view));
 		}
 		updateCanvas();
 	}
@@ -100,7 +100,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		return view.getSnapshot(params, image);
 	}
 	
-	public void setView(IViewLayoutAgent view) {
+	public void setView(ViewLayoutAgent view) {
 		this.view = view;
 	}	
 	
@@ -111,7 +111,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			break;
 		case ADDED_POINT:
 			updateCanvas();			
-			UIZone currentZone = new UIZone(zoneCreator.getCurrentZone(), view.getCanvas(), true);
+			UIZone currentZone = new UIZone(zoneCreator.getCurrentZone(), view, true);
 			currentZone.drawShape();
 			break;
 		case SETTING_NAME:

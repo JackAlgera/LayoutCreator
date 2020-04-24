@@ -1,12 +1,12 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.geometry.Bounds;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
@@ -17,25 +17,25 @@ import javafx.scene.transform.Transform;
 
 public class UIZoneText extends UIElement {
 
+	private static double TEXT_WIDTH = 0.2;
 	private static double LINE_WIDTH = 1.5;
 	
 	private Rectangle hitbox;
 	private Zone zone;
 
 	private WritableImage drawnImage;
-	private Bounds bounds;
 		
-	public UIZoneText(Zone zone, Canvas canvas) {
-		super(	(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBounds2D().getCenterX() : zone.getTextAreaPosition().getX(),
-				(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBounds2D().getMinY() : zone.getTextAreaPosition().getY(),
-				zone.getRimColor(), zone.getFillColor(), canvas);
+	public UIZoneText(Zone zone, ViewLayoutAgent viewLayoutAgent) {
+		super(	(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBoundsInLocal().getCenterX() : zone.getTextAreaPosition().getX(),
+				(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPosition().getY(),
+				zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
 		prepareImage();
 	}
 	
 	@Override
 	public void drawShape() {	
-		canvasGC.drawImage(drawnImage, posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0));	
+		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - (drawnImage.getWidth() / 2.0), posY * viewLayoutAgent.getCanvasHeight() - (drawnImage.getHeight() / 2.0));	
 	}
 	
 	public void update() {
@@ -51,27 +51,30 @@ public class UIZoneText extends UIElement {
 		txt.setFill(zone.getRimColor());	
 		
 		sPane.getChildren().addAll(txt);		
-		bounds = sPane.getBoundsInLocal();
+		Bounds bounds = sPane.getBoundsInLocal();
 		
 		Rectangle whiteRect = new Rectangle(bounds.getWidth() * 1.1, bounds.getHeight() * 1.1);
 		whiteRect.setStroke(zone.getRimColor());
 		whiteRect.setStrokeWidth(LINE_WIDTH);
 		whiteRect.setFill(Color.WHITE);
 		
-		sPane.getChildren().remove(txt);
-		sPane.getChildren().addAll(whiteRect, txt);
+		sPane.getChildren().setAll(whiteRect, txt);
 
 		SnapshotParameters params = new SnapshotParameters();
 		params.setTransform(Transform.scale(scale, scale));
 		
-		drawnImage = sPane.snapshot(params, null);
+		drawnImage = sPane.snapshot(params, null);		
 		
 		ImageView view = new ImageView(drawnImage);
-		view.setFitWidth(bounds.getWidth());
-		view.setFitHeight(bounds.getHeight());
+		view.setFitWidth(viewLayoutAgent.getCanvasWidth() * TEXT_WIDTH);
+		view.setFitHeight(viewLayoutAgent.getCanvasWidth() * TEXT_WIDTH * (bounds.getHeight() / bounds.getWidth()));
 		drawnImage = view.snapshot(null, null);
-		
-		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
+
+		hitbox = new Rectangle(
+				posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())), 
+				posY - (drawnImage.getHeight() / (2.0 * viewLayoutAgent.getCanvasHeight())),
+				drawnImage.getWidth() / viewLayoutAgent.getCanvasWidth(), 
+				drawnImage.getHeight() / viewLayoutAgent.getCanvasHeight());
 	}
 
 	@Override
@@ -87,7 +90,11 @@ public class UIZoneText extends UIElement {
 	public void translateShape(double newPosX, double newPosY) {
 		super.translateShape(newPosX, newPosY);
 		zone.setTextAreaPosition(new Point(newPosX, newPosY));
-		hitbox = new Rectangle(posX - (bounds.getWidth() / 2.0), posY - (bounds.getHeight() / 2.0), bounds.getWidth(), bounds.getHeight());
+		hitbox = new Rectangle(
+				posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())), 
+				posY - (drawnImage.getHeight() / (2.0 * viewLayoutAgent.getCanvasHeight())),
+				drawnImage.getWidth() / viewLayoutAgent.getCanvasWidth(), 
+				drawnImage.getHeight() / viewLayoutAgent.getCanvasHeight());
 	}
 	
 	@Override

@@ -76,6 +76,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		
 		canvas.setMouseTransparent(true);
 		
+		mouseInputHandler.setViewLayoutAgent(this);
 		this.getChildren().addAll(imageView ,canvas);		
 	}
 
@@ -92,6 +93,14 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 	
+	public double getCanvasWidth() {
+		return imageView.getBoundsInLocal().getWidth();
+	}
+	
+	public double getCanvasHeight() {
+		return imageView.getBoundsInLocal().getHeight();
+	}
+	
 	public void resizePanel(double width, double height) {
 		this.setMaxSize(width, height);
 		this.setMinSize(width, height);
@@ -103,12 +112,13 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent {
 		if(heightRatio > widthRatio) {
 			imageView.setFitHeight(height);
 			imageView.setFitWidth(-1);
-			canvas.resize(height * aspectRatio, height);
+			canvas = new Canvas(height * aspectRatio, height);
 		} else {
 			imageView.setFitHeight(-1);
 			imageView.setFitWidth(width);
-			canvas.resize(width, width / aspectRatio);
+			canvas = new Canvas(width, width / aspectRatio);
 		}
+		
 		canvas.setMouseTransparent(true);
 		
 		this.getChildren().setAll(imageView ,canvas);	

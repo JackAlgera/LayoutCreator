@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class UIElements {
-
+	
 	public static final long MIN_FABRICATION_YEAR = 1970;
 	public static final long MAX_FABRICATION_YEAR = 2050;
 	public static final String DEFAULT_BRAND = "DE";
@@ -32,7 +32,7 @@ public class UIElements {
 	public static Random r = new Random();
 	
 	public static Font LAYOUT_FONT = new Font("Arial", 18);
-	public static Font EXTINGUISHER_FONT = new Font("Monaco", 10);
+	public static Font EXTINGUISHER_FONT = new Font("Monaco", 13);
 	public static Font EXTINGUISHER_TEXT_FONT = new Font("Monaco", 13);
 	public static Font COMMENT_TEXT_FONT = new Font("Monaco", 13);
 	

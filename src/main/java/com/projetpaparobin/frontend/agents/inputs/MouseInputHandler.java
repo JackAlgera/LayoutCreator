@@ -1,6 +1,7 @@
 package com.projetpaparobin.frontend.agents.inputs;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
+import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIElement;
 import com.projetpaparobin.frontend.elements.UIZone;
@@ -20,6 +21,8 @@ import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.zones.Point;
 
 import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCreatorListener, ICommentCreatorListener, EventHandler<MouseEvent> {
@@ -38,6 +41,7 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	private static UIExtinguisherHandler extinguisherHandler = UIExtinguisherHandler.getInstance();
 	private static UICommentHandler commentHandler = UICommentHandler.getInstance();
 	
+	private ViewLayoutAgent viewLayoutAgent;
 	private UIElement selectedUIElement = null;
 	
 	private UIZone selectedZone = null;
@@ -67,10 +71,17 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 		this.state = newState;
 	}
 	
+	public void setViewLayoutAgent(ViewLayoutAgent viewLayoutAgent) {
+		this.viewLayoutAgent = viewLayoutAgent;
+	}
+	
 	@Override
 	public void handle(MouseEvent event) {
-//		System.out.println("Button:" + event.getButton() + " x=" + event.getX() + " y=" + event.getY() + " - ");
+//		System.out.println("Button:" + event.getButton() + " x=" + (event.getX() / viewLayoutAgent.getCanvasWidth()) + " y=" + (event.getY() / viewLayoutAgent.getCanvasHeight()));
 
+		double mouseX = event.getX() / viewLayoutAgent.getCanvasWidth();
+		double mouseY = event.getY() / viewLayoutAgent.getCanvasHeight();
+		
 		switch (event.getEventType().getName()) {
 		case "MOUSE_PRESSED":
 			if(selectedUIElement != null) {
@@ -79,57 +90,57 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			
 			switch (state) {
 			case IDLE:
-				selectedUIElement = commentHandler.getComment(event.getX(), event.getY());
+				selectedUIElement = commentHandler.getComment(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_COMMENT, event);
+					selectUIElement(ETypeAction.SELECTED_COMMENT, mouseX, mouseY);
 					break;
 				}
-				selectedUIElement = extinguisherHandler.getExtinguisher(event.getX(), event.getY());				
+				selectedUIElement = extinguisherHandler.getExtinguisher(mouseX, mouseY);				
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, event);
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, mouseX, mouseY);
 					break;
 				}
-				selectedUIElement = textHandler.getExtinguisherText(event.getX(), event.getY());
+				selectedUIElement = textHandler.getExtinguisherText(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT, event);
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT, mouseX, mouseY);
 					break;
 				}
-				selectedUIElement = textHandler.getZoneText(event.getX(), event.getY());
+				selectedUIElement = textHandler.getZoneText(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT, event);
+					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT, mouseX, mouseY);
 					break;
 				}
-				selectedUIElement = zoneHandler.getCorner(event.getX(), event.getY());
+				selectedUIElement = zoneHandler.getCorner(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_CORNER, event);
+					selectUIElement(ETypeAction.SELECTED_CORNER, mouseX, mouseY);
 					break;
 				}
-				selectedUIElement = zoneHandler.getZone(event.getX(), event.getY());
+				selectedUIElement = zoneHandler.getZone(mouseX, mouseY);
 				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_ZONE, event);
+					selectUIElement(ETypeAction.SELECTED_ZONE, mouseX, mouseY);
 					break;
 				}
 				
 				presLayout.updateCanvas();
 				break;
 			case CREATING_ZONE:
-				zoneCreator.addPoint(new Point(event.getX(), event.getY()));	
+				zoneCreator.addPoint(new Point(mouseX, mouseY));	
 				break;
 			case CREATING_EXTINGUISHER:
-				selectedZone = zoneHandler.getZone(event.getX(), event.getY());
+				selectedZone = zoneHandler.getZone(mouseX, mouseY);
 				if(selectedZone != null) {
-					extinguisherCreator.setPosition(new Point(event.getX(), event.getY()));
+					extinguisherCreator.setPosition(new Point(mouseX, mouseY));
 					extinguisherCreator.setZone(selectedZone.getZone());
 				}
 			case CREATING_COMMENT:
-				commentCreator.setPosition(new Point(event.getX(), event.getY()));
+				commentCreator.setPosition(new Point(mouseX, mouseY));
 				break;
 			}
 			break;
 			
 		case "MOUSE_DRAGGED":
-			double newPosX = event.getX() - dX;
-			double newPosY = event.getY() - dY;
+			double newPosX = mouseX - dX;
+			double newPosY = mouseY - dY;
 			
 			switch (state) {
 			case SELECTED_EXTINGUISHER:
@@ -187,10 +198,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 		}
 	}
 
-	private void selectUIElement(ETypeAction actionType, MouseEvent event) {
+	private void selectUIElement(ETypeAction actionType, double mouseX, double mouseY) {
 		if(selectedUIElement != null) {
-			dX = event.getX() - selectedUIElement.getPosX();
-			dY = event.getY() - selectedUIElement.getPosY();
+			dX = mouseX - selectedUIElement.getPosX();
+			dY = mouseY - selectedUIElement.getPosY();
 			state = actionType;
 			selectedUIElement.setIsSelected(true);
 			presLayout.updateCanvas();

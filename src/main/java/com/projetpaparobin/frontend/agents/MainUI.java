@@ -48,7 +48,7 @@ public class MainUI extends HBox {
 		layoutView.resizePanel((int) (width * widthRatio), height);
 		sideBarButtonAgent.resizePanel(width * (1.0 - widthRatio), height * heightRatio);
 		sideBarRecapAgent.resizePanel(width * (1.0 - widthRatio), height * (1.0 - heightRatio));
-		layoutPres.updateCanvas();
+		layoutPres.updateShapes();
 	}
 	
 }

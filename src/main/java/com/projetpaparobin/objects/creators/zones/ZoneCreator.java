@@ -49,7 +49,7 @@ public class ZoneCreator {
 	
 	public void finishedCreatingShape() {
 		if(zoneState == EZoneCreationState.ADDING_POINTS) {
-			if(!currentZone.getShape().getPoints().isEmpty()) {
+			if(!currentZone.getShape().isEmpty()) {
 				zoneState = EZoneCreationState.SETTING_NAME;
 				sendEvent(EZoneEvents.SETTING_NAME);
 			} else {

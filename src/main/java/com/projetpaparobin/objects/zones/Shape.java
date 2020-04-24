@@ -1,9 +1,10 @@
 package com.projetpaparobin.objects.zones;
 
-import java.awt.Polygon;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javafx.scene.shape.Polygon;
 
 public class Shape {
 
@@ -13,8 +14,13 @@ public class Shape {
 	private Polygon area;
 	
 	public Shape() {
-		this.points = new ArrayList<Point>();
 		this.area = new Polygon();
+		this.points = new ArrayList<Point>();
+	}
+	
+	public Shape(ArrayList<Point> points) {
+		this.area = new Polygon();
+		this.points = points;
 		updateArea();
 	}
 	
@@ -28,30 +34,32 @@ public class Shape {
 		updateArea();
 	}
 		
-	public ArrayList<Point> getPoints() {
-		return points;
-	}
-
 	public void setPoints(ArrayList<Point> points) {
 		this.points = points;
 		updateArea();
 	}
 
-	public void updateArea() {
-		int[] xPoints = new int[points.size()];
-		int[] yPoints = new int[points.size()];
-		
-		for (int i = 0; i < points.size(); i++) {
-			Point p = points.get(i);
-			xPoints[i] = (int) p.getX();
-			yPoints[i] = (int) p.getY();
-		}
-		
-		area = new Polygon(xPoints, yPoints, points.size());
-	}
-
 	public Polygon getArea() {
 		return area;
+	}
+	
+	public void updateArea() {
+		area.getPoints().clear();
+		for (Point point : points) {
+			area.getPoints().addAll(point.getX(), point.getY());
+		}
+	}
+
+	public ArrayList<Point> getPoints() {
+		return points;
+	}
+	
+	public boolean containsPoint(double posX, double posY) {
+		return area.contains(posX, posY);
+	}
+	
+	public boolean isEmpty() {
+		return area.getPoints().isEmpty();
 	}
 	
 }

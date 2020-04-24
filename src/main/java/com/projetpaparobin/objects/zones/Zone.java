@@ -80,7 +80,7 @@ public class Zone {
 	}
 	
 	public boolean containsPoint(double posX, double posY) {
-		return shape.getArea().contains(posX, posY);
+		return shape.containsPoint(posX, posY);
 	}
 
 	public Point getTextAreaPosition() {
@@ -95,7 +95,6 @@ public class Zone {
 	public String getDisplayText() {
 		return id.getDisplayText();
 	}
-
 	@JsonIgnore
 	public String getAreaName() {
 		return id.getAreaName();

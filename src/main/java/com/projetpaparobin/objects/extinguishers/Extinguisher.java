@@ -9,8 +9,7 @@ import com.projetpaparobin.utils.UIColor;
 public class Extinguisher {
 
 	private ExtinguisherID id;
-	private Point pos;
-	private Point textAreaPosition;
+	private Point pos, textAreaPosition;
 	
 	@JsonBackReference
 	private Zone zone;

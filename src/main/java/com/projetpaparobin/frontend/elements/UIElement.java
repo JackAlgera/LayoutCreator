@@ -1,9 +1,9 @@
 package com.projetpaparobin.frontend.elements;
 
 import com.projetpaparobin.documents.LayoutHandler;
+import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.utils.UIColor;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -14,20 +14,18 @@ public abstract class UIElement {
 	protected UIColor fillColor;
 	protected Color rimColor;
 	protected GraphicsContext canvasGC;
+	protected ViewLayoutAgent viewLayoutAgent;
 	protected double posX, posY;
 	protected boolean isSelected;
 	
-	public UIElement(double posX, double posY, Color rimColor, UIColor fillColor, Canvas canvas) {
+	public UIElement(double posX, double posY, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
 		this.posX = posX;
 		this.posY = posY;
+		this.viewLayoutAgent = viewLayoutAgent;
 		this.rimColor = rimColor;
 		this.fillColor = fillColor;
-		this.canvasGC = canvas.getGraphicsContext2D();
 		this.isSelected = false;
-	}
-	
-	public void addCanvas(Canvas canvas) {
-		this.canvasGC = canvas.getGraphicsContext2D();
+		this.canvasGC = viewLayoutAgent.getCanvas().getGraphicsContext2D();
 	}
 	
 	public void translateShape(double newPosX, double newPosY) {
