@@ -71,9 +71,13 @@ public class ZoneID {
 	}
 
 	public String getAreaName() {
-		return (areaName.isBlank() ? getDisplayText() : areaName);
+		return (areaName.isBlank() ? getDefaultAreaName() : areaName);
 	}
-
+	
+	public String getDefaultAreaName() {
+		return areaType.toString() + areaNumber;
+	}
+	
 	public void setAreaName(String areaName) {
 		this.areaName = areaName;
 	}	
