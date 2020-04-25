@@ -53,7 +53,7 @@ public enum EExtinguisherType {
 	}
 	
 	public static EExtinguisherType getDefaultExtinguisherType() {
-		return C20;
+		return E6A;
 	}
 	
 	public static EExtinguisherType getEnum(String value) {
