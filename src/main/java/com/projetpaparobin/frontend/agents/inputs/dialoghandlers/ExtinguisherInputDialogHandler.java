@@ -191,13 +191,9 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 	
 	private void setErrorStyle(boolean hasError, TextField fabricationYear) {
 		if(hasError) {
-			fabricationYear.setStyle(""
-					+ "-fx-text-box-border: #DBB1B1; "
-					+ "-fx-control-inner-background: #FFF0F0; "
-					+ "-fx-focus-color: #FF2020; "
-					+ "-fx-faint-focus-color: #FF202020;");
+			fabricationYear.getStyleClass().add("validation-error");
 		} else {
-			fabricationYear.setStyle(null);
+			fabricationYear.getStyleClass().setAll("text-field", "text-input");
 		}
 	}
 	

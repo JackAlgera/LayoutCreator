@@ -40,6 +40,7 @@ public class MainInterface extends Application {
     		layout = new MainUI(primaryStage, width, height, file.getExcelTemplatePath(), file.getLayoutPDFPath(), file.getLayoutPageNum());		
     		layout.setOnKeyPressed(KeyboardInputHandler.getInstance());
     		scene = new Scene(layout);
+    		scene.getStylesheets().add("stylesheet.css");
     		primaryStage.setScene(scene);
     		primaryStage.show();
     		
