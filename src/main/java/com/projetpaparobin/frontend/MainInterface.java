@@ -18,26 +18,29 @@ public class MainInterface extends Application {
 	private MainUI layout;
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception {		
-		FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
-		ChosenInputFilesPOJO file = fileChooser.showAndWait();
-		
-		primaryStage.setOnCloseRequest(new ConfirmCloseEventHandler(primaryStage).getConfirmCloseEventHandler());
-		
+	public void start(Stage primaryStage) throws Exception {	
     	double height = 800;
     	double width = 1000;
+    	
+		primaryStage.setTitle("Projet papa Robaing");
+		primaryStage.setMaximized(false);
+		primaryStage.setResizable(true);
+		primaryStage.getIcons().add(new Image("/icons/Application_Icon.png"));
+		addResizeListener(primaryStage);
+		primaryStage.setOnCloseRequest(new ConfirmCloseEventHandler(primaryStage).getConfirmCloseEventHandler());		
+
+		layout = new MainUI();		
+		Scene scene = new Scene(layout);		
+		primaryStage.setScene(scene);
+		
+		FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
+		ChosenInputFilesPOJO file = fileChooser.showAndWait();		
     	
     	if(file != null && !file.getLayoutPDFPath().isBlank() && !file.getExcelTemplatePath().isBlank() && file.getLayoutPageNum() > 0) {
     		layout = new MainUI(primaryStage, width, height, file.getExcelTemplatePath(), file.getLayoutPDFPath(), file.getLayoutPageNum());		
     		layout.setOnKeyPressed(KeyboardInputHandler.getInstance());
-    		Scene scene = new Scene(layout);
-    		
-    		primaryStage.setTitle("Projet papa Robaing");
-    		primaryStage.setMaximized(false);
-    		primaryStage.setResizable(true);
+    		scene = new Scene(layout);
     		primaryStage.setScene(scene);
-    		primaryStage.getIcons().add(new Image("file:icon.png"));
-    		addResizeListener(primaryStage);
     		primaryStage.show();
     		
     		ApplicationStatePersister.startAutomaticSaver(1);

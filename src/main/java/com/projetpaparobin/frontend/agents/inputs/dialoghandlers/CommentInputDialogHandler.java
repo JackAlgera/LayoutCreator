@@ -11,8 +11,9 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 
-public class CommentInputDialogHandler implements ICommentCreatorListener {
+public class CommentInputDialogHandler extends DialogHandlerAbs implements ICommentCreatorListener {
 
 	private static double width = 180;
 	
@@ -21,8 +22,10 @@ public class CommentInputDialogHandler implements ICommentCreatorListener {
 	private Dialog<String> inputDialog;
 	private TextField text;
 	
-	public CommentInputDialogHandler() {
+	public CommentInputDialogHandler(Window primaryStage) {
+		super(primaryStage);
 		inputDialog = new Dialog<String>();
+		inputDialog.setTitle("Nouveau commentaire");
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -57,6 +60,9 @@ public class CommentInputDialogHandler implements ICommentCreatorListener {
 		case CREATING_NEW_COMMENT:
 			break;
 		case SETTING_TEXT:
+			if(inputDialog.getOwner() == null) {
+				inputDialog.initOwner(primaryStage);
+			}
 			Optional<String> response = inputDialog.showAndWait();
 			if(!response.isEmpty()) {
 				commentCreator.setCommentText(response.get());

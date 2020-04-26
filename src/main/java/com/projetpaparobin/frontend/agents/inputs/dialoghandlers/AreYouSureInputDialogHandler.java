@@ -4,12 +4,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.stage.Window;
 
-public class AreYouSureInputDialogHandler {
+public class AreYouSureInputDialogHandler extends DialogHandlerAbs {
 
 	private Dialog<Boolean> inputDialog;
 	
-	public AreYouSureInputDialogHandler(String title, String warningText) {
+	public AreYouSureInputDialogHandler(Window primaryStage, String title, String warningText) {
+		super(primaryStage);
 		inputDialog = new Dialog<Boolean>();
 		inputDialog.setTitle(title);
 		
@@ -33,6 +35,9 @@ public class AreYouSureInputDialogHandler {
 	}
 	
 	public Boolean showAndWait() {
+		if(inputDialog.getOwner() == null) {
+			inputDialog.initOwner(primaryStage);
+		}
 		return inputDialog.showAndWait().get();
 	}
 	

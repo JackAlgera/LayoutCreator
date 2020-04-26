@@ -20,17 +20,20 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 
-public class ZoneInputDialogHandler implements IZoneCreatorListener {
+public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCreatorListener {
 
 	private static double width = 180;
 	
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private Dialog<ZoneID> inputDialog;
 	
-	public ZoneInputDialogHandler() {
+	public ZoneInputDialogHandler(Window primaryStage) {
+		super(primaryStage);
 		zoneCreator.addListener(this);
 		inputDialog = new Dialog<ZoneID>();
+		inputDialog.setTitle("Nouvelle zone");
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -97,6 +100,9 @@ public class ZoneInputDialogHandler implements IZoneCreatorListener {
 		case ADDED_POINT:
 			break;
 		case SETTING_NAME:
+			if(inputDialog.getOwner() == null) {
+				inputDialog.initOwner(primaryStage);
+			}
 			Optional<ZoneID> response = inputDialog.showAndWait();
 			if(!response.isEmpty()) {
 				zoneCreator.setZoneID(response.get());

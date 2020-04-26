@@ -22,10 +22,13 @@ public class MainUI extends HBox {
 	
 	private VBox sideBox;
 
+	public MainUI() {
+	}
+	
 	public MainUI(Stage primaryStage, double width, double height, String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
 		super();		
 		layoutPres = new PresentationLayoutAgent();
-		layoutView = new ViewLayoutAgent(layoutPDFPath, layoutPageNum, width * widthRatio, height, layoutPres);
+		layoutView = new ViewLayoutAgent(primaryStage, layoutPDFPath, layoutPageNum, width * widthRatio, height, layoutPres);
 		layoutPres.setView(layoutView);		
 
 		sideBarButtonAgent = new SideBarButtonAgent(layoutPres, primaryStage, width * (1.0 - widthRatio), height * heightRatio);				

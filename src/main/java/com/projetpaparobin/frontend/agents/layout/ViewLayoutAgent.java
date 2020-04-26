@@ -20,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Window;
 
 public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILayoutHandlerListener {
 
@@ -36,15 +37,18 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 	
 	private PresentationLayoutAgent pres;
 		
-	public ViewLayoutAgent(String imagePath, int pageNum, double width, double height, PresentationLayoutAgent pres) {
+	public ViewLayoutAgent() {
+	}
+	
+	public ViewLayoutAgent(Window primaryStage, String imagePath, int pageNum, double width, double height, PresentationLayoutAgent pres) {
 		super();
 		this.setMaxSize(width, height);
 		this.setMinSize(width, height);
 		this.setAlignment(Pos.CENTER);
 		this.pres = pres;		
-		zoneInputDialog = new ZoneInputDialogHandler();
-		extinguisherInputDialog = new ExtinguisherInputDialogHandler();
-		commentInputDialog = new CommentInputDialogHandler();
+		zoneInputDialog = new ZoneInputDialogHandler(primaryStage);
+		extinguisherInputDialog = new ExtinguisherInputDialogHandler(primaryStage);
+		commentInputDialog = new CommentInputDialogHandler(primaryStage);
 		
 		try {
 			BufferedImage bufImage = pdfHandler.getImageFromPDF(imagePath, pageNum);

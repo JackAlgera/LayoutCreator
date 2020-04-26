@@ -12,12 +12,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class ConfirmCloseEventHandler {
+public class ConfirmCloseEventHandler extends DialogHandlerAbs {
 
 	private FileSaveInputDialogHandler fileSaveInputDialog;
 	private EventHandler<WindowEvent> confirmCloseEventHandler;
 	
 	public ConfirmCloseEventHandler(Stage primaryStage) {
+		super(primaryStage);
 		fileSaveInputDialog = new FileSaveInputDialogHandler(primaryStage);
 		
 		confirmCloseEventHandler = event -> {

@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.projetpaparobin.documents.preferences.DAOPreferencesImpl;
 import com.projetpaparobin.documents.preferences.PreferencesPOJO;
+import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.DialogHandlerAbs;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.scene.control.ButtonType;
@@ -12,12 +13,14 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
-public class FileChooseInputDialogHandler {
+public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 
 	public final String NBR_EXTINGUISHERS_SHEET_NAME = "dernière page";
 	public final String PARC_INDUSTRIELLE_SHEET_NAME = "Parc activité industrielle";
@@ -29,6 +32,7 @@ public class FileChooseInputDialogHandler {
 	private DAOPreferencesImpl daoPrefs;
 	
 	public FileChooseInputDialogHandler(Window primaryStage) {
+		super(primaryStage);
 		daoPrefs = new DAOPreferencesImpl();
 		PreferencesPOJO prefs = daoPrefs.getPrefs();
 		
@@ -39,7 +43,7 @@ public class FileChooseInputDialogHandler {
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		
+				
 		Label layoutLabel = new Label("PDF avec plan");
 		TextField layoutPath = new TextField();		
 		layoutPath.setText(prefs.getLayoutPDFPath());		
@@ -98,6 +102,9 @@ public class FileChooseInputDialogHandler {
 	}
 	
 	public ChosenInputFilesPOJO showAndWait() {
+		if(inputDialog.getOwner() == null) {
+			inputDialog.initOwner(primaryStage);
+		}
 		return inputDialog.showAndWait().get();
 	}
 	

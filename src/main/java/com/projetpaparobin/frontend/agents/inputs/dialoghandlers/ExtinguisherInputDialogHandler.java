@@ -26,8 +26,9 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 
-public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListener {
+public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements IExtinguisherCreatorListener {
 
 	private static double width = 180;
 	
@@ -39,8 +40,10 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 	private CheckBox isNew;
 	private TextField fabricationYear, number, extinguisherType, brand;
 	
-	public ExtinguisherInputDialogHandler() {
+	public ExtinguisherInputDialogHandler(Window primaryStage) {
+		super(primaryStage);
 		inputDialog = new Dialog<ExtinguisherID>();
+		inputDialog.setTitle("Nouveau extincteur");
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -129,6 +132,9 @@ public class ExtinguisherInputDialogHandler implements IExtinguisherCreatorListe
 			break;
 		case SETTING_NAME:
 			updateFields();
+			if(inputDialog.getOwner() == null) {
+				inputDialog.initOwner(primaryStage);
+			}
 			Optional<ExtinguisherID> response = inputDialog.showAndWait();
 			if(!response.isEmpty()) {
 				extinguisherCreator.setExtinguisherID(response.get());

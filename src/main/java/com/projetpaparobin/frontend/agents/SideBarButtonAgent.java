@@ -64,8 +64,8 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 				CornerRadii.EMPTY, 
 				BorderWidths.DEFAULT)));
 		this.presLayoutAgent = presLayoutAgent;
-		this.fileGenerationInputDialog = new FileGenerationDialogHandler();
-		this.areYouSureInputDialog = new AreYouSureInputDialogHandler("Confirmation De Suppression", "Etes-vous sûr de vouloir tout supprimer ?");
+		this.fileGenerationInputDialog = new FileGenerationDialogHandler(primaryStage);
+		this.areYouSureInputDialog = new AreYouSureInputDialogHandler(primaryStage, "Confirmation De Suppression", "Etes-vous sûr de vouloir tout supprimer ?");
 		this.fileSaveInputDialog = new FileSaveInputDialogHandler(primaryStage);
 		
 		newExtinguisherButton = new Button("Nouveau extincteur");
