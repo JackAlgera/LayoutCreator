@@ -74,6 +74,7 @@ public class ZoneID {
 		return (areaName.isBlank() ? getDefaultAreaName() : areaName);
 	}
 	
+	@JsonIgnore
 	public String getDefaultAreaName() {
 		return areaType.toString() + areaNumber;
 	}
