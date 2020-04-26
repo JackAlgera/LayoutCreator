@@ -38,10 +38,10 @@ public class UIExtinguisher extends UIElement {
 		Circle drawnCircle;
 		
 		if(isSelected) {
-			circle = new Circle(posX, posY, SELECTED_RADIUS, Color.CYAN);
-			drawnCircle = new Circle(posX, posY, SELECTED_RADIUS * viewLayoutAgent.getCanvasWidth(), Color.CYAN);
-			drawnCircle.setStroke(Color.GRAY);
-			drawnCircle.setStrokeWidth(1.1);	
+			circle = new Circle(posX, posY, SELECTED_RADIUS, UIElements.EXTINGUISHER_SELECTED_COLOR.getColor());
+			drawnCircle = new Circle(posX, posY, SELECTED_RADIUS * viewLayoutAgent.getCanvasWidth(), UIElements.EXTINGUISHER_SELECTED_COLOR.getColor());
+			drawnCircle.setStroke(Color.BLACK);
+			drawnCircle.setStrokeWidth(1.3);	
 		} else {
 			circle = new Circle(posX, posY, RADIUS, Color.CYAN);
 			drawnCircle = new Circle(posX, posY, RADIUS * viewLayoutAgent.getCanvasWidth(), ex.getId().getColor().getColor());

@@ -2,7 +2,6 @@ package com.projetpaparobin.frontend.elements;
 
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.zones.Point;
-import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIColor;
 
 import javafx.scene.paint.Color;

@@ -17,6 +17,8 @@ import javafx.scene.text.Font;
 
 public class UIElements {
 	
+	public static UIColor EXTINGUISHER_SELECTED_COLOR = UIColor.ORANGE;
+	
 	public static final long MIN_FABRICATION_YEAR = 1970;
 	public static final long MAX_FABRICATION_YEAR = 2050;
 	public static final String DEFAULT_BRAND = "DE";
@@ -74,26 +76,18 @@ public class UIElements {
 	
 	public static int colorIndex = 0;	
 	public static ArrayList<UIColor> DEFAULT_ZONE_COLORS = new ArrayList<UIColor>(Arrays.asList(
-//			Color.TURQUOISE,
-//			Color.BLUE,
-//			Color.RED,
-//			Color.ORANGE,
-//			Color.PURPLE,
-//			Color.GREEN,
-//			Color.BROWN
-			UIColor.GREEN,
-			UIColor.BLUE,
-			UIColor.RED,
-			UIColor.YELLOW,
-			UIColor.BROWN,
-			UIColor.ORANGE
-	));
-	
-	public static ArrayList<UIColor> DEFAULT_EXTINGUISHER_COLORS = new ArrayList<UIColor>(Arrays.asList(
 			UIColor.LIGHTBLUE,
 			UIColor.LIGHTGREEN,
 			UIColor.LIGHTRED,
-			UIColor.LIGHTYELLOW
+			UIColor.LIGHTYELLOW,
+			UIColor.BROWN
+	));
+	
+	public static ArrayList<UIColor> DEFAULT_EXTINGUISHER_COLORS = new ArrayList<UIColor>(Arrays.asList(
+			UIColor.GREEN,
+			UIColor.BLUE,
+			UIColor.RED,
+			UIColor.YELLOW
 	));
 
 	public static void setDefaultButtonStyle(Button b) {
