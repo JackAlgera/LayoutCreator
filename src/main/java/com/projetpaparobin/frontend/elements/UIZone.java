@@ -19,10 +19,12 @@ public class UIZone extends UIElement {
 	
 	private ArrayList<UICorner> corners; 
 	private Zone zone;
+	private UIZoneText zoneText;
 	
 	public UIZone(Zone zone, ViewLayoutAgent viewLayoutAgent, boolean isSelected) {
 		super(zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
+		this.zoneText = null;
 		this.corners = new ArrayList<UICorner>();
 		for (Point point : zone.getShape().getPoints()) {
 			corners.add(new UICorner(this, point, INIT_POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent));
@@ -53,6 +55,10 @@ public class UIZone extends UIElement {
 		}	
 	}
 	
+	public void setUiText(UIZoneText zoneText) {
+		this.zoneText = zoneText;
+	}
+	
 	public void switchPointRadius() {
 		for (UICorner corner : corners) {
 			corner.prepareImage(POINT_RADIUS);
@@ -80,6 +86,9 @@ public class UIZone extends UIElement {
 		super.translateShape(newPosX, newPosY);
 		for (UICorner corner : corners) {
 			corner.translateShape(corner.getPosX() + deltaX, corner.getPosY() + deltaY);
+		}
+		if(zoneText != null) {
+			zoneText.moveWithZone(deltaX, deltaY);
 		}
 		updateZone();
 	}

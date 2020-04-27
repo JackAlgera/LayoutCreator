@@ -152,4 +152,9 @@ public class UIZoneText extends UIElement {
 		return resizeCorner;
 	}
 	
+	public void moveWithZone(double deltaX, double deltaY) {
+		translateShape(posX + deltaX, posY + deltaY);
+		connection.translateShape(connection.getPosX() + deltaX, connection.getPosY() + deltaY);
+	}
+	
 }
