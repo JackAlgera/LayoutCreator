@@ -46,6 +46,9 @@ public class UITextHandler {
 	
 	public UICorner getZoneTextResizeCorner(double posX, double posY) {
 		for (UIZoneText text : zoneTexts) {
+			if(!text.isSelected()) {
+				continue;
+			}
 			if(text.getResizeCorner().containsPoint(posX, posY)) {
 				return text.getResizeCorner();
 			}

@@ -217,6 +217,9 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				break;
 			case SELECTED_ZONE_TEXT_RESIZE_CORNER:
 				state = ETypeAction.IDLE;
+				if(prevSelectedElement != null) {
+					selectedUIElement = prevSelectedElement;
+				}
 				break;
 			}
 			break;
