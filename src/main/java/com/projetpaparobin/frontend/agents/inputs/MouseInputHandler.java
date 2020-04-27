@@ -107,6 +107,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
+				selectedUIElement = textHandler.getConnection(mouseX, mouseY);
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_CONNECTION, mouseX, mouseY, prevSelectedElement, true);
+					break;
+				}
 				selectedUIElement = zoneHandler.getCorner(mouseX, mouseY);
 				if(selectedUIElement != null) {
 					selectUIElement(ETypeAction.SELECTED_CORNER, mouseX, mouseY, prevSelectedElement, false);
@@ -115,11 +120,6 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				selectedUIElement = zoneHandler.getZone(mouseX, mouseY);
 				if(selectedUIElement != null) {
 					selectUIElement(ETypeAction.SELECTED_ZONE, mouseX, mouseY, prevSelectedElement, true);
-					break;
-				}
-				selectedUIElement = textHandler.getConnection(mouseX, mouseY);
-				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_CONNECTION, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
 				if(prevSelectedElement != null) {
