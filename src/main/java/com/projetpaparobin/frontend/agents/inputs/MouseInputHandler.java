@@ -4,6 +4,7 @@ import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIElement;
+import com.projetpaparobin.frontend.elements.UIExtinguisherText;
 import com.projetpaparobin.frontend.elements.UIZone;
 import com.projetpaparobin.frontend.elements.UIZoneText;
 import com.projetpaparobin.frontend.handlers.UICommentHandler;
@@ -91,6 +92,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				selectedUIElement = commentHandler.getComment(mouseX, mouseY);
 				if(selectedUIElement != null) {
 					selectUIElement(ETypeAction.SELECTED_COMMENT, mouseX, mouseY, prevSelectedElement, true);
+					break;
+				}
+				selectedUIElement = textHandler.getExtinguisherTextResizeCorner(mouseX, mouseY);
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT_RESIZE_CORNER, mouseX, mouseY, prevSelectedElement, false);
 					break;
 				}
 				selectedUIElement = extinguisherHandler.getExtinguisher(mouseX, mouseY);				
@@ -186,6 +192,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				((UIZoneText)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
 				presLayout.updateCanvas();
 				break;
+			case SELECTED_EXTINGUISHER_TEXT_RESIZE_CORNER:
+				((UIExtinguisherText)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
+				presLayout.updateCanvas();
+				break;
 			}
 			break;			
 
@@ -216,6 +226,12 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				state = ETypeAction.IDLE;
 				break;
 			case SELECTED_ZONE_TEXT_RESIZE_CORNER:
+				state = ETypeAction.IDLE;
+				if(prevSelectedElement != null) {
+					selectedUIElement = prevSelectedElement;
+				}
+				break;
+			case SELECTED_EXTINGUISHER_TEXT_RESIZE_CORNER:
 				state = ETypeAction.IDLE;
 				if(prevSelectedElement != null) {
 					selectedUIElement = prevSelectedElement;

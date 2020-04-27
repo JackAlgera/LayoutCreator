@@ -55,7 +55,6 @@ public class UIConnection extends UIElement {
 			Point p = new Point(connectionPoint.getPosX(), connectionPoint.getPosY());
 			
 			double shortestDist = Double.MAX_VALUE;
-			double shortestDistC2 = Double.MAX_VALUE;
 			
 			Point corner1, corner2, temp;
 			Point center = p;

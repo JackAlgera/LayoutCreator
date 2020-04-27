@@ -56,6 +56,18 @@ public class UITextHandler {
 		return null;
 	}
 	
+	public UICorner getExtinguisherTextResizeCorner(double posX, double posY) {
+		for (UIExtinguisherText text : extinguisherTexts) {
+			if(!text.isSelected()) {
+				continue;
+			}
+			if(text.getResizeCorner().containsPoint(posX, posY)) {
+				return text.getResizeCorner();
+			}
+		}
+		return null;
+	}
+	
 	public UIConnection getConnection(double posX, double posY) {
 		for (UIZoneText text : zoneTexts) {
 			if(text.getConnection().containsPoint(posX, posY)) {

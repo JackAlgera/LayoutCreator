@@ -3,6 +3,7 @@ package com.projetpaparobin.frontend.elements;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Point;
+import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.geometry.Bounds;
@@ -18,11 +19,13 @@ import javafx.scene.transform.Transform;
 public class UIExtinguisherText extends UIElement {
 
 	private static double DEFAULT_TEXT_HEIGHT = 0.025;
+	private static double POINT_RADIUS = 0.01;
 	private static double Y_OFFSET = - 0.03;
 	
 	private Rectangle hitbox;
 	private Extinguisher ex;
 	private double textHeight;
+	private UICorner resizeCorner;
 
 	private WritableImage drawnImage;
 		
@@ -31,13 +34,17 @@ public class UIExtinguisherText extends UIElement {
 				(ex.getTextAreaPosition() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPosition().getY(),
 				Color.BLACK, null, viewLayoutAgent);
 		this.ex = ex;
-		this.textHeight = DEFAULT_TEXT_HEIGHT;
+		this.textHeight = (ex.getTextAreaSize() == 0) ? DEFAULT_TEXT_HEIGHT : ex.getTextAreaSize();
 		prepareImage();
+		this.resizeCorner = new UICorner(this, new Point(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2), POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
 	}
 	
 	@Override
 	public void drawShape() {	
 		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - (drawnImage.getWidth() / 2.0), posY * viewLayoutAgent.getCanvasHeight() - (drawnImage.getHeight() / 2.0));	
+		if(isSelected) {
+			resizeCorner.drawShape();
+		}
 	}
 	
 	public void update() {
@@ -84,8 +91,11 @@ public class UIExtinguisherText extends UIElement {
 	
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
+		double deltaX = newPosX - posX;
+		double deltaY = newPosY - posY;
 		super.translateShape(newPosX, newPosY);
 		ex.setTextAreaPosition(new Point(newPosX, newPosY));
+		resizeCorner.translateShape(resizeCorner.getPosX() + deltaX, resizeCorner.getPosY() + deltaY);
 		hitbox = new Rectangle(
 				posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())), 
 				posY - (drawnImage.getHeight() / (2.0 * viewLayoutAgent.getCanvasHeight())),
@@ -96,12 +106,25 @@ public class UIExtinguisherText extends UIElement {
 	@Override
 	public void setIsSelected(boolean isSelected) {
 		this.isSelected = isSelected;
+		resizeCorner.setIsSelected(isSelected);
 	}
 
 	@Override
 	public void removeSelf() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public UICorner getResizeCorner() {
+		return resizeCorner;
+	}
+	
+	public void resize(double newPosY) {
+		textHeight = Math.abs((posY - newPosY) * 2);
+		update();
+		resizeCorner.translateShape(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2);
+		ex.setTextAreaSize(textHeight);
+		DEFAULT_TEXT_HEIGHT = textHeight;
 	}
 	
 }

@@ -10,6 +10,7 @@ public class Extinguisher {
 
 	private ExtinguisherID id;
 	private Point pos, textAreaPosition;
+	private double textAreaSize;
 	
 	@JsonBackReference
 	private Zone zone;
@@ -22,6 +23,15 @@ public class Extinguisher {
 		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color);
 		this.pos = pos;
 		this.zone = zone;
+		this.textAreaSize = 0;
+	}
+	
+	public double getTextAreaSize() {
+		return textAreaSize;
+	}
+
+	public void setTextAreaSize(double textAreaSize) {
+		this.textAreaSize = textAreaSize;
 	}
 	
 	public Point getTextAreaPosition() {

@@ -6,7 +6,6 @@ import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
