@@ -17,11 +17,12 @@ import javafx.scene.transform.Transform;
 
 public class UIExtinguisherText extends UIElement {
 
-	private static double TEXT_HEIGHT = 0.025;
+	private static double DEFAULT_TEXT_HEIGHT = 0.025;
 	private static double Y_OFFSET = - 0.03;
 	
 	private Rectangle hitbox;
 	private Extinguisher ex;
+	private double textHeight;
 
 	private WritableImage drawnImage;
 		
@@ -30,6 +31,7 @@ public class UIExtinguisherText extends UIElement {
 				(ex.getTextAreaPosition() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPosition().getY(),
 				Color.BLACK, null, viewLayoutAgent);
 		this.ex = ex;
+		this.textHeight = DEFAULT_TEXT_HEIGHT;
 		prepareImage();
 	}
 	
@@ -59,8 +61,8 @@ public class UIExtinguisherText extends UIElement {
 		drawnImage = sPane.snapshot(params, null);
 		
 		ImageView view = new ImageView(drawnImage);
-		view.setFitWidth(viewLayoutAgent.getCanvasHeight() * TEXT_HEIGHT * (bounds.getWidth() / bounds.getHeight()));
-		view.setFitHeight(viewLayoutAgent.getCanvasHeight() * TEXT_HEIGHT);
+		view.setFitWidth(viewLayoutAgent.getCanvasHeight() * textHeight * (bounds.getWidth() / bounds.getHeight()));
+		view.setFitHeight(viewLayoutAgent.getCanvasHeight() * textHeight);
 		params.setTransform(Transform.scale(1, 1));
 		drawnImage = view.snapshot(params, null);
 		

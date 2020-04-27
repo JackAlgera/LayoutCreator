@@ -5,6 +5,7 @@ import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIElement;
 import com.projetpaparobin.frontend.elements.UIZone;
+import com.projetpaparobin.frontend.elements.UIZoneText;
 import com.projetpaparobin.frontend.handlers.UICommentHandler;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;
@@ -102,6 +103,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
+				selectedUIElement = textHandler.getZoneTextResizeCorner(mouseX, mouseY);
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT_RESIZE_CORNER, mouseX, mouseY, prevSelectedElement, false);
+					break;
+				}
 				selectedUIElement = textHandler.getZoneText(mouseX, mouseY);
 				if(selectedUIElement != null) {
 					selectUIElement(ETypeAction.SELECTED_ZONE_TEXT, mouseX, mouseY, prevSelectedElement, true);
@@ -175,7 +181,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			case SELECTED_CONNECTION:
 				selectedUIElement.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
-				break;				
+				break;		
+			case SELECTED_ZONE_TEXT_RESIZE_CORNER:
+				((UIZoneText)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
+				presLayout.updateCanvas();
+				break;
 			}
 			break;			
 
@@ -189,7 +199,6 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				break;	
 			case SELECTED_CORNER:
 				state = ETypeAction.IDLE;
-				System.out.println("HERE");
 				if(prevSelectedElement != null) {
 					selectedUIElement = prevSelectedElement;
 				}
@@ -204,6 +213,9 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				state = ETypeAction.IDLE;
 				break;	
 			case SELECTED_CONNECTION:
+				state = ETypeAction.IDLE;
+				break;
+			case SELECTED_ZONE_TEXT_RESIZE_CORNER:
 				state = ETypeAction.IDLE;
 				break;
 			}

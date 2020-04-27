@@ -3,6 +3,7 @@ package com.projetpaparobin.frontend.elements;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
+import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.geometry.Bounds;
@@ -17,12 +18,16 @@ import javafx.scene.transform.Transform;
 
 public class UIZoneText extends UIElement {
 
-	private static double TEXT_WIDTH = 0.2;
+	private static double RESIZE_SENSITIVITY = 0.5; // TODO
+	private static double POINT_RADIUS = 0.01;
+	private static double DEFAULT_TEXT_HEIGHT = 0.03;
 	private static double LINE_WIDTH = 1.5;
 	
 	private Rectangle hitbox;
 	private Zone zone;
 	private UIConnection connection;
+	private UICorner resizeCorner;
+	private double textHeight;
 
 	private WritableImage drawnImage;
 		
@@ -31,14 +36,19 @@ public class UIZoneText extends UIElement {
 				(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPos().getY(),
 				zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
+		this.textHeight = (zone.getTextAreaSize() == 0) ? DEFAULT_TEXT_HEIGHT : zone.getTextAreaSize();
 		this.connection = new UIConnection(zone, this, getInitConnectionPos(zone, uiZone, this), zone.getRimColor(), viewLayoutAgent);
 		prepareImage();
+		this.resizeCorner = new UICorner(this, new Point(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2), POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
 	}
 	
 	@Override
 	public void drawShape() {	
 		connection.drawShape();
 		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - (drawnImage.getWidth() / 2.0), posY * viewLayoutAgent.getCanvasHeight() - (drawnImage.getHeight() / 2.0));	
+		if(isSelected) {
+			resizeCorner.drawShape();
+		}
 	}
 	
 	public void update() {
@@ -69,8 +79,8 @@ public class UIZoneText extends UIElement {
 		drawnImage = sPane.snapshot(params, null);		
 		
 		ImageView view = new ImageView(drawnImage);
-		view.setFitWidth(viewLayoutAgent.getCanvasWidth() * TEXT_WIDTH);
-		view.setFitHeight(viewLayoutAgent.getCanvasWidth() * TEXT_WIDTH * (bounds.getHeight() / bounds.getWidth()));
+		view.setFitWidth(viewLayoutAgent.getCanvasHeight() * textHeight * (bounds.getWidth() / bounds.getHeight()));
+		view.setFitHeight(viewLayoutAgent.getCanvasHeight() * textHeight);
 		drawnImage = view.snapshot(null, null);
 
 		hitbox = new Rectangle(
@@ -91,6 +101,9 @@ public class UIZoneText extends UIElement {
 	
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
+		double deltaX = newPosX - posX;
+		double deltaY = newPosY - posY;
+		resizeCorner.translateShape(resizeCorner.getPosX() + deltaX, resizeCorner.getPosY() + deltaY);
 		super.translateShape(newPosX, newPosY);
 		zone.setTextAreaPos(new Point(newPosX, newPosY));
 		hitbox = new Rectangle(
@@ -104,12 +117,20 @@ public class UIZoneText extends UIElement {
 	public void setIsSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 		connection.setIsSelected(isSelected);
+		resizeCorner.setIsSelected(isSelected);
 	}
 
 	@Override
 	public void removeSelf() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void resize(double newPosY) {
+		textHeight = Math.abs((posY - newPosY) * 2);
+		update();
+		resizeCorner.translateShape(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2);
+		zone.setTextAreaSize((posY - newPosY) * 2);
 	}
 	
 	private Point getInitConnectionPos(Zone zone, UIZone uiZone, UIZoneText uiText) {
@@ -124,6 +145,10 @@ public class UIZoneText extends UIElement {
 	
 	public UIConnection getConnection() {
 		return connection;
+	}
+	
+	public UICorner getResizeCorner() {
+		return resizeCorner;
 	}
 	
 }

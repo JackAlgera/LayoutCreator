@@ -18,6 +18,7 @@ public class Zone {
 	@JsonIgnore
 	private Color rimColor;
 	private Point textAreaPos;
+	private double textAreaSize;
 	private Point textConnectionCenterPos;
 	
 	@JsonManagedReference
@@ -30,6 +31,7 @@ public class Zone {
 		this.rimColor = fillColor.getColor().darker();
 		this.textAreaPos = null;
 		this.textConnectionCenterPos = null;
+		this.textAreaSize = 0;
 	}
 	
 	public ZoneID getId() {
@@ -99,6 +101,14 @@ public class Zone {
 
 	public void setTextConnectionCenterPos(Point textConnectionCenterPos) {
 		this.textConnectionCenterPos = textConnectionCenterPos;
+	}
+	
+	public double getTextAreaSize() {
+		return textAreaSize;
+	}
+
+	public void setTextAreaSize(double textAreaSize) {
+		this.textAreaSize = textAreaSize;
 	}
 
 	@JsonIgnore
