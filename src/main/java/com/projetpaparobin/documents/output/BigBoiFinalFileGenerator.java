@@ -149,8 +149,10 @@ public class BigBoiFinalFileGenerator {
 		fillExcelCell(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
 		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName() + " " + ((ex.getId().getLocal() == null) ? "" : ex.getId().getLocal()));
 		
-		fillExcelCell(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());		
-		fillExcelCell(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
+		fillExcelCell(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());	
+		if(!ex.getProtectionType().equals(EProtectionType.PIP)) {
+			fillExcelCell(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
+		}
 		fillExcelCell(sheet, row, 12, CellType.STRING, ex.getId().getExtinguisherType());
 		fillExcelCell(sheet, row, 14, CellType.STRING, ex.getId().getBrand());
 		fillExcelCell(sheet, row, 16, CellType.NUMERIC, ex.getId().getFabricationYear());
@@ -202,7 +204,7 @@ public class BigBoiFinalFileGenerator {
 		
 		fillExcelCell(sheet, rowNbrPIP, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
 		if(containsPIP) {
-			fillExcelCell(sheet, rowNbrPIP, 11, CellType.STRING, zone.getId().getAreaName() + " " + zone.getId().getAreaSize());
+			fillExcelCell(sheet, rowNbrPIP, 11, CellType.STRING, zone.getId().getAreaName() + " " + zone.getId().getAreaSize() + zone.getId().getUnits().toString());
 		} else {
 			fillExcelCell(sheet, rowNbrPIP, 1, CellType.STRING, zone.getId().getAreaName());
 			fillExcelCell(sheet, rowNbrPIP, 5, CellType.NUMERIC, zone.getId().getAreaSize());

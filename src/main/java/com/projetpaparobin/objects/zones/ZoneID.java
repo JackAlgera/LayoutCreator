@@ -9,16 +9,18 @@ public class ZoneID {
 	private EAreaType areaType;
 	private EActivityType activityType;
 	private int areaSize;
+	private EUnits units;
 	
 	public ZoneID() {
 	}
 	
-	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize) {
+	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize, EUnits units) {
 		this.areaNumber = areaNumber;
 		this.areaType = areaType;
 		this.activityType = activityType;
 		this.areaSize = areaSize;
 		this.areaName = areaName;
+		this.units = units;
 	}
 
 	@JsonIgnore
@@ -38,6 +40,14 @@ public class ZoneID {
 		}
 	}
 	
+	public EUnits getUnits() {
+		return units;
+	}
+
+	public void setUnits(EUnits units) {
+		this.units = units;
+	}
+
 	public EAreaType getAreaType() {
 		return areaType;
 	}

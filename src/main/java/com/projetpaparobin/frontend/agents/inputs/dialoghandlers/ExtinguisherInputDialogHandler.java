@@ -82,7 +82,6 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 			if(type.equals(EProtectionType.PC)) {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, local, fabricationYear, brand, colorComboBox, isNew));
 				inputDialog.setHeight(inputDialog.getHeight() + number.getHeight() + DEFAULT_SPACE_BETWEEN_INPUTS);
-				System.out.println(local.getHeight());
 			} else {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
 				inputDialog.setHeight(initHeight);
@@ -105,7 +104,10 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		
 		isNew = new CheckBox("Is new");	
 		
-		dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
+		VBox vbox = new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew);
+		vbox.setFillWidth(true);
+		
+		dialogPane.setContent(vbox);
 		initHeight = inputDialog.getHeight();
 		
 		final Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
