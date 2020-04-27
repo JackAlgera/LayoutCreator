@@ -130,7 +130,8 @@ public class UIZoneText extends UIElement {
 		textHeight = Math.abs((posY - newPosY) * 2);
 		update();
 		resizeCorner.translateShape(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2);
-		zone.setTextAreaSize((posY - newPosY) * 2);
+		zone.setTextAreaSize(textHeight);
+		DEFAULT_TEXT_HEIGHT = textHeight;
 	}
 	
 	private Point getInitConnectionPos(Zone zone, UIZone uiZone, UIZoneText uiText) {
