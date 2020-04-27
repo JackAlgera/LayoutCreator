@@ -147,7 +147,7 @@ public class BigBoiFinalFileGenerator {
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
 		fillExcelCell(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
-		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName() + " " + ex.getId().getLocal());
+		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName() + " " + ((ex.getId().getLocal() == null) ? "" : ex.getId().getLocal()));
 		
 		fillExcelCell(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());		
 		fillExcelCell(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
