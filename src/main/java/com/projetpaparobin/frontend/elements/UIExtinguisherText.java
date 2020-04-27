@@ -30,8 +30,8 @@ public class UIExtinguisherText extends UIElement {
 	private WritableImage drawnImage;
 		
 	public UIExtinguisherText(Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
-		super(	(ex.getTextAreaPosition() == null) ? ex.getPos().getX() : ex.getTextAreaPosition().getX(),
-				(ex.getTextAreaPosition() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPosition().getY(),
+		super(	(ex.getTextAreaPos() == null) ? ex.getPos().getX() : ex.getTextAreaPos().getX(),
+				(ex.getTextAreaPos() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPos().getY(),
 				Color.BLACK, null, viewLayoutAgent);
 		this.ex = ex;
 		if(ex.getTextAreaSize() == 0) {
@@ -97,7 +97,7 @@ public class UIExtinguisherText extends UIElement {
 		double deltaX = newPosX - posX;
 		double deltaY = newPosY - posY;
 		super.translateShape(newPosX, newPosY);
-		ex.setTextAreaPosition(new Point(newPosX, newPosY));
+		ex.setTextAreaPos(new Point(newPosX, newPosY));
 		resizeCorner.translateShape(resizeCorner.getPosX() + deltaX, resizeCorner.getPosY() + deltaY);
 		hitbox = new Rectangle(
 				posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())), 

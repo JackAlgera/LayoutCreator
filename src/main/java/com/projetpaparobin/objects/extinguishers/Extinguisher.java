@@ -9,7 +9,7 @@ import com.projetpaparobin.utils.UIColor;
 public class Extinguisher {
 
 	private ExtinguisherID id;
-	private Point pos, textAreaPosition;
+	private Point pos, textAreaPos;
 	private double textAreaSize;
 	
 	@JsonBackReference
@@ -34,12 +34,12 @@ public class Extinguisher {
 		this.textAreaSize = textAreaSize;
 	}
 	
-	public Point getTextAreaPosition() {
-		return textAreaPosition;
+	public Point getTextAreaPos() {
+		return textAreaPos;
 	}
 
-	public void setTextAreaPosition(Point textAreaPosition) {
-		this.textAreaPosition = textAreaPosition;
+	public void setTextAreaPos(Point textAreaPosition) {
+		this.textAreaPos = textAreaPosition;
 	}
 
 	public Point getPos() {
