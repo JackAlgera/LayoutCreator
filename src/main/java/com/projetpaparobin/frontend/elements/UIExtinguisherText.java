@@ -34,7 +34,10 @@ public class UIExtinguisherText extends UIElement {
 				(ex.getTextAreaPosition() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPosition().getY(),
 				Color.BLACK, null, viewLayoutAgent);
 		this.ex = ex;
-		this.textHeight = (ex.getTextAreaSize() == 0) ? DEFAULT_TEXT_HEIGHT : ex.getTextAreaSize();
+		if(ex.getTextAreaSize() == 0) {
+			ex.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
+		}
+		this.textHeight = ex.getTextAreaSize();
 		prepareImage();
 		this.resizeCorner = new UICorner(this, new Point(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2), POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
 	}

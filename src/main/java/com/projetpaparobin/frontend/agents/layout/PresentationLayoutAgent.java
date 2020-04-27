@@ -95,7 +95,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 				textHandler.addExtinguisherText(uiExText);
 			}
 		} 
-		
+
 		for (Comment comment : layoutHandler.getComments()) {
 			commentHandler.addComment(new UIComment(comment, view));
 		}

@@ -36,7 +36,10 @@ public class UIZoneText extends UIElement {
 				(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPos().getY(),
 				zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
-		this.textHeight = (zone.getTextAreaSize() == 0) ? DEFAULT_TEXT_HEIGHT : zone.getTextAreaSize();
+		if(zone.getTextAreaSize() == 0) {
+			zone.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
+		}
+		this.textHeight = zone.getTextAreaSize();
 		this.connection = new UIConnection(zone, this, getInitConnectionPos(zone, uiZone, this), zone.getRimColor(), viewLayoutAgent);
 		prepareImage();
 		this.resizeCorner = new UICorner(this, new Point(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2), POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
