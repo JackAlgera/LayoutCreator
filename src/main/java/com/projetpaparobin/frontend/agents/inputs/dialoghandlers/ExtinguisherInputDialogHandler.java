@@ -30,6 +30,7 @@ import javafx.stage.Window;
 
 public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements IExtinguisherCreatorListener {
 
+	private static double DEFAULT_SPACE_BETWEEN_INPUTS = 8;
 	private static double width = 180;
 	
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
@@ -38,7 +39,9 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 	private ComboBox<String> protectionType;
 	private ComboBox<UIColor> colorComboBox;
 	private CheckBox isNew;
-	private TextField fabricationYear, number, extinguisherType, brand;
+	private TextField fabricationYear, number, extinguisherType, brand, local;
+	
+	private double initHeight;
 	
 	public ExtinguisherInputDialogHandler(Window primaryStage) {
 		super(primaryStage);
@@ -52,6 +55,9 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		number = new TextField();
 		number.setPromptText("Number");
 		number.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
+		
+		local = new TextField();
+		local.setPromptText("Local");
 		
 		colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_EXTINGUISHER_COLORS));
 		colorComboBox.setValue(EExtinguisherType.getDefaultExtinguisherType().getColor());
@@ -71,6 +77,17 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 				.map(val -> val.toString())
 				.collect(Collectors.toList())));	
 		protectionType.setPrefWidth(width);
+		protectionType.valueProperty().addListener((observable, oldValue, newValue) -> {
+			EProtectionType type = EProtectionType.getEnum(newValue);
+			if(type.equals(EProtectionType.PC)) {
+				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, local, fabricationYear, brand, colorComboBox, isNew));
+				inputDialog.setHeight(inputDialog.getHeight() + number.getHeight() + DEFAULT_SPACE_BETWEEN_INPUTS);
+				System.out.println(local.getHeight());
+			} else {
+				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
+				inputDialog.setHeight(initHeight);
+			}
+		});
 		
 		fabricationYear = new TextField();
 		fabricationYear.setPromptText("Fabrication year");
@@ -88,7 +105,8 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		
 		isNew = new CheckBox("Is new");	
 		
-		dialogPane.setContent(new VBox(8, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
+		dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
+		initHeight = inputDialog.getHeight();
 		
 		final Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
 		okButton.addEventFilter(ActionEvent.ACTION, 
@@ -108,10 +126,11 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 				String brandVal = (brand.getText().strip().isBlank()) ? UIElements.DEFAULT_BRAND : brand.getText().strip().toUpperCase();
 				boolean isNewVal = isNew.isSelected();
 				UIColor colorVal = colorComboBox.getValue();
+				String localValue = (local == null) ? "" : local.getText();
 				
 				resetFields();
 				
-				return new ExtinguisherID(numberVal, extinguisherTypeVal, protectionTypeVal, fabricationYearVal, brandVal, isNewVal, colorVal);
+				return new ExtinguisherID(numberVal, extinguisherTypeVal, protectionTypeVal, fabricationYearVal, brandVal, isNewVal, colorVal, localValue);
 			} 
 			if(button == ButtonType.CANCEL) {
 				resetFields();
@@ -121,7 +140,7 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 			return null;
 		});
 		
-		inputDialog.setResizable(false);
+		inputDialog.setResizable(true);
 		extinguisherCreator.addListener(this);
 	}
 
@@ -166,6 +185,7 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		protectionType.setValue(EProtectionType.values()[0].toString());
 		isNew.setSelected(false);
 		colorComboBox.setValue(EExtinguisherType.getDefaultExtinguisherType().getColor());
+		local.setText("");
 		
 		setErrorStyle(false, fabricationYear);
 		setErrorStyle(false, number);

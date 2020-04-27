@@ -19,8 +19,8 @@ public class Extinguisher {
 	}
 	
 	public Extinguisher(String number, String extinguisherType, EProtectionType protectionType, UIColor color,
-			Point pos, boolean isNew, Zone zone,int anneeMiseEnService,String marque) {
-		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color);
+			Point pos, boolean isNew, Zone zone, int anneeMiseEnService, String marque, String local) {
+		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color, local);
 		this.pos = pos;
 		this.zone = zone;
 		this.textAreaSize = 0;
@@ -71,6 +71,10 @@ public class Extinguisher {
 		return id;
 	}
 
+	@JsonIgnore
+	public String getLocal() {
+		return id.getLocal();
+	}
 	@JsonIgnore
 	public String getNumber() {
 		return id.getNumber();

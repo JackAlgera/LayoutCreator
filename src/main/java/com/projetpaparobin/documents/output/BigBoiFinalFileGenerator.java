@@ -27,7 +27,6 @@ import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.dao.DAOExcelImpl;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
-import com.projetpaparobin.objects.extinguishers.TypeExtinguisher;
 import com.projetpaparobin.objects.zones.Zone;
 
 public class BigBoiFinalFileGenerator {
@@ -101,7 +100,7 @@ public class BigBoiFinalFileGenerator {
 		for (Zone zone : layoutHandler.getZones()) {			
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
             for (Extinguisher e: zone.getExtinguishers()) {
-                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear(), e.getId().getProtectionType());
+                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear(), e.getId().getProtectionType(), e.getId().getLocal());
 
                 if(extinguisherList.containsKey(typeExtinguisher)) {
                     extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
@@ -142,7 +141,7 @@ public class BigBoiFinalFileGenerator {
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
 		fillExcelCell(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
-		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName());
+		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName() + " " + ex.getId().getLocal());
 		
 		fillExcelCell(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());		
 		fillExcelCell(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
@@ -202,6 +201,7 @@ public class BigBoiFinalFileGenerator {
 		for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {		
 			switch (extinguisher.getKey().getProtectionType()) {
 			case PC:
+				fillExcelCell(sheet, rowNbrPIP, 11, CellType.STRING, extinguisher.getKey().getLocal());
 			case PIP:
 				fillExcelCell(sheet, rowNbrPIP, 17, CellType.NUMERIC, extinguisher.getValue());
 				fillExcelCell(sheet, rowNbrPIP, 18, CellType.STRING, extinguisher.getKey().getType());

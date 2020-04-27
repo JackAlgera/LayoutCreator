@@ -1,15 +1,23 @@
-package com.projetpaparobin.objects.extinguishers;
+package com.projetpaparobin.documents.output;
+
+import com.projetpaparobin.objects.extinguishers.EProtectionType;
 
 public class TypeExtinguisher {
 
 	private String type;
 	private int fabricationYear;
 	private EProtectionType protectionType;
+	private String local;
 	
-	public TypeExtinguisher(String type, int fabricationYear, EProtectionType protectionType) {
+	public TypeExtinguisher(String type, int fabricationYear, EProtectionType protectionType, String local) {
 		this.type = type;
 		this.fabricationYear = fabricationYear;
 		this.protectionType = protectionType;
+		this.local = local;
+	}
+	
+	public String getLocal() {
+		return local;
 	}
 	
 	public String getType() {
@@ -23,12 +31,13 @@ public class TypeExtinguisher {
 	public EProtectionType getProtectionType() {
 		return protectionType;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + fabricationYear;
+		result = prime * result + ((local == null) ? 0 : local.hashCode());
 		result = prime * result + ((protectionType == null) ? 0 : protectionType.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -44,6 +53,11 @@ public class TypeExtinguisher {
 			return false;
 		TypeExtinguisher other = (TypeExtinguisher) obj;
 		if (fabricationYear != other.fabricationYear)
+			return false;
+		if (local == null) {
+			if (other.local != null)
+				return false;
+		} else if (!local.equals(other.local))
 			return false;
 		if (protectionType != other.protectionType)
 			return false;

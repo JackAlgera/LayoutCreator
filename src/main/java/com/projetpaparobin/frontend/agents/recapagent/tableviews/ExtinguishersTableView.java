@@ -22,7 +22,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 
 	private TableColumn<Extinguisher, Integer> fabricationYearColumn;
 	private TableColumn<Extinguisher, EProtectionType> protectionTypeColumn;
-	private TableColumn<Extinguisher, String> brandColumn, numberColumn, extinguisherTypeColumn;
+	private TableColumn<Extinguisher, String> brandColumn, numberColumn, extinguisherTypeColumn, localColumn;
 	private TableColumn<Extinguisher, Boolean> isNewColumn;
 	private TableColumn<Extinguisher, UIColor> colorColumn;
 	
@@ -31,15 +31,16 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		super(presLayout, width);
 		
 		width = width * 0.97;
-		double nbrColumns = 6;
+		double nbrColumns = 7;
 
 		setNumberColumn(width / nbrColumns);				
 		setExtinguisherTypeColumn(width / nbrColumns);		
 		setProtectionTypeColumn(width / nbrColumns);	
 		setFabricationYearColumn(width / nbrColumns);	
-		setBrandColumn(width / nbrColumns);
+		setBrandColumn(width / nbrColumns);	
+		setLocalColumn(width / nbrColumns);
 		setColorColumn(width / nbrColumns);
-		this.getColumns().addAll(numberColumn, extinguisherTypeColumn, protectionTypeColumn, fabricationYearColumn, brandColumn, colorColumn); 
+		this.getColumns().addAll(numberColumn, extinguisherTypeColumn, protectionTypeColumn, fabricationYearColumn, brandColumn, localColumn, colorColumn); 
 		this.setItems(LayoutHandler.getInstance().getExtinguishers());
 	}	
 	
@@ -47,7 +48,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		this.setMaxWidth(width);
 		this.setMinWidth(width);
 		width = width * 0.97;
-		double nbrColumns = 6;
+		double nbrColumns = 7;
 		fabricationYearColumn.setMaxWidth(width / nbrColumns);
 		fabricationYearColumn.setMinWidth(width / nbrColumns);
 		protectionTypeColumn.setMaxWidth(width / nbrColumns);
@@ -60,6 +61,8 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		extinguisherTypeColumn.setMinWidth(width / nbrColumns);
 		colorColumn.setMaxWidth(width / nbrColumns);
 		colorColumn.setMinWidth(width / nbrColumns);
+		localColumn.setMaxWidth(width / nbrColumns);
+		localColumn.setMinWidth(width / nbrColumns);
 	}
 	
 	private void setNumberColumn(double maxWidth) {
@@ -118,6 +121,17 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		brandColumn.setOnEditCommit(event -> {
 			String newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
 			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setBrand(newVal);
+			presLayout.updateShapes();
+		});
+	}
+	
+	private void setLocalColumn(double maxWidth) {
+		localColumn = createColumn("Local", "local", maxWidth);
+		localColumn.setCellFactory(EditableCellTextField.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), null));
+		
+		localColumn.setOnEditCommit(event -> {
+			String newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setLocal(newVal);
 			presLayout.updateShapes();
 		});
 	}

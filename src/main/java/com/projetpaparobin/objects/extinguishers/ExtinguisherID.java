@@ -12,12 +12,13 @@ public class ExtinguisherID {
 	private String brand;
 	private boolean isNew;
 	private UIColor color;
+	private String local;
 		
 	public ExtinguisherID() {
 	}
 	
 	public ExtinguisherID(String number, String extinguisherType, EProtectionType protectionType, int fabricationYear,
-			String brand, boolean isNew, UIColor color) {
+			String brand, boolean isNew, UIColor color, String local) {
 		this.number = number;
 		this.extinguisherType = extinguisherType;
 		this.protectionType = protectionType;
@@ -25,8 +26,17 @@ public class ExtinguisherID {
 		this.brand = brand;
 		this.isNew = isNew;
 		this.color = color;
+		this.local = local;
 	}
 	
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
+	}
+
 	public String getNumber() {
 		return number;
 	}
