@@ -21,10 +21,12 @@ public class UIExtinguisher extends UIElement {
 	private Circle circle;		
 	private WritableImage drawnImage;
 	private Extinguisher ex;
+	private UIExtinguisherText uiExText;
 	
 	public UIExtinguisher(Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
 		super(ex.getPos().getX(), ex.getPos().getY(), Color.BLACK, ex.getId().getColor(), viewLayoutAgent);
 		this.ex = ex;
+		this.uiExText = null;
 		prepareImage();
 	}
 
@@ -67,9 +69,14 @@ public class UIExtinguisher extends UIElement {
 	
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
+		double deltaX = newPosX - posX;
+		double deltaY = newPosY - posY;
 		super.translateShape(newPosX, newPosY);
 		circle = new Circle(posX, posY, circle.getRadius());
 		ex.setPos(new Point(newPosX, newPosY));
+		if(uiExText != null) {
+			uiExText.translateShape(uiExText.getPosX() + deltaX, uiExText.getPosY() + deltaY);
+		}
 	}
 
 	@Override
@@ -82,6 +89,10 @@ public class UIExtinguisher extends UIElement {
 	public void removeSelf() {
 		ex.getZone().removeExtinguisher(ex);
 		layoutHandler.removeExtinguisher(ex);
+	}
+	
+	public void setUiExText(UIExtinguisherText uiExText) {
+		this.uiExText = uiExText;
 	}
 	
 }
