@@ -4,6 +4,7 @@ import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIElement;
+import com.projetpaparobin.frontend.elements.UIExtinguisher;
 import com.projetpaparobin.frontend.elements.UIExtinguisherText;
 import com.projetpaparobin.frontend.elements.UIZone;
 import com.projetpaparobin.frontend.elements.UIZoneText;
@@ -99,14 +100,19 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT_RESIZE_CORNER, mouseX, mouseY, prevSelectedElement, false);
 					break;
 				}
-				selectedUIElement = extinguisherHandler.getExtinguisher(mouseX, mouseY);				
-				if(selectedUIElement != null) {
-					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, mouseX, mouseY, prevSelectedElement, true);
-					break;
-				}
 				selectedUIElement = textHandler.getExtinguisherText(mouseX, mouseY);
 				if(selectedUIElement != null) {
 					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_TEXT, mouseX, mouseY, prevSelectedElement, true);
+					break;
+				}
+				selectedUIElement = extinguisherHandler.getExtinguisherResizeCorner(mouseX, mouseY);
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER_RESIZE_CORNER, mouseX, mouseY, prevSelectedElement, false);
+					break;
+				}
+				selectedUIElement = extinguisherHandler.getExtinguisher(mouseX, mouseY);				
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_EXTINGUISHER, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
 				selectedUIElement = textHandler.getZoneTextResizeCorner(mouseX, mouseY);
@@ -196,6 +202,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				((UIExtinguisherText)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
 				presLayout.updateCanvas();
 				break;
+			case SELECTED_EXTINGUISHER_RESIZE_CORNER:
+				((UIExtinguisher)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
+				presLayout.updateCanvas();
+				break;
 			}
 			break;			
 
@@ -232,6 +242,12 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				}
 				break;
 			case SELECTED_EXTINGUISHER_TEXT_RESIZE_CORNER:
+				state = ETypeAction.IDLE;
+				if(prevSelectedElement != null) {
+					selectedUIElement = prevSelectedElement;
+				}
+				break;
+			case SELECTED_EXTINGUISHER_RESIZE_CORNER:
 				state = ETypeAction.IDLE;
 				if(prevSelectedElement != null) {
 					selectedUIElement = prevSelectedElement;

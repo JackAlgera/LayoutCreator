@@ -2,7 +2,10 @@ package com.projetpaparobin.frontend.handlers;
 
 import java.util.ArrayList;
 
+import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIExtinguisher;
+import com.projetpaparobin.frontend.elements.UIZone;
+import com.projetpaparobin.frontend.elements.UIZoneText;
 
 public class UIExtinguisherHandler {
 
@@ -25,6 +28,18 @@ public class UIExtinguisherHandler {
 		for (UIExtinguisher e : extinguishers) {
 			if(e.containsPoint(posX, posY)) {
 				return e;
+			}
+		}
+		return null;
+	}
+	
+	public UICorner getExtinguisherResizeCorner(double posX, double posY) {
+		for (UIExtinguisher ex : extinguishers) {
+			if(!ex.isSelected()) {
+				continue;
+			}
+			if(ex.getResizeCorner().containsPoint(posX, posY)) {
+				return ex.getResizeCorner();
 			}
 		}
 		return null;

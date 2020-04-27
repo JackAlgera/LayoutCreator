@@ -11,6 +11,7 @@ public class Extinguisher {
 	private ExtinguisherID id;
 	private Point pos, textAreaPos;
 	private double textAreaSize;
+	private double radius;
 	
 	@JsonBackReference
 	private Zone zone;
@@ -24,8 +25,17 @@ public class Extinguisher {
 		this.pos = pos;
 		this.zone = zone;
 		this.textAreaSize = 0;
+		this.radius = -1;
 	}
 	
+	public double getRadius() {
+		return radius;
+	}
+
+	public void setRadius(double radius) {
+		this.radius = radius;
+	}
+
 	public double getTextAreaSize() {
 		return textAreaSize;
 	}
