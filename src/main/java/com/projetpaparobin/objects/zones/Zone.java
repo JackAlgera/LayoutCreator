@@ -17,7 +17,8 @@ public class Zone {
 	private UIColor fillColor;
 	@JsonIgnore
 	private Color rimColor;
-	private Point textAreaPosition;
+	private Point textAreaPos;
+	private Point textConnectionCenterPos;
 	
 	@JsonManagedReference
 	private ArrayList<Extinguisher> extinguishers;	
@@ -27,7 +28,8 @@ public class Zone {
 		this.extinguishers = new ArrayList<Extinguisher>();
 		this.fillColor = UIElements.getRandomColor();
 		this.rimColor = fillColor.getColor().darker();
-		this.textAreaPosition = null;
+		this.textAreaPos = null;
+		this.textConnectionCenterPos = null;
 	}
 	
 	public ZoneID getId() {
@@ -83,12 +85,20 @@ public class Zone {
 		return shape.containsPoint(posX, posY);
 	}
 
-	public Point getTextAreaPosition() {
-		return textAreaPosition;
+	public Point getTextAreaPos() {
+		return textAreaPos;
 	}
 
-	public void setTextAreaPosition(Point textAreaPosition) {
-		this.textAreaPosition = textAreaPosition;
+	public void setTextAreaPos(Point textAreaPos) {
+		this.textAreaPos = textAreaPos;
+	}
+
+	public Point getTextConnectionCenterPos() {
+		return textConnectionCenterPos;
+	}
+
+	public void setTextConnectionCenterPos(Point textConnectionCenterPos) {
+		this.textConnectionCenterPos = textConnectionCenterPos;
 	}
 
 	@JsonIgnore

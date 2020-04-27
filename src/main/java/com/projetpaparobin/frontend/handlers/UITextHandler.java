@@ -2,6 +2,7 @@ package com.projetpaparobin.frontend.handlers;
 
 import java.util.ArrayList;
 
+import com.projetpaparobin.frontend.elements.UIConnection;
 import com.projetpaparobin.frontend.elements.UIExtinguisherText;
 import com.projetpaparobin.frontend.elements.UIZoneText;
 
@@ -37,6 +38,15 @@ public class UITextHandler {
 		for (UIZoneText text : zoneTexts) {
 			if(text.containsPoint(posX, posY)) {
 				return text;
+			}
+		}
+		return null;
+	}
+	
+	public UIConnection getConnection(double posX, double posY) {
+		for (UIZoneText text : zoneTexts) {
+			if(text.getConnection().containsPoint(posX, posY)) {
+				return text.getConnection();
 			}
 		}
 		return null;

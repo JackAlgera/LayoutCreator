@@ -10,12 +10,12 @@ import javafx.scene.shape.Circle;
 public class UICorner extends UIElement {
 	
 	private Circle circle;		
-	private UIZone uiZone;
+	private UIElement uiElement;
 	private static double lineWidth = 1.0;
 	
-	public UICorner(UIZone uiZone, Point p, double radius, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
+	public UICorner(UIElement uiElement, Point p, double radius, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
 		super(p.getX(), p.getY(), rimColor, fillColor, viewLayoutAgent);
-		this.uiZone = uiZone;
+		this.uiElement = uiElement;
 		prepareImage(radius);
 	}
 
@@ -54,8 +54,8 @@ public class UICorner extends UIElement {
 		circle = new Circle(posX, posY, circle.getRadius());
 	}
 	
-	public UIZone getUiZone() {
-		return uiZone;
+	public UIElement getUiElement() {
+		return uiElement;
 	}
 	
 	@Override

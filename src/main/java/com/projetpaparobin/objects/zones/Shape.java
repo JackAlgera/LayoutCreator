@@ -3,6 +3,7 @@ package com.projetpaparobin.objects.zones;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import javafx.scene.shape.Polygon;
 
@@ -61,6 +62,11 @@ public class Shape {
 	@JsonIgnore
 	public boolean isEmpty() {
 		return area.getPoints().isEmpty();
+	}
+	
+	@JsonIgnore
+	public Point getCenter() {
+		return new Point(area.getBoundsInLocal().getCenterX(), area.getBoundsInLocal().getCenterY());
 	}
 	
 }

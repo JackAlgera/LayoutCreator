@@ -22,19 +22,22 @@ public class UIZoneText extends UIElement {
 	
 	private Rectangle hitbox;
 	private Zone zone;
+	private UIConnection connection;
 
 	private WritableImage drawnImage;
 		
-	public UIZoneText(Zone zone, ViewLayoutAgent viewLayoutAgent) {
-		super(	(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBoundsInLocal().getCenterX() : zone.getTextAreaPosition().getX(),
-				(zone.getTextAreaPosition() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPosition().getY(),
+	public UIZoneText(Zone zone, UIZone uiZone, ViewLayoutAgent viewLayoutAgent) {
+		super(	(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getCenterX() : zone.getTextAreaPos().getX(),
+				(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPos().getY(),
 				zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
+		this.connection = new UIConnection(zone, this, getInitConnectionPos(zone, uiZone, this), zone.getRimColor(), viewLayoutAgent);
 		prepareImage();
 	}
 	
 	@Override
 	public void drawShape() {	
+		connection.drawShape();
 		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - (drawnImage.getWidth() / 2.0), posY * viewLayoutAgent.getCanvasHeight() - (drawnImage.getHeight() / 2.0));	
 	}
 	
@@ -89,7 +92,7 @@ public class UIZoneText extends UIElement {
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
 		super.translateShape(newPosX, newPosY);
-		zone.setTextAreaPosition(new Point(newPosX, newPosY));
+		zone.setTextAreaPos(new Point(newPosX, newPosY));
 		hitbox = new Rectangle(
 				posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())), 
 				posY - (drawnImage.getHeight() / (2.0 * viewLayoutAgent.getCanvasHeight())),
@@ -100,12 +103,27 @@ public class UIZoneText extends UIElement {
 	@Override
 	public void setIsSelected(boolean isSelected) {
 		this.isSelected = isSelected;
+		connection.setIsSelected(isSelected);
 	}
 
 	@Override
 	public void removeSelf() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private Point getInitConnectionPos(Zone zone, UIZone uiZone, UIZoneText uiText) {
+		if(zone.getTextConnectionCenterPos() == null) {
+			Point p = new Point(((uiZone.getPosX() + uiText.getPosX()) / 2.0), ((uiZone.getPosY() + uiText.getPosY()) / 2.0));
+			zone.setTextConnectionCenterPos(p);
+			return p;
+		} else {
+			return new Point(zone.getTextConnectionCenterPos().getX(), zone.getTextConnectionCenterPos().getY());
+		}
+	}
+	
+	public UIConnection getConnection() {
+		return connection;
 	}
 	
 }

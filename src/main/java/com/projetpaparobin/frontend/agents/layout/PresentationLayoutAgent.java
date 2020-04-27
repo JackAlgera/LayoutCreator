@@ -82,7 +82,7 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 			UIZone uiZone = new UIZone(zone, view, false);
 			uiZone.switchPointRadius();
 			zoneHandler.add(uiZone);
-			textHandler.addZoneText(new UIZoneText(zone, view));
+			textHandler.addZoneText(new UIZoneText(zone, uiZone, view));
 			
 			for (Extinguisher ex : zone.getExtinguishers()) {
 				extinguisherHandler.addExtinguisher(new UIExtinguisher(ex, view));

@@ -117,7 +117,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 					selectUIElement(ETypeAction.SELECTED_ZONE, mouseX, mouseY, prevSelectedElement, true);
 					break;
 				}
-
+				selectedUIElement = textHandler.getConnection(mouseX, mouseY);
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_CONNECTION, mouseX, mouseY, prevSelectedElement, true);
+					break;
+				}
 				if(prevSelectedElement != null) {
 					prevSelectedElement.setIsSelected(false);
 				}
@@ -153,7 +157,7 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				break;
 			case SELECTED_CORNER:
 				selectedUIElement.translateShape(newPosX, newPosY);
-				((UICorner) selectedUIElement).getUiZone().updateZone();
+				((UIZone) ((UICorner) selectedUIElement).getUiElement()).updateZone();
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_ZONE:
@@ -168,6 +172,10 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				selectedUIElement.translateShape(newPosX, newPosY);
 				presLayout.updateCanvas();
 				break;
+			case SELECTED_CONNECTION:
+				selectedUIElement.translateShape(newPosX, newPosY);
+				presLayout.updateCanvas();
+				break;				
 			}
 			break;			
 
@@ -184,8 +192,6 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				System.out.println("HERE");
 				if(prevSelectedElement != null) {
 					selectedUIElement = prevSelectedElement;
-//					prevSelectedElement.setIsSelected(false);
-//					presLayout.updateCanvas();
 				}
 				break;
 			case SELECTED_ZONE:
@@ -197,6 +203,9 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			case SELECTED_COMMENT:
 				state = ETypeAction.IDLE;
 				break;	
+			case SELECTED_CONNECTION:
+				state = ETypeAction.IDLE;
+				break;
 			}
 			break;
 		default:
