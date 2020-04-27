@@ -26,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.dao.DAOExcelImpl;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
+import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Zone;
 
@@ -97,7 +98,8 @@ public class BigBoiFinalFileGenerator {
 		
 		ExtinguisherTypePositionHandler positionHandler = new ExtinguisherTypePositionHandler(nbrExtinguishersSheet);
 		
-		for (Zone zone : layoutHandler.getZones()) {			
+		for (Zone zone : layoutHandler.getZones()) {		
+			boolean containsPIP = false;
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
             for (Extinguisher e: zone.getExtinguishers()) {
                 TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear(), e.getId().getProtectionType(), e.getId().getLocal());
@@ -109,15 +111,19 @@ public class BigBoiFinalFileGenerator {
                 }
                 
                 extinguishers.add(e);
+                
+                if(e.getProtectionType().equals(EProtectionType.PIP)) {
+                	containsPIP = true;
+                }
             }
 	            	            
 			switch (zone.getId().getActivityType()) {
 			case INDUSTRIELLE:				
-				industrielleRow = fillActivitySheet(industrielleSheet, industrielleRow, zone, extinguisherList);
+				industrielleRow = fillActivitySheet(industrielleSheet, industrielleRow, zone, extinguisherList, containsPIP);
 				break;
 				
 			case TERTIAIRE:
-				tertiaireRow = fillActivitySheet(tertiaireSheet, tertiaireRow, zone, extinguisherList);		
+				tertiaireRow = fillActivitySheet(tertiaireSheet, tertiaireRow, zone, extinguisherList, containsPIP);		
 				break;
 			}
 		}
@@ -190,13 +196,17 @@ public class BigBoiFinalFileGenerator {
 		}
 	}
 	
-	private int fillActivitySheet(XSSFSheet sheet, int rowNbr, Zone zone, HashMap<TypeExtinguisher, Integer> extinguisherList) {
+	private int fillActivitySheet(XSSFSheet sheet, int rowNbr, Zone zone, HashMap<TypeExtinguisher, Integer> extinguisherList, boolean containsPIP) {
 		int rowNbrPG = rowNbr;
 		int rowNbrPIP = rowNbr;
 		
 		fillExcelCell(sheet, rowNbrPIP, 0, CellType.NUMERIC, zone.getId().getAreaNumber());
-		fillExcelCell(sheet, rowNbrPIP, 1, CellType.STRING, zone.getId().getAreaName());
-		fillExcelCell(sheet, rowNbrPIP, 5, CellType.NUMERIC, zone.getId().getAreaSize());
+		if(containsPIP) {
+			fillExcelCell(sheet, rowNbrPIP, 11, CellType.STRING, zone.getId().getAreaName() + " " + zone.getId().getAreaSize());
+		} else {
+			fillExcelCell(sheet, rowNbrPIP, 1, CellType.STRING, zone.getId().getAreaName());
+			fillExcelCell(sheet, rowNbrPIP, 5, CellType.NUMERIC, zone.getId().getAreaSize());
+		}
 		
 		for (Map.Entry<TypeExtinguisher, Integer> extinguisher : extinguisherList.entrySet()) {		
 			switch (extinguisher.getKey().getProtectionType()) {
