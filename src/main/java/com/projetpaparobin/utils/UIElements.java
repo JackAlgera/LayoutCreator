@@ -80,7 +80,11 @@ public class UIElements {
 			UIColor.LIGHTGREEN,
 			UIColor.LIGHTRED,
 			UIColor.LIGHTYELLOW,
-			UIColor.BROWN
+			UIColor.LIGHTGREY,
+			UIColor.LIGHTMAGENTA,
+			UIColor.LIGHTCYAN,
+			UIColor.LIGHTBROWN
+			
 	));
 	
 	public static ArrayList<UIColor> DEFAULT_EXTINGUISHER_COLORS = new ArrayList<UIColor>(Arrays.asList(
