@@ -3,6 +3,8 @@ package com.projetpaparobin.documents.output;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -34,6 +36,8 @@ import com.projetpaparobin.objects.zones.Zone;
 
 public class BigBoiFinalFileGenerator {
 
+	private static String DATE_FORMAT = "dd/MM/yyyy";
+	
 	private static ArrayList<String> NOT_MES_5_TYPES = new ArrayList<String>(Arrays.asList(
 			EExtinguisherType.E6AEVF.getName(),
 			EExtinguisherType.AL6F.getName(),
@@ -143,8 +147,15 @@ public class BigBoiFinalFileGenerator {
 			recensementRow++;
 		}
 
+		fillTimeDates(nbrExtinguishersSheet);
+		
 		XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
 		closeProject(fileInputStream, outputTitle, workbook);
+	}
+	
+	private void fillTimeDates(XSSFSheet sheet) {
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+		fillExcelCell(sheet, 17, 1, CellType.STRING, timeFormatter.format(LocalDateTime.now()));
 	}
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {

@@ -87,8 +87,6 @@ public class UIExtinguisher extends UIElement {
 
 	@Override
 	public boolean containsPoint(double posX, double posY) {
-		System.out.println( viewLayoutAgent.getCanvasRatio());
-		
 		if(		posY <= (this.posY + circle.getRadius()) && 
 				posY >= (this.posY - circle.getRadius()) &&
 				posX <= (this.posX + circle.getRadius() * viewLayoutAgent.getCanvasRatio()) && 

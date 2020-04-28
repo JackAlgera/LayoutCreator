@@ -14,18 +14,18 @@ public enum UIColor {
 	LIGHTCYAN(   "Cyan clair",   new Color(Color.CYAN.getRed(),    Color.CYAN.getGreen(),    Color.CYAN.getBlue(),    0.5)),
 	LIGHTBROWN(  "Marron clair", new Color(Color.BROWN.getRed(),   Color.BROWN.getGreen(),   Color.BROWN.getBlue(),   0.5)),
 	
-	BLACK(		"Noir", 		new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 	1.0)),
+	BLACK(		"Noir",			new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 	1.0)),
 	WHITE(		"Blanche", 		new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), 	1.0)),
 	
 	ORANGE(	"Orange", 	new Color(255.0 / 255, 	153.0 / 255, 	36.0 / 255, 	1.0)),	
 	BLUE(	"Bleu", 	new Color(30.0 / 255, 	144.0 / 255, 	255.0 / 255, 	1.0)),
-	RED(	"Rouge", 	new Color(255.0 / 255, 	0.0 / 255, 	0.0 / 255, 	1.0)),
-	YELLOW("Jaune",		new Color(255.0 / 255, 	255.0 / 255, 	0.0 / 255, 	1.0)),
-	GREEN(	"Vert", 	new Color(0.0 / 255, 	255.0 / 255, 	0.0 / 255, 	1.0)),
+	RED(	"Rouge", 	new Color(255.0 / 255, 	0.0 / 255, 		0.0 / 255, 		1.0)),
+	YELLOW("Jaune",		new Color(255.0 / 255, 	255.0 / 255, 	0.0 / 255, 		1.0)),
+	GREEN(	"Vert", 	new Color(0.0 / 255, 	255.0 / 255, 	0.0 / 255, 		1.0)),
 	GREY(   "Gris",		new Color(110.0 / 255, 	110.0 / 255, 	110.0 / 255, 	1.0)),
 	MAGENTA("Magenta",	new Color(255.0 / 255, 	0.0 / 255,  	220.0 / 255, 	1.0)),
 	CYAN(   "Cyan",	    new Color(0.0 / 255, 	183.0 / 255,  	235.0 / 255, 	1.0)),
-	BROWN(  "Marron",	new Color(100.0 / 255, 	50.0 / 255,  	0.0 / 255, 	1.0));
+	BROWN(  "Marron",	new Color(100.0 / 255, 	50.0 / 255,  	0.0 / 255, 		1.0));
 	
 	private String colorName;
 	

@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
-import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.zones.EActivityType;
 import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.EUnits;
@@ -81,11 +80,10 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, areaNumber, activityType, areaSize));
 				inputDialog.setHeight(initHeight);
 			}
-		});
-		
+		});	
 		VBox vbox = new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, areaNumber, activityType, areaSize);
 		vbox.setFillWidth(true);
-		
+
 		dialogPane.setContent(vbox);
 		initHeight = inputDialog.getHeight();
 		

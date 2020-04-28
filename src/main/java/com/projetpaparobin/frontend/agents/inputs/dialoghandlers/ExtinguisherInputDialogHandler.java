@@ -118,7 +118,7 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 				}
 			}
 		);
-		
+				
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String numberVal = (number.getText().isBlank()) ? ExtinguisherCreator.getDefaultZoneNumber() : number.getText();
