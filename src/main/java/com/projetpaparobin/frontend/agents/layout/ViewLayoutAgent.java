@@ -36,6 +36,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 	private CommentInputDialogHandler commentInputDialog;
 	
 	private PresentationLayoutAgent pres;
+	private double canvasRatio;
 		
 	public ViewLayoutAgent() {
 	}
@@ -82,6 +83,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 		mouseInputHandler.setViewLayoutAgent(this);
 		layoutHandler.addListener(this);
 		this.getChildren().addAll(imageView ,canvas);		
+		this.canvasRatio = getHeight() / getWidth();
 	}
 	
 	public void updateLayoutImage() {		
@@ -144,7 +146,8 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 		
 		canvas.setMouseTransparent(true);
 		
-		this.getChildren().setAll(imageView ,canvas);	
+		this.getChildren().setAll(imageView ,canvas);		
+		this.canvasRatio = getHeight() / getWidth();
 	}
 
 	@Override
@@ -152,4 +155,8 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 		updateLayoutImage();
 	}
 
+	public double getCanvasRatio() {
+		return canvasRatio;
+	}
+	
 }

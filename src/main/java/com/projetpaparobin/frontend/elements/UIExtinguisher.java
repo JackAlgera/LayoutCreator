@@ -6,12 +6,15 @@ import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
+import javafx.geometry.Bounds;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Transform;
 
 public class UIExtinguisher extends UIElement {
 	
@@ -38,42 +41,61 @@ public class UIExtinguisher extends UIElement {
 
 	@Override
 	public void drawShape() {
-		canvasGC.drawImage(drawnImage, (posX - circle.getRadius()) * viewLayoutAgent.getCanvasWidth(), posY * viewLayoutAgent.getCanvasHeight() - circle.getRadius() * viewLayoutAgent.getCanvasWidth());	
+		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - circle.getRadius() * viewLayoutAgent.getCanvasHeight(), (posY - circle.getRadius()) * viewLayoutAgent.getCanvasHeight());	
 		if(isSelected) {
 			resizeCorner.drawShape();
 		}
 	}
 
 	private void prepareImage() {
+		int scale = 5;
+		
 		StackPane sPane = new StackPane();		
-		Circle drawnCircle;
-		
-		if(isSelected) {
-			circle = new Circle(posX, posY, ex.getRadius() + SELECTED_EXTINGUISHER_RADIUS_INCREASE, UIElements.EXTINGUISHER_SELECTED_COLOR.getColor());
-			drawnCircle = new Circle(posX, posY, (ex.getRadius() + SELECTED_EXTINGUISHER_RADIUS_INCREASE) * viewLayoutAgent.getCanvasWidth(), UIElements.EXTINGUISHER_SELECTED_COLOR.getColor());
-			drawnCircle.setStroke(Color.BLACK);
-			drawnCircle.setStrokeWidth(1.3);	
-		} else {
-			circle = new Circle(posX, posY, ex.getRadius(), Color.CYAN);
-			drawnCircle = new Circle(posX, posY, ex.getRadius() * viewLayoutAgent.getCanvasWidth(), ex.getId().getColor().getColor());
-			drawnCircle.setStroke(rimColor);
-			drawnCircle.setStrokeWidth(0.8);	
-		}	
-		
 		Text nbrText = new Text("" + ex.getId().getNumber());
 		nbrText.setFont(UIElements.EXTINGUISHER_FONT);
+		nbrText.setFill(UIColor.BLACK.getColor());	
 		
+		sPane.getChildren().addAll(nbrText);		
+		Bounds bounds = sPane.getBoundsInLocal();
+
+		Circle drawnCircle;
+		drawnCircle = new Circle(bounds.getWidth());
+		drawnCircle.setStroke(Color.BLACK);
+		drawnCircle.setStrokeWidth(1.0);	
+	
+		if(isSelected) {
+			drawnCircle.setFill(UIElements.EXTINGUISHER_SELECTED_COLOR.getColor());
+		} else {
+			drawnCircle.setFill(ex.getId().getColor().getColor());
+		}
+				
 		sPane.getChildren().setAll(drawnCircle, nbrText);
-		
+
 		SnapshotParameters params = new SnapshotParameters();
+		params.setTransform(Transform.scale(scale, scale));
 		params.setFill(Color.TRANSPARENT);
 		
-		drawnImage = sPane.snapshot(params, null);
+		drawnImage = sPane.snapshot(params, null);		
+				
+		ImageView view = new ImageView(drawnImage);
+		view.setFitWidth(viewLayoutAgent.getCanvasHeight() * ex.getRadius() * 2);
+		view.setFitHeight(viewLayoutAgent.getCanvasHeight() * ex.getRadius() * 2);
+		params.setTransform(Transform.scale(1, 1));
+		drawnImage = view.snapshot(params, null);
+		circle = new Circle(posX, posY, ex.getRadius());			
 	}
 
 	@Override
 	public boolean containsPoint(double posX, double posY) {
-		return circle.contains(posX, posY);
+		System.out.println( viewLayoutAgent.getCanvasRatio());
+		
+		if(		posY <= (this.posY + circle.getRadius()) && 
+				posY >= (this.posY - circle.getRadius()) &&
+				posX <= (this.posX + circle.getRadius() * viewLayoutAgent.getCanvasRatio()) && 
+				posX >= (this.posX - circle.getRadius() * viewLayoutAgent.getCanvasRatio())) {
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
