@@ -28,6 +28,8 @@ import com.projetpaparobin.documents.dao.DAOExcelImpl;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
+import com.projetpaparobin.objects.zones.EActivityType;
+import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.Zone;
 
 public class BigBoiFinalFileGenerator {
@@ -221,7 +223,7 @@ public class BigBoiFinalFileGenerator {
 				rowNbrPIP++;
 				break;
 			case PG:
-				double FC = (TYPE_6L.contains(extinguisher.getKey().getType())) ? 0.75 : 1.0;
+				double FC = zone.getId().getActivityType().equals(EActivityType.TERTIAIRE) ? 1.0 : ((TYPE_6L.contains(extinguisher.getKey().getType())) ? 0.75 : 1.0);
 				fillExcelCell(sheet, rowNbrPG, 6, CellType.NUMERIC, extinguisher.getValue());
 				fillExcelCell(sheet, rowNbrPG, 7, CellType.STRING, extinguisher.getKey().getType());
 				fillExcelCell(sheet, rowNbrPG, 8, CellType.NUMERIC, extinguisher.getKey().getFabricationYear());
