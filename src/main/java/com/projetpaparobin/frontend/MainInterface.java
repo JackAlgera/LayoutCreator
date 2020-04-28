@@ -25,7 +25,7 @@ public class MainInterface extends Application {
 		primaryStage.setTitle("Projet papa Robaing");
 		primaryStage.setMaximized(false);
 		primaryStage.setResizable(true);
-		primaryStage.getIcons().add(new Image("/icons/Application_Icon.png"));
+		primaryStage.getIcons().add(new Image("/icons/Application_Icon_v2.png"));
 		addResizeListener(primaryStage);
 		primaryStage.setOnCloseRequest(new ConfirmCloseEventHandler(primaryStage).getConfirmCloseEventHandler());		
 
