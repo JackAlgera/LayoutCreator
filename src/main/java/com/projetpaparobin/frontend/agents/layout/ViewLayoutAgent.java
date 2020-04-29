@@ -47,7 +47,7 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 		this.setMinSize(width, height);
 		this.setAlignment(Pos.CENTER);
 		this.pres = pres;		
-		zoneInputDialog = new ZoneInputDialogHandler(primaryStage);
+		zoneInputDialog = new ZoneInputDialogHandler(primaryStage, pres);
 		extinguisherInputDialog = new ExtinguisherInputDialogHandler(primaryStage);
 		commentInputDialog = new CommentInputDialogHandler(primaryStage);
 		

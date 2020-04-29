@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
@@ -11,6 +12,7 @@ import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.zones.EActivityType;
 import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.EUnits;
+import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.objects.zones.ZoneID;
 import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
@@ -37,9 +39,11 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 	private TextField areaNumber, areaName, areaSize;
 	
 	private double initHeight;
+	private PresentationLayoutAgent presLayout;
 	
-	public ZoneInputDialogHandler(Window primaryStage) {
+	public ZoneInputDialogHandler(Window primaryStage, PresentationLayoutAgent presLayout) {
 		super(primaryStage);
+		this.presLayout = presLayout;
 		zoneCreator.addListener(this);
 		inputDialog = new Dialog<ZoneID>();
 		inputDialog.setTitle("Nouvelle zone");
@@ -72,8 +76,15 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		areaSize.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
 		colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_ZONE_COLORS));
-		colorComboBox.setValue(UIElements.getRandomColor());
+		colorComboBox.setValue(UIElements.DEFAULT_ZONE_CREATION_COLOR);
 		colorComboBox.setPrefWidth(width);	
+		colorComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+				Zone zone = zoneCreator.getCurrentZone();
+				if(zone != null) {
+					zone.setFillColor(colorComboBox.getValue());
+					presLayout.handleZoneCreatorEvent(EZoneEvents.ADDED_POINT);
+				}
+		});
 		
 		areaType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EAreaType.values())
 						.map(val -> val.toString())
@@ -113,7 +124,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				activityType.setValue(EActivityType.values()[0].toString());
 				areaSize.setText("");
 				units.setValue("kg");
-				colorComboBox.setValue(UIElements.getRandomColor());
+				colorComboBox.setValue(UIElements.DEFAULT_ZONE_CREATION_COLOR);
 				
 				return new ZoneID(areaNameVal, areaTypeVal, areaNumberVal, activityTypeVal, areaSizeVal, unitsVal, colorVal);
 			} 
