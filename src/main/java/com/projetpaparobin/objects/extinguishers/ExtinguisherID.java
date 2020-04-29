@@ -5,18 +5,18 @@ import com.projetpaparobin.utils.UIColor;
 
 public class ExtinguisherID {
 
-	private String number; //from 01 to XX 
+	private String number; // from 01 to XX
 	private String extinguisherType;
-	private EProtectionType protectionType; 
+	private EProtectionType protectionType;
 	private int fabricationYear;
 	private String brand;
 	private boolean isNew;
 	private UIColor color;
 	private String local;
-		
+
 	public ExtinguisherID() {
 	}
-	
+
 	public ExtinguisherID(String number, String extinguisherType, EProtectionType protectionType, int fabricationYear,
 			String brand, boolean isNew, UIColor color, String local) {
 		this.number = number;
@@ -28,7 +28,7 @@ public class ExtinguisherID {
 		this.color = color;
 		this.local = local;
 	}
-	
+
 	public String getLocal() {
 		return local;
 	}
@@ -152,5 +152,5 @@ public class ExtinguisherID {
 			return false;
 		return true;
 	}
-	
+
 }

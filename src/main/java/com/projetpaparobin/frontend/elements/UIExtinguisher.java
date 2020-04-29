@@ -98,7 +98,7 @@ public class UIExtinguisher extends UIElement {
 		super.translateShape(newPosX, newPosY);
 		circle = new Circle(posX, posY, circle.getRadius());
 		ex.setPos(new Point(newPosX, newPosY));
-		if(uiExText != null) {
+		if (uiExText != null) {
 			uiExText.translateShape(uiExText.getPosX() + deltaX, uiExText.getPosY() + deltaY);
 		}
 	}
@@ -122,12 +122,12 @@ public class UIExtinguisher extends UIElement {
 	public void setUiExText(UIExtinguisherText uiExText) {
 		this.uiExText = uiExText;
 	}
-	
+
 	public void resize(double newPosY) {
 		ex.setRadius(Math.abs(posY - newPosY));
 		prepareImage();
 		super.translateResizeCorner(posX + circle.getRadius(), posY - circle.getRadius());
 		DEFAULT_EXTINGUISHER_RADIUS = ex.getRadius();
 	}
-	
+
 }

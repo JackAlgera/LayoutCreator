@@ -40,7 +40,7 @@ public class UICorner extends UIElement {
 		super.drawShape();
 	}
 
-	public void prepareImage(double radius) {		
+	public void prepareImage(double radius) {
 		circle = new Circle(posX, posY, radius);
 	}
 
@@ -48,17 +48,17 @@ public class UICorner extends UIElement {
 	public boolean containsPoint(double posX, double posY) {
 		return circle.contains(posX, posY);
 	}
-	
+
 	@Override
 	public void translateShape(double newPosX, double newPosY) {
 		super.translateShape(newPosX, newPosY);
 		circle = new Circle(posX, posY, circle.getRadius());
 	}
-	
+
 	public UIElement getUiElement() {
 		return uiElement;
 	}
-	
+
 	@Override
 	public void removeSelf() {
 	}

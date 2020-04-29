@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class MainInterface extends Application {
 
 	private MainUI layout;
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		double height = 800;

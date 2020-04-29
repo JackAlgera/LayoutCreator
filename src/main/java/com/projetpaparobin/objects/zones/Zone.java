@@ -10,16 +10,16 @@ import com.projetpaparobin.utils.UIColor;
 import javafx.scene.paint.Color;
 
 public class Zone {
-	
+
 	private ZoneID id;
 	private Shape shape;
 	private Point textAreaPos;
 	private double textAreaSize;
 	private Point textConnectionCenterPos;
-	
+
 	@JsonManagedReference
-	private ArrayList<Extinguisher> extinguishers;	
-	
+	private ArrayList<Extinguisher> extinguishers;
+
 	public Zone() {
 		this.shape = new Shape();
 		this.extinguishers = new ArrayList<Extinguisher>();
@@ -28,7 +28,7 @@ public class Zone {
 		this.textAreaSize = 0;
 		this.id = new ZoneID();
 	}
-	
+
 	@JsonIgnore
 	public UIColor getFillColor() {
 		return id.getFillColor();
@@ -38,12 +38,12 @@ public class Zone {
 	public void setFillColor(UIColor fillColor) {
 		id.setFillColor(fillColor);
 	}
-	
+
 	@JsonIgnore
 	public Color getRimColor() {
 		return id.getRimColor();
 	}
-	
+
 	public ZoneID getId() {
 		return id;
 	}
@@ -63,11 +63,11 @@ public class Zone {
 	public void removeExtinguisher(Extinguisher ex) {
 		extinguishers.remove(ex);
 	}
-	
+
 	public void addExtinguisher(Extinguisher ex) {
 		extinguishers.add(ex);
 	}
-	
+
 	public ArrayList<Extinguisher> getExtinguishers() {
 		return extinguishers;
 	}
@@ -75,7 +75,7 @@ public class Zone {
 	public void setExtinguishers(ArrayList<Extinguisher> extinguishers) {
 		this.extinguishers = extinguishers;
 	}
-	
+
 	public boolean containsPoint(double posX, double posY) {
 		return shape.containsPoint(posX, posY);
 	}
@@ -95,7 +95,7 @@ public class Zone {
 	public void setTextConnectionCenterPos(Point textConnectionCenterPos) {
 		this.textConnectionCenterPos = textConnectionCenterPos;
 	}
-	
+
 	public double getTextAreaSize() {
 		return textAreaSize;
 	}
@@ -108,22 +108,27 @@ public class Zone {
 	public String getDisplayText() {
 		return id.getDisplayText();
 	}
+
 	@JsonIgnore
 	public String getAreaName() {
 		return id.getAreaName();
-	}	
+	}
+
 	@JsonIgnore
 	public int getAreaNumber() {
 		return id.getAreaNumber();
 	}
+
 	@JsonIgnore
 	public String getAreaType() {
 		return id.getAreaType().toString();
 	}
+
 	@JsonIgnore
 	public String getActivityType() {
 		return id.getActivityType().toString();
 	}
+
 	@JsonIgnore
 	public int getAreaSize() {
 		return id.getAreaSize();
@@ -182,5 +187,5 @@ public class Zone {
 			return false;
 		return true;
 	}
-	
+
 }

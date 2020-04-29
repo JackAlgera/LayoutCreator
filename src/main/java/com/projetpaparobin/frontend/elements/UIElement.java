@@ -43,38 +43,38 @@ public abstract class UIElement {
 		double deltaY = newPosY - posY;
 		this.posX = newPosX;
 		this.posY = newPosY;
-		if(hasResizeCorner) {
+		if (hasResizeCorner) {
 			resizeCorner.translateShape(resizeCorner.getPosX() + deltaX, resizeCorner.getPosY() + deltaY);
 		}
 	}
-	
+
 	public double getPosX() {
 		return posX;
 	}
-	
+
 	public double getPosY() {
 		return posY;
 	}
-	
+
 	public void setIsSelected(boolean isSelected) {
 		this.isSelected = isSelected;
-		if(hasResizeCorner) {
+		if (hasResizeCorner) {
 			resizeCorner.setIsSelected(isSelected);
 		}
 	}
-	
+
 	public boolean isSelected() {
 		return isSelected;
 	}
-	
+
 	public abstract void removeSelf();
-	
+
 	public void drawShape() {
-		if(isSelected && hasResizeCorner) {
+		if (isSelected && hasResizeCorner) {
 			resizeCorner.drawShape();
-		}		
+		}
 	}
-	
+
 	public UICorner getResizeCorner() {
 		return resizeCorner;
 	}

@@ -19,7 +19,7 @@ public class UIZoneText extends UIElement {
 
 	private static double DEFAULT_TEXT_HEIGHT = 0.03;
 	private static double LINE_WIDTH = 1.5;
-	
+
 	private Rectangle hitbox;
 	private Zone zone;
 	private UIConnection connection;

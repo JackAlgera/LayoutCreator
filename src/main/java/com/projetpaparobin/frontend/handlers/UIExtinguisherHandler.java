@@ -9,50 +9,50 @@ public class UIExtinguisherHandler {
 
 	private static UIExtinguisherHandler instance;
 	private ArrayList<UIExtinguisher> extinguishers;
-		
-	private UIExtinguisherHandler() {	
+
+	private UIExtinguisherHandler() {
 		extinguishers = new ArrayList<UIExtinguisher>();
 	}
-	
+
 	public static UIExtinguisherHandler getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new UIExtinguisherHandler();
 		}
-		
+
 		return instance;
 	}
-	
+
 	public UIExtinguisher getExtinguisher(double posX, double posY) {
 		for (UIExtinguisher e : extinguishers) {
-			if(e.containsPoint(posX, posY)) {
+			if (e.containsPoint(posX, posY)) {
 				return e;
 			}
 		}
 		return null;
 	}
-	
+
 	public UICorner getExtinguisherResizeCorner(double posX, double posY) {
 		for (UIExtinguisher ex : extinguishers) {
-			if(!ex.isSelected()) {
+			if (!ex.isSelected()) {
 				continue;
 			}
-			if(ex.getResizeCorner().containsPoint(posX, posY)) {
+			if (ex.getResizeCorner().containsPoint(posX, posY)) {
 				return ex.getResizeCorner();
 			}
 		}
 		return null;
 	}
-	
+
 	public ArrayList<UIExtinguisher> getExtinguishers() {
 		return extinguishers;
 	}
-	
+
 	public void addExtinguisher(UIExtinguisher e) {
 		extinguishers.add(e);
 	}
-	
+
 	public void reset() {
 		extinguishers.clear();
 	}
-	
+
 }
