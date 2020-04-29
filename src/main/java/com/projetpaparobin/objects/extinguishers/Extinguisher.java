@@ -24,7 +24,7 @@ public class Extinguisher {
 		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color, local);
 		this.pos = pos;
 		this.zone = zone;
-		this.textAreaSize = 0;
+		this.textAreaSize = -1;
 		this.radius = -1;
 	}
 	

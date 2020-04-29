@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 public class UIZone extends UIElement {
 	
 	private static double INIT_POINT_RADIUS = 0.005;
-	private static double POINT_RADIUS = 0.01;
 	private static double LINE_WIDTH = 2;
 	
 	private ArrayList<UICorner> corners; 
@@ -22,7 +21,7 @@ public class UIZone extends UIElement {
 	private UIZoneText zoneText;
 	
 	public UIZone(Zone zone, ViewLayoutAgent viewLayoutAgent, boolean isSelected) {
-		super(zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
+		super(zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), false, zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
 		this.zoneText = null;
 		this.corners = new ArrayList<UICorner>();
@@ -53,6 +52,7 @@ public class UIZone extends UIElement {
 				corner.drawShape();
 			}
 		}	
+		super.drawShape();
 	}
 	
 	public void setUiText(UIZoneText zoneText) {
@@ -61,7 +61,7 @@ public class UIZone extends UIElement {
 	
 	public void switchPointRadius() {
 		for (UICorner corner : corners) {
-			corner.prepareImage(POINT_RADIUS);
+			corner.prepareImage(RESIZE_POINT_RADIUS);
 		}
 	}
 			
@@ -102,16 +102,15 @@ public class UIZone extends UIElement {
 	}
 	
 	@Override
-	public void setIsSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
-
-	@Override
 	public void removeSelf() {
 		layoutHandler.removeZone(zone);
 		for (Extinguisher ex : zone.getExtinguishers()) {
 			layoutHandler.removeExtinguisher(ex);
 		}
+	}
+
+	@Override
+	public void resize(double newPosY) {
 	}
 	
 }

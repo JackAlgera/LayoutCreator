@@ -8,6 +8,7 @@ public class Comment {
 	private Point pos;
 	private String text;
 	private UIColor color;	
+	private double textAreaSize;
 	
 	public Comment() {
 		color = UIColor.BLACK;
@@ -17,6 +18,15 @@ public class Comment {
 		this.pos = pos;
 		this.text = text;
 		this.color = color;
+		this.textAreaSize = -1;
+	}
+	
+	public double getTextAreaSize() {
+		return textAreaSize;
+	}
+
+	public void setTextAreaSize(double textAreaSize) {
+		this.textAreaSize = textAreaSize;
 	}
 	
 	public Point getPos() {

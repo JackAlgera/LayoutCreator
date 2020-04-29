@@ -17,7 +17,7 @@ import javafx.scene.transform.Transform;
 
 public class UIComment extends UIElement {
 
-	private static double TEXT_HEIGHT = 0.025;
+	private static double DEFAULT_TEXT_HEIGHT = 0.025;
 	
 	private Rectangle hitbox;
 	private Comment comment;
@@ -25,14 +25,19 @@ public class UIComment extends UIElement {
 	private WritableImage drawnImage;
 		
 	public UIComment(Comment comment, ViewLayoutAgent viewLayoutAgent) {
-		super(comment.getPos().getX(), comment.getPos().getY(), comment.getColor().getColor(), null, viewLayoutAgent);
+		super(comment.getPos().getX(), comment.getPos().getY(), true, comment.getColor().getColor(), null, viewLayoutAgent);
 		this.comment = comment;
+		if(comment.getTextAreaSize() <= 0) {
+			comment.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
+		}
 		prepareImage();
+		initResizeCorner(new Point(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2));
 	}
 	
 	@Override
 	public void drawShape() {	
 		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - (drawnImage.getWidth() / 2.0), posY * viewLayoutAgent.getCanvasHeight() - (drawnImage.getHeight() / 2.0));	
+		super.drawShape();
 	}
 	
 	public void update() {
@@ -56,8 +61,8 @@ public class UIComment extends UIElement {
 		drawnImage = sPane.snapshot(params, null);
 		
 		ImageView view = new ImageView(drawnImage);
-		view.setFitWidth(viewLayoutAgent.getCanvasHeight() * TEXT_HEIGHT * (bounds.getWidth() / bounds.getHeight()));
-		view.setFitHeight(viewLayoutAgent.getCanvasHeight() * TEXT_HEIGHT);
+		view.setFitWidth(viewLayoutAgent.getCanvasHeight() * comment.getTextAreaSize() * (bounds.getWidth() / bounds.getHeight()));
+		view.setFitHeight(viewLayoutAgent.getCanvasHeight() * comment.getTextAreaSize());
 		params.setTransform(Transform.scale(1, 1));
 		params.setFill(Color.TRANSPARENT);
 		drawnImage = view.snapshot(params, null);
@@ -90,13 +95,16 @@ public class UIComment extends UIElement {
 	}
 
 	@Override
-	public void setIsSelected(boolean isSelected) {
-		this.isSelected = isSelected;
+	public void removeSelf() {
+		layoutHandler.removeComment(comment);
 	}
 
 	@Override
-	public void removeSelf() {
-		layoutHandler.removeComment(comment);
+	public void resize(double newPosY) {
+		comment.setTextAreaSize((posY - newPosY) * 2);
+		update();
+		super.translateResizeCorner(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2);
+		DEFAULT_TEXT_HEIGHT = comment.getTextAreaSize();
 	}
 
 }

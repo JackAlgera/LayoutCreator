@@ -14,7 +14,7 @@ public class UICorner extends UIElement {
 	private static double lineWidth = 1.0;
 	
 	public UICorner(UIElement uiElement, Point p, double radius, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
-		super(p.getX(), p.getY(), rimColor, fillColor, viewLayoutAgent);
+		super(p.getX(), p.getY(), false, rimColor, fillColor, viewLayoutAgent);
 		this.uiElement = uiElement;
 		prepareImage(radius);
 	}
@@ -36,7 +36,8 @@ public class UICorner extends UIElement {
 					posY * viewLayoutAgent.getCanvasHeight() - circle.getRadius() * viewLayoutAgent.getCanvasWidth(), 
 					circle.getRadius() * 2 * viewLayoutAgent.getCanvasWidth(), 
 					circle.getRadius() * 2 * viewLayoutAgent.getCanvasWidth());
-		}		
+		}	
+		super.drawShape();
 	}
 
 	public void prepareImage(double radius) {		
@@ -59,13 +60,11 @@ public class UICorner extends UIElement {
 	}
 	
 	@Override
-	public void setIsSelected(boolean isSelected) {
-		this.isSelected = isSelected;
+	public void removeSelf() {
 	}
 
 	@Override
-	public void removeSelf() {
-		// TODO Auto-generated method stub
-		
+	public void resize(double newPosY) {
+		uiElement.resize(newPosY);
 	}
 }

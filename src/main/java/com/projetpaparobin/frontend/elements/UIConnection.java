@@ -20,7 +20,7 @@ public class UIConnection extends UIElement {
 	private static double lineWidth = 1.5;
 	
 	public UIConnection(Zone zone, UIZoneText uiText, Point centerPoint, Color rimColor, ViewLayoutAgent viewLayoutAgent) {
-		super(centerPoint.getX(), centerPoint.getY(), rimColor, null, viewLayoutAgent);
+		super(centerPoint.getX(), centerPoint.getY(), false, rimColor, null, viewLayoutAgent);
 		this.uiText = uiText;
 		this.zone = zone;
 		this.connectionPoint = new UICorner(this, centerPoint, POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
@@ -38,6 +38,7 @@ public class UIConnection extends UIElement {
 		if(isSelected) {
 			connectionPoint.drawShape();
 		}
+		super.drawShape();
 	}
 
 	public void prepareImage() {		
@@ -108,14 +109,11 @@ public class UIConnection extends UIElement {
 	}
 		
 	@Override
-	public void setIsSelected(boolean isSelected) {
-		this.isSelected = isSelected;
+	public void removeSelf() {
 	}
 
 	@Override
-	public void removeSelf() {
-		// TODO Auto-generated method stub
-		
+	public void resize(double newPosY) {
 	}
 	
 }

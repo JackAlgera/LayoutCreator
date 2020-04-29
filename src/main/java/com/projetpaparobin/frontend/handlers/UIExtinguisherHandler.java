@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIExtinguisher;
-import com.projetpaparobin.frontend.elements.UIZone;
-import com.projetpaparobin.frontend.elements.UIZoneText;
 
 public class UIExtinguisherHandler {
 

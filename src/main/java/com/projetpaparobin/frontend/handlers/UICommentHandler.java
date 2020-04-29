@@ -3,6 +3,7 @@ package com.projetpaparobin.frontend.handlers;
 import java.util.ArrayList;
 
 import com.projetpaparobin.frontend.elements.UIComment;
+import com.projetpaparobin.frontend.elements.UICorner;
 
 public class UICommentHandler {
 
@@ -25,6 +26,18 @@ public class UICommentHandler {
 		for (UIComment comment : comments) {
 			if(comment.containsPoint(posX, posY)) {
 				return comment;
+			}
+		}
+		return null;
+	}	
+	
+	public UICorner getCommentResizeCorner(double posX, double posY) {
+		for (UIComment comment : comments) {
+			if(!comment.isSelected()) {
+				continue;
+			}
+			if(comment.getResizeCorner().containsPoint(posX, posY)) {
+				return comment.getResizeCorner();
 			}
 		}
 		return null;

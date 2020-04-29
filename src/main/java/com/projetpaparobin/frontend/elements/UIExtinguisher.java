@@ -19,32 +19,27 @@ import javafx.scene.transform.Transform;
 public class UIExtinguisher extends UIElement {
 	
 	private static double DEFAULT_EXTINGUISHER_RADIUS = 0.02;
-	private static double SELECTED_EXTINGUISHER_RADIUS_INCREASE = 0.003;
-	private static double POINT_RADIUS = 0.01;
 	
 	private Circle circle;		
 	private WritableImage drawnImage;
 	private Extinguisher ex;
 	private UIExtinguisherText uiExText;
-	private UICorner resizeCorner;
 	
 	public UIExtinguisher(Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
-		super(ex.getPos().getX(), ex.getPos().getY(), Color.BLACK, ex.getId().getColor(), viewLayoutAgent);
+		super(ex.getPos().getX(), ex.getPos().getY(), true, Color.BLACK, ex.getId().getColor(), viewLayoutAgent);
 		this.ex = ex;
 		this.uiExText = null;
 		if(ex.getRadius() <= 0) {
 			ex.setRadius(DEFAULT_EXTINGUISHER_RADIUS);
 		}
 		prepareImage();
-		this.resizeCorner = new UICorner(this, new Point(posX + circle.getRadius(), posY - circle.getRadius()), POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
+		initResizeCorner(new Point(posX + circle.getRadius(), posY - circle.getRadius()));
 	}
 
 	@Override
 	public void drawShape() {
 		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - circle.getRadius() * viewLayoutAgent.getCanvasHeight(), (posY - circle.getRadius()) * viewLayoutAgent.getCanvasHeight());	
-		if(isSelected) {
-			resizeCorner.drawShape();
-		}
+		super.drawShape();
 	}
 
 	private void prepareImage() {
@@ -106,13 +101,11 @@ public class UIExtinguisher extends UIElement {
 		if(uiExText != null) {
 			uiExText.translateShape(uiExText.getPosX() + deltaX, uiExText.getPosY() + deltaY);
 		}
-		resizeCorner.translateShape(resizeCorner.getPosX() + deltaX, resizeCorner.getPosY() + deltaY);
 	}
 
 	@Override
 	public void setIsSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-		resizeCorner.setIsSelected(isSelected);
+		super.setIsSelected(isSelected);
 		prepareImage();
 	}
 
@@ -133,7 +126,7 @@ public class UIExtinguisher extends UIElement {
 	public void resize(double newPosY) {
 		ex.setRadius(Math.abs(posY - newPosY));
 		prepareImage();
-		resizeCorner.translateShape(posX + circle.getRadius(), posY - circle.getRadius());
+		super.translateResizeCorner(posX + circle.getRadius(), posY - circle.getRadius());
 		DEFAULT_EXTINGUISHER_RADIUS = ex.getRadius();
 	}
 	

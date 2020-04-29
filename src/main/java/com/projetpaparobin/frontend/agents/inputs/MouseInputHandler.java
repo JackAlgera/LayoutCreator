@@ -2,6 +2,7 @@ package com.projetpaparobin.frontend.agents.inputs;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
+import com.projetpaparobin.frontend.elements.UIComment;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIElement;
 import com.projetpaparobin.frontend.elements.UIExtinguisher;
@@ -90,6 +91,11 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			
 			switch (state) {
 			case IDLE:
+				selectedUIElement = commentHandler.getCommentResizeCorner(mouseX, mouseY);
+				if(selectedUIElement != null) {
+					selectUIElement(ETypeAction.SELECTED_COMMENT_TEXT_RESIZE_CORNER, mouseX, mouseY, prevSelectedElement, false);
+					break;
+				}
 				selectedUIElement = commentHandler.getComment(mouseX, mouseY);
 				if(selectedUIElement != null) {
 					selectUIElement(ETypeAction.SELECTED_COMMENT, mouseX, mouseY, prevSelectedElement, true);
@@ -195,15 +201,19 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				presLayout.updateCanvas();
 				break;		
 			case SELECTED_ZONE_TEXT_RESIZE_CORNER:
-				((UIZoneText)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
+				selectedUIElement.resize(newPosY);
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_EXTINGUISHER_TEXT_RESIZE_CORNER:
-				((UIExtinguisherText)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
+				selectedUIElement.resize(newPosY);
 				presLayout.updateCanvas();
 				break;
 			case SELECTED_EXTINGUISHER_RESIZE_CORNER:
-				((UIExtinguisher)((UICorner)selectedUIElement).getUiElement()).resize(newPosY);
+				selectedUIElement.resize(newPosY);
+				presLayout.updateCanvas();
+				break;
+			case SELECTED_COMMENT_TEXT_RESIZE_CORNER:
+				selectedUIElement.resize(newPosY);
 				presLayout.updateCanvas();
 				break;
 			}
@@ -248,6 +258,12 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 				}
 				break;
 			case SELECTED_EXTINGUISHER_RESIZE_CORNER:
+				state = ETypeAction.IDLE;
+				if(prevSelectedElement != null) {
+					selectedUIElement = prevSelectedElement;
+				}
+				break;
+			case SELECTED_COMMENT_TEXT_RESIZE_CORNER:
 				state = ETypeAction.IDLE;
 				if(prevSelectedElement != null) {
 					selectedUIElement = prevSelectedElement;
