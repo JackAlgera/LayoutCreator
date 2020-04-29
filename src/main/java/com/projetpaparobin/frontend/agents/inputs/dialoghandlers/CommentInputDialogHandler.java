@@ -32,7 +32,7 @@ public class CommentInputDialogHandler extends DialogHandlerAbs implements IComm
 		dialogPane.setPrefWidth(width);
 		
 		text = new TextField();
-		text.setPromptText("Je trouve que zone est jolie");
+		text.setPromptText("Commentaire");
 			
 		dialogPane.setContent(new VBox(8, text));
 		

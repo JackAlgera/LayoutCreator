@@ -66,7 +66,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	}
 	
 	private void setNumberColumn(double maxWidth) {
-		numberColumn = createColumn("Number", "number", maxWidth);
+		numberColumn = createColumn("Numérotation", "number", maxWidth);
 		numberColumn.setCellFactory(EditableCellTextField.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), UIElements.getNumberFilter()));
 		
 		numberColumn.setOnEditCommit(event -> {
@@ -77,7 +77,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	}
 		
 	private void setFabricationYearColumn(double maxWidth) {
-		fabricationYearColumn = createColumn("Fabrication Year", "fabricationYear", maxWidth);
+		fabricationYearColumn = createColumn("Année de fabrication", "fabricationYear", maxWidth);
 		fabricationYearColumn.setCellFactory(EditableCellTextField.<Extinguisher, Integer>forTableColumn(new IntegerStringConverter(), UIElements.getNumberFilter()));
 		
 		fabricationYearColumn.setOnEditCommit(event -> {
@@ -88,7 +88,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	}
 	
 	private void setExtinguisherTypeColumn(double maxWidth) {
-		extinguisherTypeColumn = createColumn("Extinguisher type", "extinguisherType", maxWidth);
+		extinguisherTypeColumn = createColumn("Type d'extincteur", "extinguisherType", maxWidth);
 		extinguisherTypeColumn.setCellFactory(EditableCellComboBox.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), FXCollections.observableArrayList(Stream.of(EExtinguisherType.values())
 				.filter(type -> !type.equals(EExtinguisherType.OTHER))
 				.map(val -> val.toString())
@@ -102,7 +102,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	}
 		
 	private void setProtectionTypeColumn(double maxWidth) {
-		protectionTypeColumn = createColumn("Protection type", "protectionType", maxWidth);
+		protectionTypeColumn = createColumn("Type de protection", "protectionType", maxWidth);
 		protectionTypeColumn.setCellFactory(EditableCellComboBox.<Extinguisher, EProtectionType>forTableColumn(new ProtectionTypeConverter(), FXCollections.observableArrayList(Stream.of(EProtectionType.values())
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
@@ -115,7 +115,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	}
 		
 	private void setBrandColumn(double maxWidth) {
-		brandColumn = createColumn("Brand", "brand", maxWidth);
+		brandColumn = createColumn("Marque", "brand", maxWidth);
 		brandColumn.setCellFactory(EditableCellTextField.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), null));
 		
 		brandColumn.setOnEditCommit(event -> {
@@ -137,7 +137,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	}
 	
 	private void setColorColumn(double maxWidth) {
-		colorColumn = createColumn("Color", "fillColor", maxWidth);
+		colorColumn = createColumn("Couleur", "fillColor", maxWidth);
 		colorColumn.setCellFactory(EditableCellComboBox.<Extinguisher, UIColor>forTableColumn(new UIColorConverter(), FXCollections.observableArrayList(UIElements.DEFAULT_EXTINGUISHER_COLORS.stream()
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));

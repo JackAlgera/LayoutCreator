@@ -14,13 +14,13 @@ public class FileGenerationDialogHandler extends DialogHandlerAbs {
 	public FileGenerationDialogHandler(Window primaryStage) {
 		super(primaryStage);
 		inputDialog = new Dialog<String>();
-		inputDialog.setTitle("Génération de fichier");
+		inputDialog.setTitle("Génération des fichiers Excel et PNG");
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		
 		TextField fileName = new TextField();
-		fileName.setPromptText("File name");
+		fileName.setPromptText("Nom des fichiers");
 		
 		dialogPane.setContent(new VBox(8, fileName));
 		inputDialog.setResultConverter((ButtonType button) -> {

@@ -37,17 +37,17 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		PreferencesPOJO prefs = daoPrefs.getPrefs();
 		
 		fileChooser = new FileChooser();
-		fileChooser.setTitle("Choix fichie");
+		fileChooser.setTitle("Choix du fichier PDF");
 		inputDialog = new Dialog<ChosenInputFilesPOJO>();
-		inputDialog.setTitle("Layout Editor");
+		inputDialog.setTitle("Editeur de plan");
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 				
-		Label layoutLabel = new Label("PDF avec plan");
+		Label layoutLabel = new Label("PDF du plan");
 		TextField layoutPath = new TextField();		
 		layoutPath.setText(prefs.getLayoutPDFPath());		
-		layoutPath.setPromptText("Nom fichier");
+		layoutPath.setPromptText("Nom du fichier");
 		layoutPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
 			if(file != null) {
@@ -56,16 +56,16 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		});
 		
 		TextField pageNum = new TextField();
-		pageNum.setPromptText("Num page");
+		pageNum.setPromptText("Numéro de la page du plan");
 		pageNum.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		if(prefs.getLayoutPageNum() > 0) {
 			pageNum.setText("" + prefs.getLayoutPageNum());
 		}
 		
-		Label excelLabel = new Label("Excel");
+		Label excelLabel = new Label("Excel de travail");
 		TextField excelPath = new TextField();		
 		excelPath.setText(prefs.getExcelTemplatePath());		
-		excelPath.setPromptText("Nom fichier");
+		excelPath.setPromptText("Nom du fichier");
 		excelPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
 			if(file != null) {

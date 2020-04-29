@@ -20,7 +20,7 @@ public class AutomaticApplicationStateSaver extends Thread {
 		
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
 		
-		this.file = new File("Session_du_" + dateFormatter.format(new Date()) + "." + UIElements.SAVE_FILE_TYPE);
+		this.file = new File("Autosave_du_" + dateFormatter.format(new Date()) + "." + UIElements.SAVE_FILE_TYPE);
 	}
 	
 	@Override

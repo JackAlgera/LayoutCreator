@@ -44,10 +44,10 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		dialogPane.setPrefWidth(width);
 		
 		TextField areaName = new TextField();
-		areaName.setPromptText("Area name");
+		areaName.setPromptText("Nom de la zone");
 			
 		TextField areaNumber = new TextField();
-		areaNumber.setPromptText("Area number");
+		areaNumber.setPromptText("Numérotation de la zone");
 		areaNumber.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 
 		ComboBox<String> activityType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EActivityType.values())
@@ -63,7 +63,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		units.setPrefWidth(width);
 		
 		TextField areaSize = new TextField();
-		areaSize.setPromptText("Area size");
+		areaSize.setPromptText("Taille de la zone");
 		areaSize.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
 		ComboBox<String> areaType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EAreaType.values())
@@ -101,7 +101,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				areaNumber.setText("");
 				activityType.setValue(EActivityType.values()[0].toString());
 				areaSize.setText("");
-				units.setValue("Kg");
+				units.setValue("kg");
 				
 				return new ZoneID(areaNameVal, areaTypeVal, areaNumberVal, activityTypeVal, areaSizeVal, unitsVal);
 			} 

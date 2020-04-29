@@ -46,14 +46,14 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 	public ExtinguisherInputDialogHandler(Window primaryStage) {
 		super(primaryStage);
 		inputDialog = new Dialog<ExtinguisherID>();
-		inputDialog.setTitle("Nouveau extincteur");
+		inputDialog.setTitle("Ajouter un extincteur");
 		
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		dialogPane.setPrefWidth(width);
 		
 		number = new TextField();
-		number.setPromptText("Number");
+		number.setPromptText("Numérotation extincteur");
 		number.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		
 		local = new TextField();
@@ -64,7 +64,7 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		colorComboBox.setPrefWidth(width);		
 		
 		extinguisherType = new TextField();
-		extinguisherType.setPromptText("Extinguisher type");		
+		extinguisherType.setPromptText("Type d'extincteur");		
 		TextFields.bindAutoCompletion(extinguisherType, Stream.of(EExtinguisherType.values()).map(t -> t.getName()).collect(Collectors.toSet()));
 		extinguisherType.textProperty().addListener((observable, oldValue, newValue) -> {
 			EExtinguisherType type = EExtinguisherType.getEnum(newValue);
@@ -89,7 +89,7 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		});
 		
 		fabricationYear = new TextField();
-		fabricationYear.setPromptText("Fabrication year");
+		fabricationYear.setPromptText("Année de fabrication");
 		fabricationYear.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		fabricationYear.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(!newValue.isBlank()) {
@@ -99,10 +99,10 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		});		
 		
 		brand = new TextField();
-		brand.setPromptText("Brand");
+		brand.setPromptText("Marque");
 		brand.setTextFormatter(new TextFormatter<String>(UIElements.getLetterFilter()));
 		
-		isNew = new CheckBox("Is new");	
+		isNew = new CheckBox("Nouveau extincteur?");	
 		
 		VBox vbox = new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew);
 		vbox.setFillWidth(true);

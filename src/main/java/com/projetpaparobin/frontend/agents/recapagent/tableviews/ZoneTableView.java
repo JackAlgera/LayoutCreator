@@ -65,7 +65,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 	}
 	
 	private void setAreaNameColumn(double maxWidth) {
-		areaNameColumn = createColumn("Area name", "areaName", maxWidth);
+		areaNameColumn = createColumn("Nom de la zone", "areaName", maxWidth);
 		areaNameColumn.setCellFactory(EditableCellTextField.<Zone, String>forTableColumn(new DefaultStringConverter(), null));
 		
 		areaNameColumn.setOnEditCommit(event -> {
@@ -76,7 +76,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 	}
 	
 	private void setNumberColumn(double maxWidth) {		
-		areaNumberColumn = createColumn("Area number", "areaNumber", maxWidth);
+		areaNumberColumn = createColumn("Numérotation de la zone", "areaNumber", maxWidth);
 		areaNumberColumn.setCellFactory(EditableCellTextField.<Zone, Integer>forTableColumn(new IntegerStringConverter(), UIElements.getNumberFilter()));
 		
 		areaNumberColumn.setOnEditCommit(event -> {
@@ -87,7 +87,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 	}
 	
 	private void setAreaTypeColumn(double maxWidth) {
-		areaTypeColumn = createColumn("Area type", "areaType", maxWidth);
+		areaTypeColumn = createColumn("Type de zone", "areaType", maxWidth);
 		areaTypeColumn.setCellFactory(EditableCellComboBox.<Zone, EAreaType>forTableColumn(new AreaTypeConverter(), FXCollections.observableArrayList(Stream.of(EAreaType.values())
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
@@ -100,7 +100,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 	}
 	
 	private void setActivityTypeColumn(double maxWidth) {
-		activityTypeColumn = createColumn("Activity type", "activityType", maxWidth);
+		activityTypeColumn = createColumn("Type d'activité", "activityType", maxWidth);
 		activityTypeColumn.setCellFactory(EditableCellComboBox.<Zone, EActivityType>forTableColumn(new ActivityTypeConverter(), FXCollections.observableArrayList(Stream.of(EActivityType.values())
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
@@ -113,7 +113,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 	}
 	
 	private void setColorColumn(double maxWidth) {
-		colorColumn = createColumn("Color", "fillColor", maxWidth);
+		colorColumn = createColumn("Couleur", "fillColor", maxWidth);
 		colorColumn.setCellFactory(EditableCellComboBox.<Zone, UIColor>forTableColumn(new UIColorConverter(), FXCollections.observableArrayList(UIElements.DEFAULT_ZONE_COLORS.stream()
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
@@ -126,7 +126,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 	}
 	
 	private void setAreaSizeColumn(double maxWidth) {
-		areaSizeColumn = createColumn("Area Size", "areaSize", maxWidth);
+		areaSizeColumn = createColumn("Taille de la zone", "areaSize", maxWidth);
 		areaSizeColumn.setCellFactory(EditableCellTextField.<Zone, Integer>forTableColumn(new IntegerStringConverter(), UIElements.getNumberFilter()));
 		
 		areaSizeColumn.setOnEditCommit(event -> {
