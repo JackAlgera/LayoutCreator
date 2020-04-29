@@ -34,8 +34,8 @@ public class UIConnection extends UIElement {
 		canvasGC.setLineWidth(lineWidth);
 		canvasGC.strokeLine(line1.getStartX(), line1.getStartY(), line1.getEndX(), line1.getEndY());
 		canvasGC.strokeLine(line2.getStartX(), line2.getStartY(), line2.getEndX(), line2.getEndY());
-		
-		if(isSelected) {
+
+		if (isSelected) {
 			connectionPoint.drawShape();
 		}
 		super.drawShape();

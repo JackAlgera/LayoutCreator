@@ -2,8 +2,9 @@ package com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser;
 
 import java.io.File;
 
-import com.projetpaparobin.documents.preferences.DAOPreferencesImpl;
+import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.PreferencesPOJO;
+import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.DialogHandlerAbs;
 import com.projetpaparobin.utils.UIElements;
 
@@ -19,20 +20,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 public class FileChooseInputDialogHandler extends DialogHandlerAbs {
-
-	public final String NBR_EXTINGUISHERS_SHEET_NAME = "dernière page";
-	public final String PARC_INDUSTRIELLE_SHEET_NAME = "Parc activité industrielle";
-	public final String PARC_TERTIAIRE_SHEET_NAME = "Parc activité tertiaire";
-	public final String RECENSEMENT_SHEET_NAME = "Recensement";
 	
 	private FileChooser fileChooser;
 	private Dialog<ChosenInputFilesPOJO> inputDialog;
-	private DAOPreferencesImpl daoPrefs;
+	private DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
 	
 	public FileChooseInputDialogHandler(Window primaryStage) {
 		super(primaryStage);
-		daoPrefs = new DAOPreferencesImpl();
-		PreferencesPOJO prefs = daoPrefs.getPrefs();
 		
 		fileChooser = new FileChooser();
 		fileChooser.setTitle("Choix du fichier PDF");
@@ -44,7 +38,7 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 				
 		Label layoutLabel = new Label("PDF du plan:");
 		TextField layoutPath = new TextField();		
-		layoutPath.setText(prefs.getLayoutPDFPath());		
+		layoutPath.setText(dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH));		
 		layoutPath.setPromptText("Nom du fichier");
 		layoutPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
@@ -57,13 +51,13 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		TextField pageNum = new TextField();
 		pageNum.setPromptText("Numéro");
 		pageNum.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
-		if(prefs.getLayoutPageNum() > 0) {
-			pageNum.setText("" + prefs.getLayoutPageNum());
+		if(Integer.parseInt(dao.getKeyValue(EPreferencesValues.LAYOUT_PAGE_NUM)) > 0) {
+			pageNum.setText("" + dao.getKeyValue(EPreferencesValues.LAYOUT_PAGE_NUM));
 		}
 		
 		Label excelLabel = new Label("Excel de travail:");
 		TextField excelPath = new TextField();		
-		excelPath.setText(prefs.getExcelTemplatePath());		
+		excelPath.setText(dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH));		
 		excelPath.setPromptText("Nom du fichier");
 		excelPath.setOnMouseClicked((event) -> {
 			File file = fileChooser.showOpenDialog(primaryStage);
@@ -75,21 +69,20 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		dialogPane.setContent(new HBox(8, new VBox(8, layoutLabel, layoutPath, pageNumLabel, pageNum), new VBox(8, excelLabel, excelPath)));
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
-				String layoutVal = layoutPath.getText();				
-				int pageNumVal = (pageNum.getText().isBlank()) ? 1 : Integer.parseInt(pageNum.getText());
-				String excelVal = excelPath.getText();
-				
-				daoPrefs.setPrefs(new PreferencesPOJO(excelVal, layoutVal, pageNumVal,
-						 NBR_EXTINGUISHERS_SHEET_NAME, 
-						 PARC_INDUSTRIELLE_SHEET_NAME, 
-						 PARC_TERTIAIRE_SHEET_NAME, 
-						 RECENSEMENT_SHEET_NAME));
+				PreferencesPOJO prefs = new PreferencesPOJO();
+				prefs.addKeyValue(EPreferencesValues.LAYOUT_PDF_PATH, layoutPath.getText());
+				prefs.addKeyValue(EPreferencesValues.LAYOUT_PAGE_NUM, (pageNum.getText().isBlank()) ? "1" : pageNum.getText());
+				prefs.addKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH, excelPath.getText());
+
+				dao.setPrefs(prefs);
 				
 				pageNum.setText("");	
 				layoutPath.setText("");
 				excelPath.setText("");				
 				
-				return new ChosenInputFilesPOJO(excelVal, layoutVal, pageNumVal);
+				return new ChosenInputFilesPOJO(dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH),
+						dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH),
+						Integer.parseInt(dao.getKeyValue(EPreferencesValues.LAYOUT_PAGE_NUM)));
 			} 
 			if(button == ButtonType.CANCEL) {
 				return new ChosenInputFilesPOJO("", "", -1);

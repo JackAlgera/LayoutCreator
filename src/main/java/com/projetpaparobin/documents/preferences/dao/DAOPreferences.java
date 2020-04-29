@@ -1,4 +1,6 @@
-package com.projetpaparobin.documents.preferences;
+package com.projetpaparobin.documents.preferences.dao;
+
+import com.projetpaparobin.documents.preferences.PreferencesPOJO;
 
 public abstract class DAOPreferences {
 

@@ -26,12 +26,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.documents.dao.DAOExcelImpl;
+import com.projetpaparobin.documents.preferences.EPreferencesValues;
+import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.EActivityType;
-import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.Zone;
 
 public class BigBoiFinalFileGenerator {
@@ -65,7 +65,7 @@ public class BigBoiFinalFileGenerator {
 			));
 	
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
-	private static DAOExcelImpl dao = DAOExcelImpl.getInstance();
+	private static DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
 	
 	private static BigBoiFinalFileGenerator instance;
 	
@@ -84,7 +84,7 @@ public class BigBoiFinalFileGenerator {
 		FileInputStream fileInputStream = null;
 		XSSFWorkbook workbook = null;
 		try {
-			fileInputStream = new FileInputStream(dao.getExcelTemplate());
+			fileInputStream = new FileInputStream(dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH));
 			workbook = new XSSFWorkbook(fileInputStream);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -93,10 +93,10 @@ public class BigBoiFinalFileGenerator {
 		
 		List<Extinguisher> extinguishers = new ArrayList<Extinguisher>();
 		
-		XSSFSheet industrielleSheet = workbook.getSheet(dao.getParcIndustrielleSheetName());
-		XSSFSheet tertiaireSheet = workbook.getSheet(dao.getParcTertiaireSheetName());
-		XSSFSheet nbrExtinguishersSheet = workbook.getSheet(dao.getNbrExtinguishersSheetName());
-		XSSFSheet recensementSheet = workbook.getSheet(dao.getRecensementSheetName());
+		XSSFSheet industrielleSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME));
+		XSSFSheet tertiaireSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME));
+		XSSFSheet nbrExtinguishersSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME));
+		XSSFSheet recensementSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME));
 		
 		int tertiaireRow = 11;
 		int industrielleRow = 11;
