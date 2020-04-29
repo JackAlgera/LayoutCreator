@@ -38,12 +38,14 @@ public class UIElements {
 	public static Font EXTINGUISHER_TEXT_FONT = new Font("Monaco", 13);
 	public static Font COMMENT_TEXT_FONT = new Font("Monaco", 13);
 	
+	public static UIColor DEFAULT_ZONE_CREATION_COLOR = UIColor.LIGHTBLUE;
+	
 	public static Border BLACK_BORDER = new Border(new BorderStroke(
 			Color.BLACK, 
 			BorderStrokeStyle.SOLID, 
 			CornerRadii.EMPTY, 
 			BorderWidths.DEFAULT));
-		
+	
 	public static UIColor getRandomColor() {
 		UIColor randColor = DEFAULT_ZONE_COLORS.get(colorIndex);
 		colorIndex = (colorIndex + 1) % DEFAULT_ZONE_COLORS.size();

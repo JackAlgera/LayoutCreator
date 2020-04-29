@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.utils.UIColor;
-import com.projetpaparobin.utils.UIElements;
 
 import javafx.scene.paint.Color;
 
@@ -14,9 +13,6 @@ public class Zone {
 	
 	private ZoneID id;
 	private Shape shape;
-	private UIColor fillColor;
-	@JsonIgnore
-	private Color rimColor;
 	private Point textAreaPos;
 	private double textAreaSize;
 	private Point textConnectionCenterPos;
@@ -27,11 +23,25 @@ public class Zone {
 	public Zone() {
 		this.shape = new Shape();
 		this.extinguishers = new ArrayList<Extinguisher>();
-		this.fillColor = UIElements.getRandomColor();
-		this.rimColor = fillColor.getColor().darker();
 		this.textAreaPos = null;
 		this.textConnectionCenterPos = null;
 		this.textAreaSize = 0;
+		this.id = new ZoneID();
+	}
+	
+	@JsonIgnore
+	public UIColor getFillColor() {
+		return id.getFillColor();
+	}
+
+	@JsonIgnore
+	public void setFillColor(UIColor fillColor) {
+		id.setFillColor(fillColor);
+	}
+	
+	@JsonIgnore
+	public Color getRimColor() {
+		return id.getRimColor();
 	}
 	
 	public ZoneID getId() {
@@ -48,23 +58,6 @@ public class Zone {
 
 	public void setShape(Shape shape) {
 		this.shape = shape;
-	}
-
-	public UIColor getFillColor() {
-		return fillColor;
-	}
-	
-	public Color getRimColor() {
-		return rimColor;
-	}
-	
-	public void setFillColor(UIColor fillColor) {
-		if(fillColor == null) {
-			this.fillColor = UIElements.getRandomColor();
-		} else {
-			this.fillColor = fillColor;
-		}
-		this.rimColor = fillColor.getColor().darker();
 	}
 
 	public void removeExtinguisher(Extinguisher ex) {
@@ -135,16 +128,19 @@ public class Zone {
 	public int getAreaSize() {
 		return id.getAreaSize();
 	}
-		
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((extinguishers == null) ? 0 : extinguishers.hashCode());
-		result = prime * result + ((fillColor == null) ? 0 : fillColor.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((rimColor == null) ? 0 : rimColor.hashCode());
 		result = prime * result + ((shape == null) ? 0 : shape.hashCode());
+		result = prime * result + ((textAreaPos == null) ? 0 : textAreaPos.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(textAreaSize);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((textConnectionCenterPos == null) ? 0 : textConnectionCenterPos.hashCode());
 		return result;
 	}
 
@@ -162,25 +158,27 @@ public class Zone {
 				return false;
 		} else if (!extinguishers.equals(other.extinguishers))
 			return false;
-		if (fillColor == null) {
-			if (other.fillColor != null)
-				return false;
-		} else if (!fillColor.equals(other.fillColor))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (rimColor == null) {
-			if (other.rimColor != null)
-				return false;
-		} else if (!rimColor.equals(other.rimColor))
-			return false;
 		if (shape == null) {
 			if (other.shape != null)
 				return false;
 		} else if (!shape.equals(other.shape))
+			return false;
+		if (textAreaPos == null) {
+			if (other.textAreaPos != null)
+				return false;
+		} else if (!textAreaPos.equals(other.textAreaPos))
+			return false;
+		if (Double.doubleToLongBits(textAreaSize) != Double.doubleToLongBits(other.textAreaSize))
+			return false;
+		if (textConnectionCenterPos == null) {
+			if (other.textConnectionCenterPos != null)
+				return false;
+		} else if (!textConnectionCenterPos.equals(other.textConnectionCenterPos))
 			return false;
 		return true;
 	}

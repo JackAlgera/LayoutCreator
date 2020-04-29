@@ -3,7 +3,6 @@ package com.projetpaparobin.objects.zones;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import javafx.scene.shape.Polygon;
 

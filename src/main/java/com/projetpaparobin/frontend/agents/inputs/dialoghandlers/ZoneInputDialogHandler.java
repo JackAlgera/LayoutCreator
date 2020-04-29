@@ -7,10 +7,12 @@ import java.util.stream.Stream;
 import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
+import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.zones.EActivityType;
 import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.EUnits;
 import com.projetpaparobin.objects.zones.ZoneID;
+import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
@@ -30,7 +32,10 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 	
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private Dialog<ZoneID> inputDialog;
-
+	private ComboBox<UIColor> colorComboBox;
+	private ComboBox<String> activityType, units, areaType;
+	private TextField areaNumber, areaName, areaSize;
+	
 	private double initHeight;
 	
 	public ZoneInputDialogHandler(Window primaryStage) {
@@ -43,30 +48,34 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		dialogPane.setPrefWidth(width);
 		
-		TextField areaName = new TextField();
+		areaName = new TextField();
 		areaName.setPromptText("Nom de la zone");
 			
-		TextField areaNumber = new TextField();
+		areaNumber = new TextField();
 		areaNumber.setPromptText("Numérotation de la zone");
 		areaNumber.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 
-		ComboBox<String> activityType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EActivityType.values())
+		activityType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EActivityType.values())
 				.map(val -> val.toString())
 				.collect(Collectors.toList())));	
 		activityType.setValue(EActivityType.values()[0].toString());
 		activityType.setPrefWidth(width);
 		
-		ComboBox<String> units = new ComboBox<String>(FXCollections.observableArrayList(FXCollections.observableArrayList(Stream.of(EUnits.values())
+		units = new ComboBox<String>(FXCollections.observableArrayList(FXCollections.observableArrayList(Stream.of(EUnits.values())
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
 		units.setValue(EUnits.values()[0].toString());
 		units.setPrefWidth(width);
 		
-		TextField areaSize = new TextField();
+		areaSize = new TextField();
 		areaSize.setPromptText("Taille de la zone");
 		areaSize.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
-		ComboBox<String> areaType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EAreaType.values())
+		colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_ZONE_COLORS));
+		colorComboBox.setValue(UIElements.getRandomColor());
+		colorComboBox.setPrefWidth(width);	
+		
+		areaType = new ComboBox<String>(FXCollections.observableArrayList(Stream.of(EAreaType.values())
 						.map(val -> val.toString())
 						.collect(Collectors.toList())));	
 		areaType.setValue(EAreaType.values()[0].toString());
@@ -81,7 +90,8 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				inputDialog.setHeight(initHeight);
 			}
 		});	
-		VBox vbox = new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, areaNumber, activityType, areaSize);
+		
+		VBox vbox = new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, areaNumber, activityType, areaSize, colorComboBox);
 		vbox.setFillWidth(true);
 
 		dialogPane.setContent(vbox);
@@ -95,6 +105,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				EActivityType activityTypeVal = EActivityType.getEnum(activityType.getValue());
 				int areaSizeVal = (areaSize.getText().isBlank()) ? 0 : Integer.parseInt(areaSize.getText());
 				EUnits unitsVal = (units == null) ? EUnits.m2 : EUnits.getEnum(units.getValue());
+				UIColor colorVal = colorComboBox.getValue();
 				
 				areaName.setText("");
 				areaType.setValue(EAreaType.values()[0].toString());
@@ -102,8 +113,9 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				activityType.setValue(EActivityType.values()[0].toString());
 				areaSize.setText("");
 				units.setValue("kg");
+				colorComboBox.setValue(UIElements.getRandomColor());
 				
-				return new ZoneID(areaNameVal, areaTypeVal, areaNumberVal, activityTypeVal, areaSizeVal, unitsVal);
+				return new ZoneID(areaNameVal, areaTypeVal, areaNumberVal, activityTypeVal, areaSizeVal, unitsVal, colorVal);
 			} 
 			if(button == ButtonType.CANCEL) {
 				zoneCreator.canceled();

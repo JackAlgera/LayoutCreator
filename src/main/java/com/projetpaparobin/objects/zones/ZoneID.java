@@ -1,6 +1,10 @@
 package com.projetpaparobin.objects.zones;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projetpaparobin.utils.UIColor;
+import com.projetpaparobin.utils.UIElements;
+
+import javafx.scene.paint.Color;
 
 public class ZoneID {
 
@@ -10,17 +14,24 @@ public class ZoneID {
 	private EActivityType activityType;
 	private int areaSize;
 	private EUnits units;
+	private UIColor fillColor;
+	@JsonIgnore
+	private Color rimColor;
 	
 	public ZoneID() {
+		this.fillColor = UIElements.DEFAULT_ZONE_CREATION_COLOR;
+		this.rimColor = fillColor.getColor().darker();
 	}
 	
-	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize, EUnits units) {
+	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize, EUnits units, UIColor fillColor) {
 		this.areaNumber = areaNumber;
 		this.areaType = areaType;
 		this.activityType = activityType;
 		this.areaSize = areaSize;
 		this.areaName = areaName;
 		this.units = units;
+		this.fillColor = fillColor;
+		this.rimColor = fillColor.getColor().darker();
 	}
 
 	@JsonIgnore
@@ -38,6 +49,23 @@ public class ZoneID {
 		default:
 			return "";
 		}
+	}
+
+	public UIColor getFillColor() {
+		return fillColor;
+	}
+
+	public void setFillColor(UIColor fillColor) {
+		if(fillColor == null) {
+			this.fillColor = UIElements.getRandomColor();
+		} else {
+			this.fillColor = fillColor;
+		}
+		this.rimColor = fillColor.getColor().darker();
+	}
+	
+	public Color getRimColor() {
+		return rimColor;
 	}
 	
 	public EUnits getUnits() {
