@@ -44,7 +44,7 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		DialogPane dialogPane = inputDialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 				
-		Label layoutLabel = new Label("PDF du plan");
+		Label layoutLabel = new Label("PDF du plan:");
 		TextField layoutPath = new TextField();		
 		layoutPath.setText(prefs.getLayoutPDFPath());		
 		layoutPath.setPromptText("Nom du fichier");
@@ -55,14 +55,15 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 			}
 		});
 		
+		Label pageNumLabel = new Label("Numéro de la page du plan:");
 		TextField pageNum = new TextField();
-		pageNum.setPromptText("Numéro de la page du plan");
+		pageNum.setPromptText("Numéro");
 		pageNum.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 		if(prefs.getLayoutPageNum() > 0) {
 			pageNum.setText("" + prefs.getLayoutPageNum());
 		}
 		
-		Label excelLabel = new Label("Excel de travail");
+		Label excelLabel = new Label("Excel de travail:");
 		TextField excelPath = new TextField();		
 		excelPath.setText(prefs.getExcelTemplatePath());		
 		excelPath.setPromptText("Nom du fichier");
@@ -73,7 +74,7 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 			}
 		});
 		
-		dialogPane.setContent(new HBox(8, new VBox(8, layoutLabel, layoutPath, pageNum), new VBox(8, excelLabel, excelPath)));
+		dialogPane.setContent(new HBox(8, new VBox(8, layoutLabel, layoutPath, pageNumLabel, pageNum), new VBox(8, excelLabel, excelPath)));
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {
 				String layoutVal = layoutPath.getText();				
