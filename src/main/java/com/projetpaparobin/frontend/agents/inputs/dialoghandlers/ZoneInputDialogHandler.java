@@ -24,6 +24,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
@@ -38,7 +39,6 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 	private ComboBox<String> activityType, units, areaType;
 	private TextField areaNumber, areaName, areaSize;
 	
-	private double initHeight;
 	private PresentationLayoutAgent presLayout;
 	
 	public ZoneInputDialogHandler(Window primaryStage, PresentationLayoutAgent presLayout) {
@@ -94,11 +94,11 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		areaType.valueProperty().addListener((observable, oldValue, newValue) -> {
 			EAreaType type = EAreaType.getEnum(newValue);
 			if(type.equals(EAreaType.ZIP)) {
-				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, units, areaNumber, activityType, areaSize));
-				inputDialog.setHeight(inputDialog.getHeight() + areaName.getHeight() + DEFAULT_SPACE_BETWEEN_INPUTS);
+				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, units, areaNumber, activityType, areaSize, colorComboBox));
+				dialogPane.getScene().getWindow().sizeToScene();
 			} else {
-				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, areaNumber, activityType, areaSize));
-				inputDialog.setHeight(initHeight);
+				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, areaNumber, activityType, areaSize, colorComboBox));
+				dialogPane.getScene().getWindow().sizeToScene();
 			}
 		});	
 		
@@ -106,7 +106,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		vbox.setFillWidth(true);
 
 		dialogPane.setContent(vbox);
-		initHeight = inputDialog.getHeight();
+		dialogPane.setMinHeight(Region.USE_PREF_SIZE);
 		
 		inputDialog.setResultConverter((ButtonType button) -> {
 			if(button == ButtonType.OK) {

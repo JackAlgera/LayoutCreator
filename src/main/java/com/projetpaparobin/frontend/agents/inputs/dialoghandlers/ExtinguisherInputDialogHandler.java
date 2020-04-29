@@ -40,9 +40,7 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 	private ComboBox<UIColor> colorComboBox;
 	private CheckBox isNew;
 	private TextField fabricationYear, number, extinguisherType, brand, local;
-	
-	private double initHeight;
-	
+		
 	public ExtinguisherInputDialogHandler(Window primaryStage) {
 		super(primaryStage);
 		inputDialog = new Dialog<ExtinguisherID>();
@@ -81,10 +79,10 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 			EProtectionType type = EProtectionType.getEnum(newValue);
 			if(type.equals(EProtectionType.PC)) {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, local, fabricationYear, brand, colorComboBox, isNew));
-				inputDialog.setHeight(inputDialog.getHeight() + number.getHeight() + DEFAULT_SPACE_BETWEEN_INPUTS);
+				dialogPane.getScene().getWindow().sizeToScene();
 			} else {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
-				inputDialog.setHeight(initHeight);
+				dialogPane.getScene().getWindow().sizeToScene();
 			}
 		});
 		
@@ -108,7 +106,6 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		vbox.setFillWidth(true);
 		
 		dialogPane.setContent(vbox);
-		initHeight = inputDialog.getHeight();
 		
 		final Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
 		okButton.addEventFilter(ActionEvent.ACTION, 
