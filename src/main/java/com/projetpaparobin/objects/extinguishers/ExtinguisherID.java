@@ -97,5 +97,60 @@ public class ExtinguisherID {
 	public String getDisplayText() {
 		return extinguisherType + "/" + protectionType;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + ((extinguisherType == null) ? 0 : extinguisherType.hashCode());
+		result = prime * result + fabricationYear;
+		result = prime * result + (isNew ? 1231 : 1237);
+		result = prime * result + ((local == null) ? 0 : local.hashCode());
+		result = prime * result + ((number == null) ? 0 : number.hashCode());
+		result = prime * result + ((protectionType == null) ? 0 : protectionType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExtinguisherID other = (ExtinguisherID) obj;
+		if (brand == null) {
+			if (other.brand != null)
+				return false;
+		} else if (!brand.equals(other.brand))
+			return false;
+		if (color != other.color)
+			return false;
+		if (extinguisherType == null) {
+			if (other.extinguisherType != null)
+				return false;
+		} else if (!extinguisherType.equals(other.extinguisherType))
+			return false;
+		if (fabricationYear != other.fabricationYear)
+			return false;
+		if (isNew != other.isNew)
+			return false;
+		if (local == null) {
+			if (other.local != null)
+				return false;
+		} else if (!local.equals(other.local))
+			return false;
+		if (number == null) {
+			if (other.number != null)
+				return false;
+		} else if (!number.equals(other.number))
+			return false;
+		if (protectionType != other.protectionType)
+			return false;
+		return true;
+	}
 	
 }

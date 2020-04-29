@@ -18,6 +18,7 @@ public class ZoneCreator {
 	private Zone currentZone;
 	
 	private ZoneCreator() {
+		nbrInstance = layoutHandler.getHighestZoneNumber();
 		zoneState = EZoneCreationState.NEW_ZONE;
 		listeners = new ArrayList<IZoneCreatorListener>();
 	}
@@ -80,7 +81,7 @@ public class ZoneCreator {
 	}
 	
 	public void reset() {
-		nbrInstance = 1;
+		nbrInstance = layoutHandler.getHighestZoneNumber();
 	}
 	
 	public static int getDefaultZoneNumber() {

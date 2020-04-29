@@ -7,32 +7,44 @@ import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.recapagent.converters.ProtectionTypeConverter;
 import com.projetpaparobin.frontend.agents.recapagent.converters.UIColorConverter;
+import com.projetpaparobin.frontend.agents.recapagent.converters.ZoneConverter;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
+import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIColor;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 
+	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	
 	private TableColumn<Extinguisher, Integer> fabricationYearColumn;
 	private TableColumn<Extinguisher, EProtectionType> protectionTypeColumn;
 	private TableColumn<Extinguisher, String> brandColumn, numberColumn, extinguisherTypeColumn, localColumn;
 	private TableColumn<Extinguisher, Boolean> isNewColumn;
 	private TableColumn<Extinguisher, UIColor> colorColumn;
+	private TableColumn<Extinguisher, String> zoneColumn;
+
+	double nbrColumns = 8;
+	
+	private ObservableList<String> zoneNames;
 	
 	@SuppressWarnings("unchecked")
 	public ExtinguishersTableView(PresentationLayoutAgent presLayout, double width) {
 		super(presLayout, width);
 		
-		width = width * 0.97;
-		double nbrColumns = 7;
+		width = width * 0.95;
 
+		setZoneColumn(width / nbrColumns);
 		setNumberColumn(width / nbrColumns);				
 		setExtinguisherTypeColumn(width / nbrColumns);		
 		setProtectionTypeColumn(width / nbrColumns);	
@@ -40,15 +52,16 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		setBrandColumn(width / nbrColumns);	
 		setLocalColumn(width / nbrColumns);
 		setColorColumn(width / nbrColumns);
-		this.getColumns().addAll(numberColumn, extinguisherTypeColumn, protectionTypeColumn, fabricationYearColumn, brandColumn, localColumn, colorColumn); 
+		this.getColumns().addAll(zoneColumn, numberColumn, extinguisherTypeColumn, protectionTypeColumn, fabricationYearColumn, brandColumn, localColumn, colorColumn); 
 		this.setItems(LayoutHandler.getInstance().getExtinguishers());
 	}	
 	
 	public void resizePanel(double width, double height) {
 		this.setMaxWidth(width);
 		this.setMinWidth(width);
-		width = width * 0.97;
-		double nbrColumns = 7;
+		width = width * 0.95;
+		zoneColumn.setMaxWidth(width / nbrColumns);
+		zoneColumn.setMinWidth(width / nbrColumns);
 		fabricationYearColumn.setMaxWidth(width / nbrColumns);
 		fabricationYearColumn.setMinWidth(width / nbrColumns);
 		protectionTypeColumn.setMaxWidth(width / nbrColumns);
@@ -63,6 +76,54 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		colorColumn.setMinWidth(width / nbrColumns);
 		localColumn.setMaxWidth(width / nbrColumns);
 		localColumn.setMinWidth(width / nbrColumns);
+	}
+	
+	private void setZoneColumn(double maxWidth) {
+		zoneNames = FXCollections.observableArrayList(layoutHandler.getZones().stream()
+				.map(zone -> zone.getId().getDefaultAreaName())
+				.collect(Collectors.toList()));
+		
+		zoneColumn = createColumn("Zone", "zoneDisplayText", maxWidth);
+		zoneColumn.setCellFactory(EditableCellComboBox.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), zoneNames));
+		
+		zoneColumn.setOnEditCommit(event -> {		
+			Zone oldZone = null;
+			if(event.getOldValue() != null) {
+				oldZone = layoutHandler.getZoneFromDefaultZoneName(event.getOldValue());
+			}
+			Zone newZone = null;
+			if(event.getNewValue() != null) {
+				newZone = layoutHandler.getZoneFromDefaultZoneName(event.getNewValue());
+			}
+			
+			Extinguisher ex = event.getTableView().getItems().get(event.getTablePosition().getRow());
+			
+			if(oldZone != null) {
+				oldZone.removeExtinguisher(ex);
+			}
+			if(newZone != null) {
+				newZone.addExtinguisher(ex);
+				ex.setZone(newZone);
+			}
+			for (Zone zone : layoutHandler.getZones()) {
+				System.out.println("zone " + zone.getId().getDefaultAreaName() + ":" + zone.getExtinguishers().size());
+			}
+			presLayout.updateShapes();
+		});
+		
+		layoutHandler.addZonesListListener(new ListChangeListener<Zone>() {
+			
+			@Override
+			public void onChanged(Change<? extends Zone> change) {
+				while(change.next()) {
+				}
+				zoneNames.clear();
+				for (Zone zone : layoutHandler.getZones()) {
+					zoneNames.add(zone.getId().getDefaultAreaName());
+				}
+			}
+			
+		});
 	}
 	
 	private void setNumberColumn(double maxWidth) {

@@ -72,6 +72,9 @@ public class ApplicationStatePersister {
 			zoneCreator.canceled();			
 			extinguisherCreator.canceled();
 			commentCreator.canceled();
+
+			ZoneCreator.getInstance().reset();
+			ExtinguisherCreator.getInstance().reset();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

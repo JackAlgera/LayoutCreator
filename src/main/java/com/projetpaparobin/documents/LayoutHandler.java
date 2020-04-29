@@ -14,6 +14,7 @@ import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 public class LayoutHandler implements ILayoutHandlerListener {
@@ -44,6 +45,10 @@ public class LayoutHandler implements ILayoutHandlerListener {
 		return instance;
 	}
 	
+	public void addZonesListListener(ListChangeListener<Zone> listener) {
+		zones.addListener(listener);
+	}
+	
 	public void setBufImage(BufferedImage bufImage) {
 		this.bufImage = bufImage;
 		layoutImageUpdated();
@@ -51,6 +56,15 @@ public class LayoutHandler implements ILayoutHandlerListener {
 	
 	public BufferedImage getBufImage() {
 		return bufImage;
+	}
+	
+	public Zone getZoneFromDefaultZoneName(String name) {
+		for (Zone zone : zones) {
+			if(zone.getId().getDefaultAreaName().strip().toLowerCase().equals(name.strip().toLowerCase())) {
+				return zone;
+			}
+		}
+		return (zones.size() > 0 ? zones.get(0) : null);
 	}
 	
 	public void addZone(Zone newZone) {
@@ -137,6 +151,20 @@ public class LayoutHandler implements ILayoutHandlerListener {
 		for (ILayoutHandlerListener listener : listeners) {
 			listener.layoutImageUpdated();
 		}
+	}
+	
+	public int getHighestZoneNumber() {
+		if(zones.size() == 0) {
+			return 1;
+		}
+		
+		int highestNumber = Integer.MIN_VALUE;
+		for (Zone zone : zones) {
+			if(zone.getId().getAreaNumber() > highestNumber) {
+				highestNumber = zone.getId().getAreaNumber();
+			}
+		}
+		return highestNumber + 1;
 	}
 	
 }

@@ -119,6 +119,55 @@ public class ZoneID {
 	
 	public void setAreaName(String areaName) {
 		this.areaName = areaName;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((activityType == null) ? 0 : activityType.hashCode());
+		result = prime * result + ((areaName == null) ? 0 : areaName.hashCode());
+		result = prime * result + areaNumber;
+		result = prime * result + areaSize;
+		result = prime * result + ((areaType == null) ? 0 : areaType.hashCode());
+		result = prime * result + ((fillColor == null) ? 0 : fillColor.hashCode());
+		result = prime * result + ((rimColor == null) ? 0 : rimColor.hashCode());
+		result = prime * result + ((units == null) ? 0 : units.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ZoneID other = (ZoneID) obj;
+		if (activityType != other.activityType)
+			return false;
+		if (areaName == null) {
+			if (other.areaName != null)
+				return false;
+		} else if (!areaName.equals(other.areaName))
+			return false;
+		if (areaNumber != other.areaNumber)
+			return false;
+		if (areaSize != other.areaSize)
+			return false;
+		if (areaType != other.areaType)
+			return false;
+		if (fillColor != other.fillColor)
+			return false;
+		if (rimColor == null) {
+			if (other.rimColor != null)
+				return false;
+		} else if (!rimColor.equals(other.rimColor))
+			return false;
+		if (units != other.units)
+			return false;
+		return true;
 	}	
 	
 }

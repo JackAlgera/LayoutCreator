@@ -2,13 +2,9 @@ package com.projetpaparobin.frontend.agents.inputs;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
-import com.projetpaparobin.frontend.elements.UIComment;
 import com.projetpaparobin.frontend.elements.UICorner;
 import com.projetpaparobin.frontend.elements.UIElement;
-import com.projetpaparobin.frontend.elements.UIExtinguisher;
-import com.projetpaparobin.frontend.elements.UIExtinguisherText;
 import com.projetpaparobin.frontend.elements.UIZone;
-import com.projetpaparobin.frontend.elements.UIZoneText;
 import com.projetpaparobin.frontend.handlers.UICommentHandler;
 import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
 import com.projetpaparobin.frontend.handlers.UITextHandler;

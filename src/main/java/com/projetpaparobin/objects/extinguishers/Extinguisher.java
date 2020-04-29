@@ -28,6 +28,11 @@ public class Extinguisher {
 		this.radius = -1;
 	}
 	
+	@JsonIgnore
+	public String getZoneDisplayText() {
+		return zone.getId().getDefaultAreaName();
+	}
+	
 	public double getRadius() {
 		return radius;
 	}
@@ -113,14 +118,19 @@ public class Extinguisher {
 	public String getFillColor() {
 		return id.getColor().getColorName();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-		result = prime * result + ((zone == null) ? 0 : zone.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(radius);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((textAreaPos == null) ? 0 : textAreaPos.hashCode());
+		temp = Double.doubleToLongBits(textAreaSize);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 
@@ -143,10 +153,14 @@ public class Extinguisher {
 				return false;
 		} else if (!pos.equals(other.pos))
 			return false;
-		if (zone == null) {
-			if (other.zone != null)
+		if (Double.doubleToLongBits(radius) != Double.doubleToLongBits(other.radius))
+			return false;
+		if (textAreaPos == null) {
+			if (other.textAreaPos != null)
 				return false;
-		} else if (!zone.equals(other.zone))
+		} else if (!textAreaPos.equals(other.textAreaPos))
+			return false;
+		if (Double.doubleToLongBits(textAreaSize) != Double.doubleToLongBits(other.textAreaSize))
 			return false;
 		return true;
 	}
