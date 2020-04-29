@@ -12,13 +12,13 @@ public class Extinguisher {
 	private Point pos, textAreaPos;
 	private double textAreaSize;
 	private double radius;
-	
+
 	@JsonBackReference
 	private Zone zone;
-	
+
 	public Extinguisher() {
 	}
-	
+
 	public Extinguisher(String number, String extinguisherType, EProtectionType protectionType, UIColor color,
 			Point pos, boolean isNew, Zone zone, int anneeMiseEnService, String marque, String local) {
 		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color, local);
@@ -27,12 +27,12 @@ public class Extinguisher {
 		this.textAreaSize = -1;
 		this.radius = -1;
 	}
-	
+
 	@JsonIgnore
 	public String getZoneDisplayText() {
 		return zone.getId().getDefaultAreaName();
 	}
-	
+
 	public double getRadius() {
 		return radius;
 	}
@@ -48,7 +48,7 @@ public class Extinguisher {
 	public void setTextAreaSize(double textAreaSize) {
 		this.textAreaSize = textAreaSize;
 	}
-	
+
 	public Point getTextAreaPos() {
 		return textAreaPos;
 	}
@@ -81,7 +81,7 @@ public class Extinguisher {
 	public void setId(ExtinguisherID id) {
 		this.id = id;
 	}
-	
+
 	public ExtinguisherID getId() {
 		return id;
 	}
@@ -90,30 +90,37 @@ public class Extinguisher {
 	public String getLocal() {
 		return id.getLocal();
 	}
+
 	@JsonIgnore
 	public String getNumber() {
 		return id.getNumber();
 	}
+
 	@JsonIgnore
 	public String getExtinguisherType() {
 		return id.getExtinguisherType();
 	}
+
 	@JsonIgnore
 	public EProtectionType getProtectionType() {
 		return id.getProtectionType();
 	}
+
 	@JsonIgnore
 	public int getFabricationYear() {
 		return id.getFabricationYear();
 	}
+
 	@JsonIgnore
 	public String getBrand() {
 		return id.getBrand();
 	}
+
 	@JsonIgnore
 	public boolean getIsNew() {
 		return id.isNew();
 	}
+
 	@JsonIgnore
 	public String getFillColor() {
 		return id.getColor().getColorName();
@@ -164,5 +171,5 @@ public class Extinguisher {
 			return false;
 		return true;
 	}
-	
+
 }

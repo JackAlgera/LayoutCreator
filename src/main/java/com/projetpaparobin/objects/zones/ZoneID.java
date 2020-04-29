@@ -17,13 +17,14 @@ public class ZoneID {
 	private UIColor fillColor;
 	@JsonIgnore
 	private Color rimColor;
-	
+
 	public ZoneID() {
 		this.fillColor = UIElements.DEFAULT_ZONE_CREATION_COLOR;
 		this.rimColor = fillColor.getColor().darker();
 	}
-	
-	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize, EUnits units, UIColor fillColor) {
+
+	public ZoneID(String areaName, EAreaType areaType, int areaNumber, EActivityType activityType, int areaSize,
+			EUnits units, UIColor fillColor) {
 		this.areaNumber = areaNumber;
 		this.areaType = areaType;
 		this.activityType = activityType;
@@ -38,7 +39,7 @@ public class ZoneID {
 	public String getDisplayText() {
 		return areaType.toString() + areaNumber + "-" + getActivityTypeAbbreviation() + "-" + areaSize + "m²";
 	}
-	
+
 	@JsonIgnore
 	public String getActivityTypeAbbreviation() {
 		switch (activityType) {
@@ -56,18 +57,18 @@ public class ZoneID {
 	}
 
 	public void setFillColor(UIColor fillColor) {
-		if(fillColor == null) {
+		if (fillColor == null) {
 			this.fillColor = UIElements.getRandomColor();
 		} else {
 			this.fillColor = fillColor;
 		}
 		this.rimColor = fillColor.getColor().darker();
 	}
-	
+
 	public Color getRimColor() {
 		return rimColor;
 	}
-	
+
 	public EUnits getUnits() {
 		return units;
 	}
@@ -83,7 +84,7 @@ public class ZoneID {
 	public void setAreaType(EAreaType areaType) {
 		this.areaType = areaType;
 	}
-	
+
 	public int getAreaNumber() {
 		return areaNumber;
 	}
@@ -111,12 +112,12 @@ public class ZoneID {
 	public String getAreaName() {
 		return (areaName.isBlank() ? getDefaultAreaName() : areaName);
 	}
-	
+
 	@JsonIgnore
 	public String getDefaultAreaName() {
 		return areaType.toString() + areaNumber;
 	}
-	
+
 	public void setAreaName(String areaName) {
 		this.areaName = areaName;
 	}
@@ -168,6 +169,6 @@ public class ZoneID {
 		if (units != other.units)
 			return false;
 		return true;
-	}	
-	
+	}
+
 }

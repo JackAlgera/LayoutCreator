@@ -38,32 +38,32 @@ public enum EExtinguisherType {
 	
 	private UIColor color;
 	private String name;
-	
+
 	private EExtinguisherType(String name, UIColor color) {
 		this.color = color;
 		this.name = name;
 	}
-	
+
 	public UIColor getColor() {
 		return color;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public static EExtinguisherType getDefaultExtinguisherType() {
 		return E6A;
 	}
-	
-	public static EExtinguisherType getEnum(String value) {
-        for(EExtinguisherType type : values()) {
-            if(type.getName().equalsIgnoreCase(value)) {
-            	return type;
-            }        	
-        }
 
-        return OTHER;
-    }
-	
+	public static EExtinguisherType getEnum(String value) {
+		for (EExtinguisherType type : values()) {
+			if (type.getName().equalsIgnoreCase(value)) {
+				return type;
+			}
+		}
+
+		return OTHER;
+	}
+
 }

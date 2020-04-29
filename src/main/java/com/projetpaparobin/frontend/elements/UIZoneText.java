@@ -32,14 +32,14 @@ public class UIZoneText extends UIElement {
 				(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPos().getY(),
 				true, zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
-		if(zone.getTextAreaSize() == 0) {
+		if (zone.getTextAreaSize() == 0) {
 			zone.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
 		}
 		this.textHeight = zone.getTextAreaSize();
 		this.connection = new UIConnection(zone, this, getInitConnectionPos(zone, uiZone, this), zone.getRimColor(), viewLayoutAgent);
 		prepareImage();
 		initResizeCorner(new Point(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2));
-	}	
+	}
 	
 	@Override
 	public void drawShape() {	
@@ -55,35 +55,34 @@ public class UIZoneText extends UIElement {
 	private void prepareImage() {
 		int scale = 5;
 	
-		StackPane sPane = new StackPane();		
+		StackPane sPane = new StackPane();
 		Text txt = new Text(zone.getDisplayText());
 		txt.setFont(UIElements.LAYOUT_FONT);
-		txt.setFill(zone.getRimColor());	
-		
-		sPane.getChildren().addAll(txt);		
+		txt.setFill(zone.getRimColor());
+
+		sPane.getChildren().addAll(txt);
 		Bounds bounds = sPane.getBoundsInLocal();
-		
+
 		Rectangle whiteRect = new Rectangle(bounds.getWidth() * 1.1, bounds.getHeight() * 1.1);
 		whiteRect.setStroke(zone.getRimColor());
 		whiteRect.setStrokeWidth(LINE_WIDTH);
 		whiteRect.setFill(Color.WHITE);
-		
+
 		sPane.getChildren().setAll(whiteRect, txt);
 
 		SnapshotParameters params = new SnapshotParameters();
 		params.setTransform(Transform.scale(scale, scale));
-		
-		drawnImage = sPane.snapshot(params, null);		
-		
+
+		drawnImage = sPane.snapshot(params, null);
+
 		ImageView view = new ImageView(drawnImage);
 		view.setFitWidth(viewLayoutAgent.getCanvasHeight() * textHeight * (bounds.getWidth() / bounds.getHeight()));
 		view.setFitHeight(viewLayoutAgent.getCanvasHeight() * textHeight);
 		drawnImage = view.snapshot(null, null);
 
-		hitbox = new Rectangle(
-				posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())), 
+		hitbox = new Rectangle(posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())),
 				posY - (drawnImage.getHeight() / (2.0 * viewLayoutAgent.getCanvasHeight())),
-				drawnImage.getWidth() / viewLayoutAgent.getCanvasWidth(), 
+				drawnImage.getWidth() / viewLayoutAgent.getCanvasWidth(),
 				drawnImage.getHeight() / viewLayoutAgent.getCanvasHeight());
 	}
 
@@ -91,7 +90,7 @@ public class UIZoneText extends UIElement {
 	public boolean containsPoint(double posX, double posY) {
 		return hitbox.contains(posX, posY);
 	}
-	
+
 	public Zone getZone() {
 		return zone;
 	}
@@ -100,13 +99,12 @@ public class UIZoneText extends UIElement {
 	public void translateShape(double newPosX, double newPosY) {
 		super.translateShape(newPosX, newPosY);
 		zone.setTextAreaPos(new Point(newPosX, newPosY));
-		hitbox = new Rectangle(
-				posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())), 
+		hitbox = new Rectangle(posX - (drawnImage.getWidth() / (2.0 * viewLayoutAgent.getCanvasWidth())),
 				posY - (drawnImage.getHeight() / (2.0 * viewLayoutAgent.getCanvasHeight())),
-				drawnImage.getWidth() / viewLayoutAgent.getCanvasWidth(), 
+				drawnImage.getWidth() / viewLayoutAgent.getCanvasWidth(),
 				drawnImage.getHeight() / viewLayoutAgent.getCanvasHeight());
 	}
-	
+
 	@Override
 	public void setIsSelected(boolean isSelected) {
 		super.setIsSelected(isSelected);
@@ -118,7 +116,7 @@ public class UIZoneText extends UIElement {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 	@Override
 	public void resize(double newPosY) {
 		textHeight = Math.abs((posY - newPosY) * 2);
@@ -137,15 +135,15 @@ public class UIZoneText extends UIElement {
 			return new Point(zone.getTextConnectionCenterPos().getX(), zone.getTextConnectionCenterPos().getY());
 		}
 	}
-	
+
 	public UIConnection getConnection() {
 		return connection;
 	}
-	
+
 	public UICorner getResizeCorner() {
 		return resizeCorner;
 	}
-	
+
 	public void moveWithZone(double deltaX, double deltaY) {
 		translateShape(posX + deltaX, posY + deltaY);
 		connection.translateShape(connection.getPosX() + deltaX, connection.getPosY() + deltaY);
