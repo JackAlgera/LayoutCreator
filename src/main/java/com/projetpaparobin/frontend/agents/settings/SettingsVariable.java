@@ -10,14 +10,17 @@ import javafx.scene.layout.Priority;
 
 public class SettingsVariable extends HBox {
 	
+	private EPreferencesValues key;
+	
 	private Label label;
 	private TextField textField;
 	
-	public SettingsVariable(EPreferencesValues pref, String prefValue) {
+	public SettingsVariable(EPreferencesValues key, String prefValue) {
 		super(8);
 		this.setAlignment(Pos.CENTER_LEFT);
-		this.label = new Label(pref.getDisplayValue());
+		this.label = new Label(key.getDisplayValue());
 		this.textField = new TextField(prefValue);
+		this.key = key;
 		setHgrow(label, Priority.ALWAYS);
 		setHgrow(textField, Priority.ALWAYS);
 		
@@ -26,6 +29,10 @@ public class SettingsVariable extends HBox {
 	
 	public String getValue() {
 		return textField.getText();
+	}
+	
+	public EPreferencesValues getKey() {
+		return key;
 	}
 	
 }
