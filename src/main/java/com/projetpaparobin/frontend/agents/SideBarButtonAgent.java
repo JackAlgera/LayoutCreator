@@ -44,10 +44,8 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	private static CommentCreator commentCreator = CommentCreator.getInstance();
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
-	private AreYouSureInputDialogHandler areYouSureInputDialog;
-	private FileSaveInputDialogHandler fileSaveInputDialog;
 	
-	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, resetButton, saveButton, loadButton, createCommentButton;
+	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, createCommentButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
@@ -65,8 +63,6 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 				BorderWidths.DEFAULT)));
 		this.presLayoutAgent = presLayoutAgent;
 		this.fileGenerationInputDialog = new FileGenerationDialogHandler(primaryStage);
-		this.areYouSureInputDialog = new AreYouSureInputDialogHandler(primaryStage, "Confirmation De Suppression", "Etes-vous sûr de vouloir tout supprimer ?");
-		this.fileSaveInputDialog = new FileSaveInputDialogHandler(primaryStage);
 		
 		newExtinguisherButton = new Button("Nouveau extincteur");
 		newExtinguisherButton.addEventHandler(ActionEvent.ACTION, this);
@@ -78,12 +74,6 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		createExcelButton.addEventHandler(ActionEvent.ACTION, this);
 		cancelButton = new Button("Annuler");
 		cancelButton.addEventHandler(ActionEvent.ACTION, this);
-		resetButton = new Button("Recommencer de zéro");
-		resetButton.addEventHandler(ActionEvent.ACTION, this);
-		saveButton = new Button("Sauvegarder");
-		saveButton.addEventHandler(ActionEvent.ACTION, this);
-		loadButton = new Button("Charger");
-		loadButton.addEventHandler(ActionEvent.ACTION, this);
 		createCommentButton = new Button("Nouveau commentaire");
 		createCommentButton.addEventHandler(ActionEvent.ACTION, this);
 		
@@ -92,9 +82,6 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		UIElements.setDefaultButtonStyle(doneEditingZoneButton);
 		UIElements.setDefaultButtonStyle(createExcelButton);
 		UIElements.setDefaultButtonStyle(cancelButton);
-		UIElements.setDefaultButtonStyle(resetButton);
-		UIElements.setDefaultButtonStyle(saveButton);
-		UIElements.setDefaultButtonStyle(loadButton);
 		UIElements.setDefaultButtonStyle(createCommentButton);
 		
 		VBox zoneBox = new VBox(8, newZoneButton, doneEditingZoneButton);
@@ -104,11 +91,8 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		
 		HBox finalBox = new HBox(8, zoneBox, exBox, createExcelButton);
 		finalBox.setAlignment(Pos.CENTER);
-		
-		HBox stateButtons = new HBox(8, saveButton, loadButton);
-		stateButtons.setAlignment(Pos.CENTER);
-		
-		this.getChildren().addAll(finalBox, stateButtons, resetButton);
+				
+		this.getChildren().addAll(finalBox);
 	}
 
 	public void setPresLayoutAgent(PresentationLayoutAgent presLayoutAgent) {
@@ -144,16 +128,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		} else if(event.getSource().equals(cancelButton)) {
 			mouseInputHandler.cancelSelection();
 			zoneCreator.canceled();
-		} else if(event.getSource().equals(resetButton)) {
-			if(areYouSureInputDialog.showAndWait()) {
-				layoutHandler.fullReset();
-				zoneCreator.canceled();			
-			}
-		} else if(event.getSource().equals(saveButton)) {
-			fileSaveInputDialog.showSaveDialog();
-		} else if(event.getSource().equals(loadButton)) {
-			fileSaveInputDialog.showLoadDialog();
-		}
+		} 
 	}
 	
 	public void resizePanel(double width, double height) {

@@ -2,6 +2,7 @@ package com.projetpaparobin.frontend.agents;
 
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
+import com.projetpaparobin.frontend.agents.menubar.UIMenuBar;
 import com.projetpaparobin.frontend.agents.recapagent.SideBarRecapAgent;
 import com.projetpaparobin.utils.UIElements;
 
@@ -10,10 +11,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainUI extends HBox {
+public class MainUI extends VBox {
 
 	private static double widthRatio = 0.6;
 	private static double heightRatio = 0.35;
+	
+	private UIMenuBar menuBar;
 	
 	private PresentationLayoutAgent layoutPres;
 	private ViewLayoutAgent layoutView;
@@ -26,7 +29,9 @@ public class MainUI extends HBox {
 	}
 	
 	public MainUI(Stage primaryStage, double width, double height, String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
-		super();		
+		super();	
+		menuBar = new UIMenuBar(primaryStage);
+		
 		layoutPres = new PresentationLayoutAgent();
 		layoutView = new ViewLayoutAgent(primaryStage, layoutPDFPath, layoutPageNum, width * widthRatio, height, layoutPres);
 		layoutPres.setView(layoutView);		
@@ -40,11 +45,11 @@ public class MainUI extends HBox {
 		sideBox.setMinSize(width * (1.0 - widthRatio), height);
 		sideBox.setBorder(UIElements.BLACK_BORDER);
 		
-		this.getChildren().addAll(layoutView, sideBox);
+		this.getChildren().addAll(menuBar, new HBox(layoutView, sideBox));
 	}	
 
 	public void resizePanel(double width, double height) {
-		height -= 27;
+		height -= 27 + menuBar.getHeight();
 		sideBox.setMaxSize(width * (1.0 - widthRatio), height);
 		sideBox.setMinSize(width * (1.0 - widthRatio), height);
 		
