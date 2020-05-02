@@ -30,20 +30,20 @@ public class SettingsStage {
 	private ArrayList<SettingsVariable> settingsVariables;
 	
 	public SettingsStage(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-		
+		this.primaryStage = primaryStage;		
 		
 		BorderPane root = new BorderPane();
 		
 		panel = new ScrollPane();
 		panel.setFitToWidth(true);
 		
-		SettingsVariable excelTemplatePath = new SettingsVariable(EPreferencesValues.EXCEL_TEMPLATE_PATH, dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH));
-		SettingsVariable layoutPDFPath = new SettingsVariable(EPreferencesValues.LAYOUT_PDF_PATH, dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH));
-		SettingsVariable layoutPageNum = new SettingsVariable(EPreferencesValues.LAYOUT_PAGE_NUM, dao.getKeyValue(EPreferencesValues.LAYOUT_PAGE_NUM));
+		SettingsVariable excelTemplatePath = new SettingsVariable(stage, EPreferencesValues.EXCEL_TEMPLATE_PATH, dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH), EFileType.FILE);
+		SettingsVariable layoutPDFPath = new SettingsVariable(stage, EPreferencesValues.LAYOUT_PDF_PATH, dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH), EFileType.FILE);
+		SettingsVariable layoutPageNum = new SettingsVariable(stage, EPreferencesValues.LAYOUT_PAGE_NUM, dao.getKeyValue(EPreferencesValues.LAYOUT_PAGE_NUM), EFileType.NUMBER);
+		SettingsVariable workspacePath = new SettingsVariable(stage, EPreferencesValues.WORKSPACE_PATH, dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH), EFileType.FOLDER);
 
-		panel.setContent(new VBox(5, excelTemplatePath, layoutPDFPath, layoutPageNum));
-		settingsVariables = new ArrayList<SettingsVariable>(Arrays.asList(excelTemplatePath, layoutPDFPath, layoutPageNum));
+		panel.setContent(new VBox(5, excelTemplatePath, layoutPDFPath, layoutPageNum, workspacePath));
+		settingsVariables = new ArrayList<SettingsVariable>(Arrays.asList(excelTemplatePath, layoutPDFPath, layoutPageNum, workspacePath));
 		
 		root.setCenter(panel);
 		root.setBottom(getButtonsBox());
@@ -67,9 +67,7 @@ public class SettingsStage {
 			PreferencesPOJO prefs = new PreferencesPOJO();
 			
 			for (SettingsVariable var : settingsVariables) {
-				if(!var.getValue().isBlank()) {
-					prefs.addKeyValue(var.getKey(), var.getValue());
-				}
+				prefs.addKeyValue(var.getKey(), var.getValue());
 			}
 			
 			dao.setPrefs(prefs);

@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
+import com.projetpaparobin.documents.preferences.EPreferencesValues;
+import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
@@ -38,6 +40,7 @@ import javafx.stage.Stage;
 public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent> {
 
 	private static BigBoiFinalFileGenerator fileGenerator = BigBoiFinalFileGenerator.getInstance();
+	private static DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
 	
 	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
 	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
@@ -116,14 +119,16 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 			if(!response.isBlank()) {
 				SnapshotParameters sp = new SnapshotParameters();
 			    sp.setFill(Color.TRANSPARENT);
-			    File file = new File("./" + response + ".png");
+			    String filePath = (dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH).isBlank() ? "." : dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH)) + "/" + response;
+			    File file = new File(filePath + ".png");		
+			    
 		        WritableImage wi = presLayoutAgent.getSnapshot(sp, null);
 			    try {
 					ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", file);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				fileGenerator.generateExcel(response + ".xlsm");
+				fileGenerator.generateExcel(filePath + ".xlsm");
 			}
 		} else if(event.getSource().equals(cancelButton)) {
 			mouseInputHandler.cancelSelection();
