@@ -5,14 +5,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
-import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
-import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.objects.creators.comments.CommentCreator;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
@@ -51,7 +48,6 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, createCommentButton;
 	private PresentationLayoutAgent presLayoutAgent;
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
-	private LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
 	public SideBarButtonAgent(PresentationLayoutAgent presLayoutAgent, Stage primaryStage, double width, double height) {
 		super(50);
