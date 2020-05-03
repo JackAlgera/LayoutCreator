@@ -7,10 +7,10 @@ public enum EPreferencesValues {
 	LAYOUT_PAGE_NUM("Numéro de la page du plan :", "layoutPageNum", "1"),
 	WORKSPACE_PATH("Espace de travail :", "workspacePath", ""),
 	
-	NBR_EXTINGUISHERS_SHEET_NAME("layoutPageNum", "nbrExtinguishersSheetName", "dernière page"),
-	PARC_INDUSTRIELLE_SHEET_NAME("layoutPageNum", "parcIndustrielleSheetName", "Parc activité industrielle"),
-	PARC_TERTIAIRE_SHEET_NAME("layoutPageNum", "parcTertiaireSheetName", "Parc activité tertiaire"),
-	RECENSEMENT_SHEET_NAME("layoutPageNum", "recensementSheetName", "Recensement");
+	NBR_EXTINGUISHERS_SHEET_NAME("Nom de la page d'extincteurs :", "nbrExtinguishersSheetName", "dernière page"),
+	PARC_INDUSTRIELLE_SHEET_NAME("Nom de la page d'activité industrielle :", "parcIndustrielleSheetName", "Parc activité industrielle"),
+	PARC_TERTIAIRE_SHEET_NAME("Nom de la page d'activité tertiaire :", "parcTertiaireSheetName", "Parc activité tertiaire"),
+	RECENSEMENT_SHEET_NAME("Nom de la page de recensement :", "recensementSheetName", "Recensement");
 		
 	private String key;
 	private String defaultValue;

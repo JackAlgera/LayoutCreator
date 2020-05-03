@@ -38,12 +38,23 @@ public class SettingsStage {
 		panel.setFitToWidth(true);
 		
 		SettingsVariable excelTemplatePath = new SettingsVariable(stage, EPreferencesValues.EXCEL_TEMPLATE_PATH, dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH), EFileType.FILE);
-		SettingsVariable layoutPDFPath = new SettingsVariable(stage, EPreferencesValues.LAYOUT_PDF_PATH, dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH), EFileType.FILE);
-		SettingsVariable layoutPageNum = new SettingsVariable(stage, EPreferencesValues.LAYOUT_PAGE_NUM, dao.getKeyValue(EPreferencesValues.LAYOUT_PAGE_NUM), EFileType.NUMBER);
 		SettingsVariable workspacePath = new SettingsVariable(stage, EPreferencesValues.WORKSPACE_PATH, dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH), EFileType.FOLDER);
 
-		panel.setContent(new VBox(5, excelTemplatePath, layoutPDFPath, layoutPageNum, workspacePath));
-		settingsVariables = new ArrayList<SettingsVariable>(Arrays.asList(excelTemplatePath, layoutPDFPath, layoutPageNum, workspacePath));
+		SettingsVariable nbrExtinguishersSheetName = new SettingsVariable(stage, EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME, dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME), EFileType.STRING);
+		SettingsVariable parcIndustrielleSheetName = new SettingsVariable(stage, EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME, dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), EFileType.STRING);
+		SettingsVariable parcTertiaireSheetName = new SettingsVariable(stage, EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME, dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), EFileType.STRING);
+		SettingsVariable recensementSheetName = new SettingsVariable(stage, EPreferencesValues.RECENSEMENT_SHEET_NAME, dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME), EFileType.STRING);
+		
+		settingsVariables = new ArrayList<SettingsVariable>(Arrays.asList(
+				excelTemplatePath, workspacePath,
+				nbrExtinguishersSheetName, parcIndustrielleSheetName, parcTertiaireSheetName, recensementSheetName
+				));
+		
+		VBox scrollBox = new VBox(5);
+		for (SettingsVariable var : settingsVariables) {
+			scrollBox.getChildren().add(var);
+		}
+		panel.setContent(scrollBox);
 		
 		root.setCenter(panel);
 		root.setBottom(getButtonsBox());
