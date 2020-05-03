@@ -44,10 +44,13 @@ public class SettingsStage {
 		SettingsVariable parcIndustrielleSheetName = new SettingsVariable(stage, EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME, dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), EFileType.STRING);
 		SettingsVariable parcTertiaireSheetName = new SettingsVariable(stage, EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME, dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), EFileType.STRING);
 		SettingsVariable recensementSheetName = new SettingsVariable(stage, EPreferencesValues.RECENSEMENT_SHEET_NAME, dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME), EFileType.STRING);
+
+		SettingsVariable minTextSize = new SettingsVariable(stage, EPreferencesValues.MIN_TEXT_SIZE, dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE), EFileType.STRING);
 		
 		settingsVariables = new ArrayList<SettingsVariable>(Arrays.asList(
 				excelTemplatePath, workspacePath,
-				nbrExtinguishersSheetName, parcIndustrielleSheetName, parcTertiaireSheetName, recensementSheetName
+				nbrExtinguishersSheetName, parcIndustrielleSheetName, parcTertiaireSheetName, recensementSheetName,
+				minTextSize
 				));
 		
 		VBox scrollBox = new VBox(5);

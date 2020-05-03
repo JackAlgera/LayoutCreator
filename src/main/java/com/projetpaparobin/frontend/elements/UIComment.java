@@ -1,5 +1,7 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.preferences.EPreferencesValues;
+import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.Comment;
 import com.projetpaparobin.objects.zones.Point;
@@ -17,7 +19,10 @@ import javafx.scene.transform.Transform;
 
 public class UIComment extends UIElement {
 
+	private static DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
+	
 	private static double DEFAULT_TEXT_HEIGHT = 0.025;
+	private static double MIN_TEXT_SIZE = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));	
 	
 	private Rectangle hitbox;
 	private Comment comment;
@@ -26,6 +31,7 @@ public class UIComment extends UIElement {
 		
 	public UIComment(Comment comment, ViewLayoutAgent viewLayoutAgent) {
 		super(comment.getPos().getX(), comment.getPos().getY(), true, comment.getColor().getColor(), null, viewLayoutAgent);
+		updateDefaultTextSize();
 		this.comment = comment;
 		if(comment.getTextAreaSize() <= 0) {
 			comment.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
@@ -74,6 +80,13 @@ public class UIComment extends UIElement {
 				drawnImage.getHeight() / viewLayoutAgent.getCanvasHeight());
 	}
 
+	private void updateDefaultTextSize() {
+		double temp = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
+		if(DEFAULT_TEXT_HEIGHT < temp) {
+			DEFAULT_TEXT_HEIGHT = temp;
+		}
+	}
+	
 	@Override
 	public boolean containsPoint(double posX, double posY) {
 		return hitbox.contains(posX, posY);
@@ -101,7 +114,12 @@ public class UIComment extends UIElement {
 
 	@Override
 	public void resize(double newPosY) {
-		comment.setTextAreaSize((posY - newPosY) * 2);
+		MIN_TEXT_SIZE = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
+		double textHeight = Math.abs((posY - newPosY) * 2);
+		if (textHeight < MIN_TEXT_SIZE) {
+			textHeight = MIN_TEXT_SIZE;
+		}
+		comment.setTextAreaSize(textHeight);		
 		update();
 		super.translateResizeCorner(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2);
 		DEFAULT_TEXT_HEIGHT = comment.getTextAreaSize();

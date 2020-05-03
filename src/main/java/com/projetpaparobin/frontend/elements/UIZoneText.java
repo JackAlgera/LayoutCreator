@@ -1,5 +1,7 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.preferences.EPreferencesValues;
+import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
@@ -17,9 +19,12 @@ import javafx.scene.transform.Transform;
 
 public class UIZoneText extends UIElement {
 
+	private static DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
+	
 	private static double DEFAULT_TEXT_HEIGHT = 0.03;
 	private static double LINE_WIDTH = 1.5;
-
+	private static double MIN_TEXT_SIZE = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
+	
 	private Rectangle hitbox;
 	private Zone zone;
 	private UIConnection connection;
@@ -32,6 +37,7 @@ public class UIZoneText extends UIElement {
 				(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPos().getY(),
 				true, zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
+		updateDefaultTextSize();
 		if (zone.getTextAreaSize() == 0) {
 			zone.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
 		}
@@ -86,6 +92,13 @@ public class UIZoneText extends UIElement {
 				drawnImage.getHeight() / viewLayoutAgent.getCanvasHeight());
 	}
 
+	private void updateDefaultTextSize() {
+		double temp = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
+		if(DEFAULT_TEXT_HEIGHT < temp) {
+			DEFAULT_TEXT_HEIGHT = temp;
+		}
+	}
+	
 	@Override
 	public boolean containsPoint(double posX, double posY) {
 		return hitbox.contains(posX, posY);
@@ -119,7 +132,11 @@ public class UIZoneText extends UIElement {
 
 	@Override
 	public void resize(double newPosY) {
+		MIN_TEXT_SIZE = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
 		textHeight = Math.abs((posY - newPosY) * 2);
+		if (textHeight < MIN_TEXT_SIZE) {
+			textHeight = MIN_TEXT_SIZE;
+		}
 		update();
 		super.translateResizeCorner(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2);
 		zone.setTextAreaSize(textHeight);

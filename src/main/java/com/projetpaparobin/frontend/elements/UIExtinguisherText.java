@@ -1,5 +1,7 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.preferences.EPreferencesValues;
+import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Point;
@@ -17,8 +19,11 @@ import javafx.scene.transform.Transform;
 
 public class UIExtinguisherText extends UIElement {
 
+	private static DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
+	
 	private static double DEFAULT_TEXT_HEIGHT = 0.025;
 	private static double Y_OFFSET = - 0.03;
+	private static double MIN_TEXT_SIZE = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
 	
 	private Rectangle hitbox;
 	private Extinguisher ex;
@@ -29,6 +34,7 @@ public class UIExtinguisherText extends UIElement {
 		super(	(ex.getTextAreaPos() == null) ? ex.getPos().getX() : ex.getTextAreaPos().getX(),
 				(ex.getTextAreaPos() == null) ? ex.getPos().getY() + Y_OFFSET : ex.getTextAreaPos().getY(),
 				true, Color.BLACK, null, viewLayoutAgent);
+		updateDefaultTextSize();
 		this.ex = ex;
 		if(ex.getTextAreaSize() <= 0) {
 			ex.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
@@ -76,6 +82,13 @@ public class UIExtinguisherText extends UIElement {
 				drawnImage.getHeight() / viewLayoutAgent.getCanvasHeight());
 	}
 
+	private void updateDefaultTextSize() {
+		double temp = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
+		if(DEFAULT_TEXT_HEIGHT < temp) {
+			DEFAULT_TEXT_HEIGHT = temp;
+		}
+	}
+	
 	@Override
 	public boolean containsPoint(double posX, double posY) {
 		return hitbox.contains(posX, posY);
@@ -101,7 +114,12 @@ public class UIExtinguisherText extends UIElement {
 	}
 	
 	public void resize(double newPosY) {
-		ex.setTextAreaSize((posY - newPosY) * 2);
+		MIN_TEXT_SIZE = Double.parseDouble(dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE));
+		double textHeight = Math.abs((posY - newPosY) * 2);
+		if (textHeight < MIN_TEXT_SIZE) {
+			textHeight = MIN_TEXT_SIZE;
+		}
+		ex.setTextAreaSize(textHeight);
 		update();
 		super.translateResizeCorner(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2);
 		DEFAULT_TEXT_HEIGHT = ex.getTextAreaSize();
