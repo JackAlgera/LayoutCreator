@@ -40,6 +40,7 @@ public class UIExtinguisher extends UIElement {
 	public void drawShape() {
 		canvasGC.drawImage(drawnImage, posX * viewLayoutAgent.getCanvasWidth() - circle.getRadius() * viewLayoutAgent.getCanvasHeight(), (posY - circle.getRadius()) * viewLayoutAgent.getCanvasHeight());	
 		super.drawShape();
+		uiExText.drawShape();
 	}
 
 	private void prepareImage() {
@@ -128,6 +129,10 @@ public class UIExtinguisher extends UIElement {
 		prepareImage();
 		super.translateResizeCorner(posX + circle.getRadius(), posY - circle.getRadius());
 		DEFAULT_EXTINGUISHER_RADIUS = ex.getRadius();
+	}
+	
+	public Extinguisher getExtinguisher() {
+		return ex;
 	}
 
 }

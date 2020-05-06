@@ -43,10 +43,17 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 	
 	private ViewLayoutAgent view;
 	
+	private boolean shouldDrawNewEx, shouldDrawOldEx, shouldDrawZones, shouldDrawComments;
+	
 	public PresentationLayoutAgent() {
 		zoneCreator.addListener(this);
 		extinguisherCreator.addListener(this);
 		commentCreator.addListener(this);
+		
+		shouldDrawNewEx = true;
+		shouldDrawOldEx = true;
+		shouldDrawZones = true;
+		shouldDrawComments = true;
 		
 		MouseInputHandler.getInstance().setPresLayoutAgent(this);
 	}
@@ -63,9 +70,6 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		for (UIElement extinguisher : extinguisherHandler.getExtinguishers()) {
 			extinguisher.drawShape();
 		}
-		for (UIElement text : textHandler.getExtinguisherTexts()) {
-			text.drawShape();
-		}
 		for (UIElement comment : commentHandler.getComments()) {
 			comment.drawShape();
 		}
@@ -79,29 +83,63 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		commentHandler.getComments().clear();
 		
 		for (Zone zone : layoutHandler.getZones()) {
-			UIZone uiZone = new UIZone(zone, view, false);
-			uiZone.switchPointRadius();
-			zoneHandler.add(uiZone);
-			
-			UIZoneText uiZoneText = new UIZoneText(zone, uiZone, view);
-			uiZone.setUiText(uiZoneText);
-			textHandler.addZoneText(uiZoneText);			
+			if(shouldDrawZones) {
+				UIZone uiZone = new UIZone(zone, view, false);
+				uiZone.switchPointRadius();
+				zoneHandler.add(uiZone);
+				
+				UIZoneText uiZoneText = new UIZoneText(zone, uiZone, view);
+				uiZone.setUiText(uiZoneText);
+				textHandler.addZoneText(uiZoneText);	
+			}					
 			
 			for (Extinguisher ex : zone.getExtinguishers()) {
-				UIExtinguisher uiEx = new UIExtinguisher(ex, view);
-				UIExtinguisherText uiExText = new UIExtinguisherText(ex, view);
-				uiEx.setUiExText(uiExText);
-				extinguisherHandler.addExtinguisher(uiEx);
-				textHandler.addExtinguisherText(uiExText);
+				if((shouldDrawOldEx && !ex.getIsNew()) || (shouldDrawNewEx && ex.getIsNew())) {
+					UIExtinguisher uiEx = new UIExtinguisher(ex, view);
+					UIExtinguisherText uiExText = new UIExtinguisherText(ex, view);
+					uiEx.setUiExText(uiExText);
+					extinguisherHandler.addExtinguisher(uiEx);
+					textHandler.addExtinguisherText(uiExText);
+				}				
 			}
 		} 
-
-		for (Comment comment : layoutHandler.getComments()) {
-			commentHandler.addComment(new UIComment(comment, view));
+		
+		if(shouldDrawComments) {
+			for (Comment comment : layoutHandler.getComments()) {
+				commentHandler.addComment(new UIComment(comment, view));
+			}			
 		}
 		updateCanvas();
 	}
 			
+	public void setShouldDrawEverything(boolean shouldDraw) {
+		this.shouldDrawNewEx = shouldDraw;
+		this.shouldDrawOldEx = shouldDraw;
+		this.shouldDrawZones = shouldDraw;
+		this.shouldDrawComments = shouldDraw;
+		updateShapes();
+	}
+	
+	public void setShouldDrawNewEx(boolean shouldDraw) {
+		this.shouldDrawNewEx = shouldDraw;
+		updateShapes();
+	}
+	
+	public void setShouldDrawOldEx(boolean shouldDraw) {
+		this.shouldDrawOldEx = shouldDraw;
+		updateShapes();
+	}
+	
+	public void setShouldDrawZones(boolean shouldDraw) {
+		this.shouldDrawZones = shouldDraw;
+		updateShapes();
+	}
+	
+	public void setShouldDrawComments(boolean shouldDraw) {
+		this.shouldDrawComments = shouldDraw;
+		updateShapes();
+	}
+	
 	public WritableImage getSnapshot(SnapshotParameters params, WritableImage image) {
 		return view.getSnapshot(params, image);
 	}

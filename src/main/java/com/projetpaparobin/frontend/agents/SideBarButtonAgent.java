@@ -23,6 +23,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -46,6 +47,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	private FileGenerationDialogHandler fileGenerationInputDialog;
 	
 	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, createCommentButton;
+	private CheckBox setShouldDrawNewExCheckBox, setShouldDrawOldExCheckBox, setShouldDrawZonesCheckBox, setShouldDrawCommentsCheckBox;
 	private PresentationLayoutAgent presLayoutAgent;
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	
@@ -88,10 +90,31 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		VBox exBox = new VBox(8, newExtinguisherButton, createCommentButton, cancelButton);
 		exBox.setAlignment(Pos.CENTER);
 		
+		setShouldDrawNewExCheckBox = new CheckBox("Should Draw New Ex");
+		setShouldDrawNewExCheckBox.setSelected(true);
+		setShouldDrawNewExCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			presLayoutAgent.setShouldDrawNewEx(newValue);
+		});
+		setShouldDrawOldExCheckBox = new CheckBox("Should Draw Old Ex");
+		setShouldDrawOldExCheckBox.setSelected(true);
+		setShouldDrawOldExCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			presLayoutAgent.setShouldDrawOldEx(newValue);
+		});
+		setShouldDrawZonesCheckBox = new CheckBox("Should Draw Zones");
+		setShouldDrawZonesCheckBox.setSelected(true);
+		setShouldDrawZonesCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			presLayoutAgent.setShouldDrawZones(newValue);
+		});
+		setShouldDrawCommentsCheckBox = new CheckBox("Should Draw Comments");
+		setShouldDrawCommentsCheckBox.setSelected(true);
+		setShouldDrawCommentsCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			presLayoutAgent.setShouldDrawComments(newValue);
+		});	
+		
 		HBox finalBox = new HBox(8, zoneBox, exBox, createExcelButton);
 		finalBox.setAlignment(Pos.CENTER);
 				
-		this.getChildren().addAll(finalBox);
+		this.getChildren().addAll(finalBox, new VBox(8, setShouldDrawNewExCheckBox, setShouldDrawOldExCheckBox, setShouldDrawZonesCheckBox, setShouldDrawCommentsCheckBox));
 	}
 
 	public void setPresLayoutAgent(PresentationLayoutAgent presLayoutAgent) {
@@ -118,6 +141,8 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 			    String filePath = (dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH).isBlank() ? "." : dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH)) + "/" + response;
 			    File file = new File(filePath + ".png");		
 			    
+			    presLayoutAgent.setShouldDrawEverything(true);
+			    resetCheckBoxes();
 		        WritableImage wi = presLayoutAgent.getSnapshot(sp, null);
 			    try {
 					ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", file);
@@ -130,6 +155,13 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 			mouseInputHandler.cancelSelection();
 			zoneCreator.canceled();
 		} 
+	}
+	
+	public void resetCheckBoxes() {
+		setShouldDrawNewExCheckBox.setSelected(true);
+		setShouldDrawOldExCheckBox.setSelected(true);
+		setShouldDrawZonesCheckBox.setSelected(true);
+		setShouldDrawCommentsCheckBox.setSelected(true);
 	}
 	
 	public void resizePanel(double width, double height) {
