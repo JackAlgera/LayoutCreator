@@ -25,18 +25,19 @@ public class AutomaticApplicationStateSaver extends Thread {
 	@Override
 	public void run() {
 		running = true;
+		String endFilePath = "Autosave_du_" + dateFormatter.format(new Date()) + "." + UIElements.SAVE_FILE_TYPE;
 		while(running) {
 			try {
 				if(!isPaused) {
 					if(timeBTWSaves > maxTimeBTWSaves) {
 						timeBTWSaves -= maxTimeBTWSaves;
-						String filePath = "Autosave_du_" + dateFormatter.format(new Date()) + "." + UIElements.SAVE_FILE_TYPE;
 						
 						if(!dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH).isEmpty()) {
-							filePath = dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH) + "/" + filePath;
+							System.out.println("Saved file at " + dateFormatter.format(new Date()));
+							String filePath = dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH) + "/" + endFilePath;
+							ApplicationStatePersister.saveState(new File(filePath));
 						}
 						
-						ApplicationStatePersister.saveState(new File(filePath));
 					} else {
 						timeBTWSaves += SLEEP_TIME;
 					}
