@@ -9,6 +9,7 @@ import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
+import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.zones.EActivityType;
 import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.EUnits;
@@ -118,17 +119,12 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				EUnits unitsVal = (units == null) ? EUnits.m2 : EUnits.getEnum(units.getValue());
 				UIColor colorVal = colorComboBox.getValue();
 				
-				areaName.setText("");
-				areaType.setValue(EAreaType.values()[0].toString());
-				areaNumber.setText("");
-				activityType.setValue(EActivityType.values()[0].toString());
-				areaSize.setText("");
-				units.setValue("kg");
-				colorComboBox.setValue(UIElements.DEFAULT_ZONE_CREATION_COLOR);
+				resetFields();
 				
 				return new ZoneID(areaNameVal, areaTypeVal, areaNumberVal, activityTypeVal, areaSizeVal, unitsVal, colorVal);
 			} 
 			if(button == ButtonType.CANCEL) {
+				resetFields();
 				zoneCreator.canceled();
 				return null;
 			}
@@ -159,6 +155,16 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		case CANCELED:
 			break;
 		}
+	}
+	
+	private void resetFields() {
+		areaName.setText("");
+		areaType.setValue(EAreaType.values()[0].toString());
+		areaNumber.setText("");
+		activityType.setValue(EActivityType.values()[0].toString());
+		areaSize.setText("");
+		units.setValue("kg");
+		colorComboBox.setValue(UIElements.DEFAULT_ZONE_CREATION_COLOR);
 	}
 	
 }

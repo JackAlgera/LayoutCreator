@@ -29,7 +29,8 @@ public class FileGenerationDialogHandler extends DialogHandlerAbs {
 				fileName.setText("");				
 				return fileNameVal;
 			} 
-			if(button == ButtonType.CANCEL) {
+			if(button == ButtonType.CANCEL) {		
+				fileName.setText("");				
 				return "";
 			}
 			return null;
