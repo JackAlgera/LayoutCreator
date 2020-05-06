@@ -46,11 +46,12 @@ public class SettingsStage {
 		SettingsVariable recensementSheetName = new SettingsVariable(stage, EPreferencesValues.RECENSEMENT_SHEET_NAME, dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME), EFileType.STRING);
 
 		SettingsVariable minTextSize = new SettingsVariable(stage, EPreferencesValues.MIN_TEXT_SIZE, dao.getKeyValue(EPreferencesValues.MIN_TEXT_SIZE), EFileType.STRING);
+		SettingsVariable maxExtinguishersRecensementSheet = new SettingsVariable(stage, EPreferencesValues.MAX_EXTINGUISHERS_RECENSEMENT_SHEET, dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_RECENSEMENT_SHEET), EFileType.STRING);
 		
 		settingsVariables = new ArrayList<SettingsVariable>(Arrays.asList(
 				excelTemplatePath, workspacePath,
 				nbrExtinguishersSheetName, parcIndustrielleSheetName, parcTertiaireSheetName, recensementSheetName,
-				minTextSize
+				minTextSize, maxExtinguishersRecensementSheet
 				));
 		
 		VBox scrollBox = new VBox(5);

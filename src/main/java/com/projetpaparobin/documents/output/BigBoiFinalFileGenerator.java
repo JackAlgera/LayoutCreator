@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -98,9 +99,14 @@ public class BigBoiFinalFileGenerator {
 		XSSFSheet nbrExtinguishersSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME));
 		XSSFSheet recensementSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME));
 		
+		XSSFWorkbook tempBook = new XSSFWorkbook();
+		XSSFSheet baseRecensementSheet = tempBook.createSheet(recensementSheet.getSheetName());		
+		copySheet(recensementSheet, baseRecensementSheet);
+		
 		int tertiaireRow = 11;
 		int industrielleRow = 11;
-		int recensementRow = 15;
+		int initRecensementRow = 15;
+		int recensementRow = initRecensementRow;
 		
 		ExtinguisherTypePositionHandler positionHandler = new ExtinguisherTypePositionHandler(nbrExtinguishersSheet);
 		
@@ -141,21 +147,142 @@ public class BigBoiFinalFileGenerator {
 			}
 		});
 		
+		int nbrExtinguishers = 0;
+		int nbrRecensementPages = 1;
+		int maxExtinguishersRecensementSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_RECENSEMENT_SHEET));
 		for (Extinguisher ex : extinguishers) {
+			if(nbrExtinguishers >= maxExtinguishersRecensementSheet) {
+				nbrRecensementPages++;
+				String newSheetName = dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME) + nbrRecensementPages;
+				
+				XSSFSheet newSheet = workbook.createSheet(newSheetName);
+				copySheet(baseRecensementSheet, newSheet);
+				recensementSheet = newSheet;
+				recensementRow = initRecensementRow;
+				nbrExtinguishers = 0;
+			}
 			fillExtinguisherSheet(ex.getId().getExtinguisherType(), nbrExtinguishersSheet, positionHandler);
 			fillRecensementSheet(recensementRow, recensementSheet, ex);
 			recensementRow++;
+			nbrExtinguishers++;
 		}
-
+		
 		fillTimeDates(nbrExtinguishersSheet);
+		setNbrPages(nbrExtinguishersSheet, workbook.getNumberOfSheets());
 		
 		XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
 		closeProject(fileInputStream, outputTitle, workbook);
 	}
 	
+	private void copySheet(XSSFSheet baseSheet, XSSFSheet copySheet) {
+		ArrayList<CellStyle> baseCellStyles = new ArrayList<CellStyle>();
+		for (int i = 0; i < baseSheet.getWorkbook().getNumCellStyles(); i++) {
+			CellStyle baseCellStyle = baseSheet.getWorkbook().getCellStyleAt(i);
+			CellStyle copiedCellStyle = copySheet.getWorkbook().createCellStyle();
+			
+			copiedCellStyle.cloneStyleFrom(baseCellStyle);	
+			baseCellStyles.add(copiedCellStyle);
+		}
+			
+		int maxColumnNum = 0;
+		
+		for (Row row : baseSheet) {
+			Row newRow = copySheet.createRow(row.getRowNum());
+			
+			if(row.isFormatted()) {
+				CellStyle baseRowStyle = baseCellStyles.get(row.getRowStyle().getIndex());
+				newRow.setRowStyle(baseRowStyle);
+			}
+			
+			newRow.setHeight(row.getHeight());
+			
+			if(row.getLastCellNum() > maxColumnNum) {
+				maxColumnNum = row.getLastCellNum();
+			}
+			
+			int j = row.getFirstCellNum();
+			if (j < 0) {
+				j = 0;
+			}
+			
+			for (; j <= row.getLastCellNum(); j++) {
+				Cell cell = row.getCell(j);
+				Cell newCell = newRow.getCell(j);
+				if(cell == null) {
+					continue;
+				}
+				if(newCell == null) {
+					newCell = newRow.createCell(j);
+				}
+						
+				newCell.setCellStyle(baseCellStyles.get(cell.getCellStyle().getIndex()));
+				
+				switch (cell.getCellType()) {
+				case BLANK:					
+					newCell.setBlank();
+					break;
+				case BOOLEAN:
+					newCell.setCellValue(cell.getBooleanCellValue());
+					break;
+				case ERROR:
+					newCell.setCellErrorValue(cell.getErrorCellValue());
+					break;
+				case FORMULA:
+					newCell.setCellFormula(cell.getCellFormula());
+					break;
+				case NUMERIC:
+					newCell.setCellValue(cell.getNumericCellValue());
+					break;
+				case STRING:
+					newCell.setCellValue(cell.getRichStringCellValue().getString());
+					break;
+				case _NONE:
+					newCell.setBlank();
+					break;
+				default:
+					newCell.setBlank();
+					break;
+				}
+				
+				CellRangeAddress mergedRegion = getMergedRegion(baseSheet, cell);
+				if (mergedRegion != null) {
+					CellRangeAddress newMergedRegion = new CellRangeAddress(
+							mergedRegion.getFirstRow(), mergedRegion.getLastRow(), 
+							mergedRegion.getFirstColumn(), mergedRegion.getLastColumn());
+					try {
+						copySheet.addMergedRegion(newMergedRegion);
+					} catch (IllegalStateException e) {
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < maxColumnNum; i++) {
+			copySheet.setColumnWidth(i, baseSheet.getColumnWidth(i));
+			if(baseSheet.getColumnStyle(i) != null) {
+				copySheet.setDefaultColumnStyle(i, baseCellStyles.get(baseSheet.getColumnStyle(i).getIndex()));
+			}
+		}	
+		
+	}
+	
+	private CellRangeAddress getMergedRegion(XSSFSheet sheet, Cell cell) {
+		for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
+			CellRangeAddress mergedRegion = sheet.getMergedRegion(i);
+			if (mergedRegion.isInRange(cell)) {
+				return mergedRegion;
+			}
+		}
+		return null;
+	}
+	
 	private void fillTimeDates(XSSFSheet sheet) {
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 		fillExcelCell(sheet, 17, 1, CellType.STRING, timeFormatter.format(LocalDateTime.now()));
+	}
+	
+	private void setNbrPages(XSSFSheet sheet, int nbrPages) {
+		fillExcelCell(sheet, 2, 19, CellType.NUMERIC, nbrPages);
 	}
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
