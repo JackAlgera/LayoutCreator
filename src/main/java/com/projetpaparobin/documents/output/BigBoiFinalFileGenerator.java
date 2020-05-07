@@ -245,7 +245,7 @@ public class BigBoiFinalFileGenerator {
 					newCell.setCellValue(cell.getNumericCellValue());
 					break;
 				case STRING:
-					newCell.setCellValue(cell.getRichStringCellValue().getString());
+					newCell.setCellValue(cell.getRichStringCellValue());
 					break;
 				case _NONE:
 					newCell.setBlank();
