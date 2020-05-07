@@ -19,7 +19,7 @@ public class ZoneID {
 	private Color rimColor;
 
 	public ZoneID() {
-		this.fillColor = UIElements.DEFAULT_ZONE_CREATION_COLOR;
+		this.fillColor = UIElements.getRandomColor();
 		this.rimColor = fillColor.getColor().darker();
 	}
 
