@@ -21,6 +21,7 @@ public class ZoneCreator {
 		nbrInstance = layoutHandler.getHighestZoneNumber();
 		zoneState = EZoneCreationState.NEW_ZONE;
 		listeners = new ArrayList<IZoneCreatorListener>();
+		currentZone = null;
 	}
 
 	public static ZoneCreator getInstance() {

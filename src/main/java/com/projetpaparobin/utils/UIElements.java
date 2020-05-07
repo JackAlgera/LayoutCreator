@@ -38,7 +38,7 @@ public class UIElements {
 	public static Font EXTINGUISHER_TEXT_FONT = new Font("Monaco", 13);
 	public static Font COMMENT_TEXT_FONT = new Font("Monaco", 13);
 	
-	public static UIColor DEFAULT_ZONE_CREATION_COLOR = UIColor.LIGHTBLUE;
+	public static int colorIndex = 0;	
 	
 	public static Border BLACK_BORDER = new Border(new BorderStroke(
 			Color.BLACK, 
@@ -76,7 +76,6 @@ public class UIElements {
 		return integerFilter;		
 	}
 	
-	public static int colorIndex = 0;	
 	public static ArrayList<UIColor> DEFAULT_ZONE_COLORS = new ArrayList<UIColor>(Arrays.asList(
 			UIColor.LIGHTBLUE,
 			UIColor.LIGHTGREEN,
@@ -85,8 +84,7 @@ public class UIElements {
 			UIColor.LIGHTGREY,
 			UIColor.LIGHTMAGENTA,
 			UIColor.LIGHTCYAN,
-			UIColor.LIGHTBROWN
-			
+			UIColor.LIGHTBROWN			
 	));
 	
 	public static ArrayList<UIColor> DEFAULT_EXTINGUISHER_COLORS = new ArrayList<UIColor>(Arrays.asList(

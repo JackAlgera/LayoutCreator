@@ -77,11 +77,10 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		areaSize.setTextFormatter(new TextFormatter<String>(UIElements.getNumberFilter()));
 				
 		colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_ZONE_COLORS));
-		colorComboBox.setValue(UIElements.DEFAULT_ZONE_CREATION_COLOR);
 		colorComboBox.setPrefWidth(width);	
 		colorComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 				Zone zone = zoneCreator.getCurrentZone();
-				if(zone != null) {
+				if(zone != null && !zone.getShape().getPoints().isEmpty()) {
 					zone.setFillColor(colorComboBox.getValue());
 					presLayout.handleZoneCreatorEvent(EZoneEvents.ADDED_POINT);
 				}
@@ -138,6 +137,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 	public void handleZoneCreatorEvent(EZoneEvents event) {
 		switch (event) {
 		case CREATING_NEW_ZONE:
+			colorComboBox.setValue(zoneCreator.getCurrentZone().getFillColor());
 			break;
 		case ADDED_POINT:
 			break;
@@ -164,7 +164,6 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		activityType.setValue(EActivityType.values()[0].toString());
 		areaSize.setText("");
 		units.setValue("kg");
-		colorComboBox.setValue(UIElements.DEFAULT_ZONE_CREATION_COLOR);
 	}
 	
 }
