@@ -129,10 +129,11 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		} else if(event.getSource().equals(newZoneButton)) {
 			presLayoutAgent.updateCanvas();
 			zoneCreator.newZone();
+			doneEditingZoneButton.requestFocus();
 		} else if(event.getSource().equals(createCommentButton)) {
 			commentCreator.newComment();
 		} else if(event.getSource().equals(doneEditingZoneButton)) {
-			zoneCreator.finishedCreatingShape();
+			zoneCreator.finishedCreatingShape();			
 		} else if(event.getSource().equals(createExcelButton)) {
 			String response = fileGenerationInputDialog.showAndWait();
 			if(!response.isBlank()) {
