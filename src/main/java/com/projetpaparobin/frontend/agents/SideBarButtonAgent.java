@@ -136,25 +136,37 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		} else if(event.getSource().equals(createExcelButton)) {
 			String response = fileGenerationInputDialog.showAndWait();
 			if(!response.isBlank()) {
-				SnapshotParameters sp = new SnapshotParameters();
-			    sp.setFill(Color.TRANSPARENT);
 			    String filePath = (dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH).isBlank() ? "." : dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH)) + "/" + response;
-			    File file = new File(filePath + ".png");		
-			    
-			    presLayoutAgent.setShouldDrawEverything(true);
-			    resetCheckBoxes();
-		        WritableImage wi = presLayoutAgent.getSnapshot(sp, null);
-			    try {
-					ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", file);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			    saveAllLayouts(filePath);
 				fileGenerator.generateExcel(filePath + ".xlsm");
 			}
 		} else if(event.getSource().equals(cancelButton)) {
 			mouseInputHandler.cancelSelection();
 			zoneCreator.canceled();
 		} 
+	}
+	
+	public void saveAllLayouts(String filePath) {
+		SnapshotParameters sp = new SnapshotParameters();
+	    sp.setFill(Color.TRANSPARENT);	
+	        
+	    try {			
+		    presLayoutAgent.showLayoutWithoutZones();
+		    WritableImage wi = presLayoutAgent.getSnapshot(sp, null);
+			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_plan_sans_zones" + ".png"));
+			
+		    presLayoutAgent.showLayoutWithoutZonesAndOldExtinguishers();
+	        wi = presLayoutAgent.getSnapshot(sp, null);
+			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_extincteurs_nouv_uniquement" + ".png"));
+			
+		    presLayoutAgent.setShouldDrawEverything(true);
+	        wi = presLayoutAgent.getSnapshot(sp, null);
+			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_plan_complet" + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    resetCheckBoxes();
 	}
 	
 	public void resetCheckBoxes() {

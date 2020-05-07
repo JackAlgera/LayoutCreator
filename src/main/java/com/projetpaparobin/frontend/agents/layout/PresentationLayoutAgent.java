@@ -111,7 +111,23 @@ public class PresentationLayoutAgent implements IZoneCreatorListener, IExtinguis
 		}
 		updateCanvas();
 	}
-			
+
+	public void showLayoutWithoutZones() {
+		this.shouldDrawNewEx = true;
+		this.shouldDrawOldEx = true;
+		this.shouldDrawZones = false;
+		this.shouldDrawComments = true;
+		updateShapes();
+	}
+	
+	public void showLayoutWithoutZonesAndOldExtinguishers() {
+		this.shouldDrawNewEx = true;
+		this.shouldDrawOldEx = false;
+		this.shouldDrawZones = false;
+		this.shouldDrawComments = true;
+		updateShapes();
+	}
+	
 	public void setShouldDrawEverything(boolean shouldDraw) {
 		this.shouldDrawNewEx = shouldDraw;
 		this.shouldDrawOldEx = shouldDraw;
