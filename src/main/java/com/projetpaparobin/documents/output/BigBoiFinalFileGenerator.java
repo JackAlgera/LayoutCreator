@@ -100,16 +100,27 @@ public class BigBoiFinalFileGenerator {
 		XSSFSheet recensementSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME));
 		
 		XSSFWorkbook tempBook = new XSSFWorkbook();
-		XSSFSheet baseRecensementSheet = tempBook.createSheet(recensementSheet.getSheetName());		
+		XSSFSheet baseindustrielleSheet = tempBook.createSheet(industrielleSheet.getSheetName());	
+		XSSFSheet basetertiaireSheet = tempBook.createSheet(tertiaireSheet.getSheetName());
+		XSSFSheet baseRecensementSheet = tempBook.createSheet(recensementSheet.getSheetName());
+		copySheet(industrielleSheet, baseindustrielleSheet);
+		copySheet(tertiaireSheet, basetertiaireSheet);
 		copySheet(recensementSheet, baseRecensementSheet);
 		
 		int tertiaireRow = 11;
+		int initTertiaireRow = tertiaireRow;
 		int industrielleRow = 11;
+		int initIndustrielleRow = industrielleRow;
 		int initRecensementRow = 15;
 		int recensementRow = initRecensementRow;
 		
 		ExtinguisherTypePositionHandler positionHandler = new ExtinguisherTypePositionHandler(nbrExtinguishersSheet);
 		
+		int nbrTertiaireSheets = 1;
+		int maxExtinguishersTertiaireSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_TERTIAIRE_SHEET));
+		int nbrIndustrielleSheets = 1;
+		int maxExtinguishersIndustrielleSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_INDUSTRIELLE_SHEET));
+
 		for (Zone zone : layoutHandler.getZones()) {		
 			boolean containsPIP = false;
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
@@ -130,12 +141,12 @@ public class BigBoiFinalFileGenerator {
             }
 	            	            
 			switch (zone.getId().getActivityType()) {
-			case INDUSTRIELLE:				
-				industrielleRow = fillActivitySheet(industrielleSheet, industrielleRow, zone, extinguisherList, containsPIP);
+			case INDUSTRIELLE:		
+				industrielleRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), industrielleSheet, baseindustrielleSheet, nbrIndustrielleSheets, industrielleRow, initIndustrielleRow, maxExtinguishersIndustrielleSheet, zone, extinguisherList, containsPIP);
 				break;
 				
 			case TERTIAIRE:
-				tertiaireRow = fillActivitySheet(tertiaireSheet, tertiaireRow, zone, extinguisherList, containsPIP);		
+				tertiaireRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_TERTIAIRE_SHEET), tertiaireSheet, basetertiaireSheet, nbrTertiaireSheets, tertiaireRow, initTertiaireRow, maxExtinguishersTertiaireSheet, zone, extinguisherList, containsPIP);
 				break;
 			}
 		}
@@ -338,7 +349,7 @@ public class BigBoiFinalFileGenerator {
 		}
 	}
 	
-	private int fillActivitySheet(XSSFSheet sheet, int rowNbr, Zone zone, HashMap<TypeExtinguisher, Integer> extinguisherList, boolean containsPIP) {
+	private int fillActivitySheet(String sheetName, XSSFSheet sheet, XSSFSheet baseSheet, int nbrSheets, int rowNbr, int initRowNbr, int maxRowNbr, Zone zone, HashMap<TypeExtinguisher, Integer> extinguisherList, boolean containsPIP) {
 		int rowNbrPG = rowNbr;
 		int rowNbrPIP = rowNbr;
 		
@@ -368,12 +379,44 @@ public class BigBoiFinalFileGenerator {
 				fillExcelCell(sheet, rowNbrPG, 9, CellType.NUMERIC, FC);
 				rowNbrPG++;
 				break;
-			}			
+			}		
+			
+			int maxRow = Math.max(rowNbrPG, rowNbrPIP);
+			
+			if((maxRow - initRowNbr) >= maxRowNbr) {
+				addTopBorderToCells(maxRow, 1, 20, sheet);
+				
+				nbrSheets++;
+				String newSheetName = sheetName + nbrSheets;
+				
+				XSSFSheet newSheet = sheet.getWorkbook().createSheet(newSheetName);
+				sheet.getWorkbook().setSheetOrder(newSheetName, sheet.getWorkbook().getSheetIndex(baseSheet.getSheetName()) + nbrSheets - 1);
+				copySheet(baseSheet, newSheet);
+				sheet = newSheet;
+				rowNbrPG = initRowNbr;
+				rowNbrPIP = initRowNbr;
+			}
 		}
 		
 		if(extinguisherList.size() == 0) {
 			rowNbrPIP++;
 			rowNbrPG++;
+			
+			int maxRow = Math.max(rowNbrPG, rowNbrPIP);
+			
+			if((maxRow - initRowNbr) >= maxRowNbr) {
+				addTopBorderToCells(maxRow, 1, 20, sheet);
+				
+				nbrSheets++;
+				String newSheetName = sheetName + nbrSheets;
+				
+				XSSFSheet newSheet = sheet.getWorkbook().createSheet(newSheetName);
+				sheet.getWorkbook().setSheetOrder(newSheetName, sheet.getWorkbook().getSheetIndex(baseSheet.getSheetName()) + nbrSheets - 1);
+				copySheet(baseSheet, newSheet);
+				sheet = newSheet;
+				rowNbrPG = initRowNbr;
+				rowNbrPIP = initRowNbr;
+			}
 		} 
 		
 		int maxRow = Math.max(rowNbrPG, rowNbrPIP);

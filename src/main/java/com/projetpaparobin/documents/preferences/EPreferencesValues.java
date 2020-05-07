@@ -13,7 +13,9 @@ public enum EPreferencesValues {
 	RECENSEMENT_SHEET_NAME("Nom de la page de recensement :", "recensementSheetName", "Recensement"),
 		
 	MIN_TEXT_SIZE("Taille minimal du texte - par rapport à la hauteur de la page (0.0 < x < 1.0) :", "minTextSize", "0.02"),
-	MAX_EXTINGUISHERS_RECENSEMENT_SHEET("Nombre d'extincteurs pour une page de recensement:", "maxExtinguishersRecensementSheet", "23");
+	MAX_EXTINGUISHERS_RECENSEMENT_SHEET("Nombre d'extincteurs pour une page de recensement:", "maxExtinguishersRecensementSheet", "23"),
+	MAX_EXTINGUISHERS_TERTIAIRE_SHEET("Nombre d'extincteurs pour une page d'activité tertiaire:", "maxExtinguishersTertiaireSheet", "25"),
+	MAX_EXTINGUISHERS_INDUSTRIELLE_SHEET("Nombre d'extincteurs pour une page d'activité industrielle:", "maxExtinguishersIndustrielleSheet", "25");
 	
 	private String key;
 	private String defaultValue;
