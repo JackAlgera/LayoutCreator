@@ -146,7 +146,7 @@ public class BigBoiFinalFileGenerator {
 				break;
 				
 			case TERTIAIRE:
-				tertiaireRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_TERTIAIRE_SHEET), tertiaireSheet, basetertiaireSheet, nbrTertiaireSheets, tertiaireRow, initTertiaireRow, maxExtinguishersTertiaireSheet, zone, extinguisherList, containsPIP);
+				tertiaireRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), tertiaireSheet, basetertiaireSheet, nbrTertiaireSheets, tertiaireRow, initTertiaireRow, maxExtinguishersTertiaireSheet, zone, extinguisherList, containsPIP);
 				break;
 			}
 		}
