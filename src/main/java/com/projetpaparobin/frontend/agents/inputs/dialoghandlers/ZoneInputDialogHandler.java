@@ -96,6 +96,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 			if(type.equals(EAreaType.ZIP)) {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, units, areaNumber, activityType, areaSize, colorComboBox));
 				dialogPane.getScene().getWindow().sizeToScene();
+				activityType.setValue(EActivityType.INDUSTRIELLE.toString());
 			} else {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, areaName, areaType, areaNumber, activityType, areaSize, colorComboBox));
 				dialogPane.getScene().getWindow().sizeToScene();
