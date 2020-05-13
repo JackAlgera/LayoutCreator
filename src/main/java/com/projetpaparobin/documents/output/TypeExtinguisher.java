@@ -1,6 +1,7 @@
 package com.projetpaparobin.documents.output;
 
 import com.projetpaparobin.objects.extinguishers.EProtectionType;
+import com.projetpaparobin.objects.extinguishers.Extinguisher;
 
 public class TypeExtinguisher {
 
@@ -9,11 +10,11 @@ public class TypeExtinguisher {
 	private EProtectionType protectionType;
 	private String local;
 	
-	public TypeExtinguisher(String type, int fabricationYear, EProtectionType protectionType, String local) {
-		this.type = type;
-		this.fabricationYear = fabricationYear;
-		this.protectionType = protectionType;
-		this.local = local;
+	public TypeExtinguisher(Extinguisher ex) {
+		this.type = ex.getProtectionType();
+		this.fabricationYear = ex.getFabricationYear();
+		this.protectionType = EProtectionType.getEnum(ex.getProtectionType());
+		this.local = ex.getLocal();
 	}
 	
 	public String getLocal() {

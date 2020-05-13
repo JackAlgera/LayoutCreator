@@ -125,7 +125,7 @@ public class BigBoiFinalFileGenerator {
 			boolean containsPIP = false;
 			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
             for (Extinguisher e: zone.getExtinguishers()) {
-                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e.getId().getExtinguisherType(), e.getId().getFabricationYear(), e.getId().getProtectionType(), e.getId().getLocal());
+                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e);
 
                 if(extinguisherList.containsKey(typeExtinguisher)) {
                     extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
@@ -154,7 +154,7 @@ public class BigBoiFinalFileGenerator {
 		Collections.sort(extinguishers, new Comparator<Extinguisher>() {
 			@Override
 			public int compare(Extinguisher ex1, Extinguisher ex2) {
-				return ex1.getId().getNumber().compareTo(ex2.getId().getNumber());
+				return ex1.getNumber().compareTo(ex2.getNumber());
 			}
 		});
 		
@@ -172,7 +172,7 @@ public class BigBoiFinalFileGenerator {
 				recensementRow = initRecensementRow;
 				nbrExtinguishers = 0;
 			}
-			fillExtinguisherSheet(ex.getId().getExtinguisherType(), nbrExtinguishersSheet, positionHandler);
+			fillExtinguisherSheet(ex.getExtinguisherType(), nbrExtinguishersSheet, positionHandler);
 			fillRecensementSheet(recensementRow, recensementSheet, ex);
 			recensementRow++;
 			nbrExtinguishers++;
@@ -297,20 +297,20 @@ public class BigBoiFinalFileGenerator {
 	}
 	
 	private void fillRecensementSheet(int row, XSSFSheet sheet, Extinguisher ex) {
-		fillExcelCell(sheet, row, 0, CellType.STRING, ex.getId().getNumber());
-		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName() + " " + ((ex.getId().getLocal() == null) ? "" : ex.getId().getLocal()));
+		fillExcelCell(sheet, row, 0, CellType.STRING, ex.getNumber());
+		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName() + " " + ((ex.getLocal() == null) ? "" : ex.getLocal()));
 		
 		fillExcelCell(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());	
 		if(!ex.getProtectionType().equals(EProtectionType.PIP)) {
 			fillExcelCell(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
 		}
-		fillExcelCell(sheet, row, 12, CellType.STRING, ex.getId().getExtinguisherType());
-		fillExcelCell(sheet, row, 14, CellType.STRING, ex.getId().getBrand());
-		fillExcelCell(sheet, row, 16, CellType.NUMERIC, ex.getId().getFabricationYear());
+		fillExcelCell(sheet, row, 12, CellType.STRING, ex.getExtinguisherType());
+		fillExcelCell(sheet, row, 14, CellType.STRING, ex.getBrand());
+		fillExcelCell(sheet, row, 16, CellType.NUMERIC, ex.getFabricationYear());
 		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		if(!NOT_MES_5_TYPES.contains(ex.getId().getExtinguisherType()) && (year - ex.getId().getFabricationYear()) > 5) {
-			fillExcelCell(sheet, row, 18, CellType.NUMERIC, ex.getId().getFabricationYear() + 5);
+		if(!NOT_MES_5_TYPES.contains(ex.getExtinguisherType()) && (year - ex.getFabricationYear()) > 5) {
+			fillExcelCell(sheet, row, 18, CellType.NUMERIC, ex.getFabricationYear() + 5);
 		} 
 		
 	}
