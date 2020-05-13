@@ -46,7 +46,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
 	
-	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, createCommentButton;
+	private Button newExtinguisherButton, newZoneButton, doneEditingZoneButton, createExcelButton, cancelButton, createCommentButton, refreshButton;
 	private CheckBox setShouldDrawNewExCheckBox, setShouldDrawOldExCheckBox, setShouldDrawZonesCheckBox, setShouldDrawCommentsCheckBox;
 	private PresentationLayoutAgent presLayoutAgent;
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
@@ -77,6 +77,8 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		cancelButton.addEventHandler(ActionEvent.ACTION, this);
 		createCommentButton = new Button("Nouveau commentaire");
 		createCommentButton.addEventHandler(ActionEvent.ACTION, this);
+		refreshButton = new Button("Rafraîchir");
+		refreshButton.addEventHandler(ActionEvent.ACTION, this);
 		
 		UIElements.setDefaultButtonStyle(newExtinguisherButton);
 		UIElements.setDefaultButtonStyle(newZoneButton);
@@ -111,7 +113,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 			presLayoutAgent.setShouldDrawComments(newValue);
 		});	
 		
-		HBox finalBox = new HBox(8, zoneBox, exBox, createExcelButton);
+		HBox finalBox = new HBox(8, zoneBox, exBox, new VBox(8, createExcelButton, refreshButton));
 		finalBox.setAlignment(Pos.CENTER);
 				
 		this.getChildren().addAll(finalBox, new VBox(8, setShouldDrawNewExCheckBox, setShouldDrawOldExCheckBox, setShouldDrawZonesCheckBox, setShouldDrawCommentsCheckBox));
@@ -144,7 +146,9 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		} else if(event.getSource().equals(cancelButton)) {
 			mouseInputHandler.cancelSelection();
 			zoneCreator.canceled();
-		} 
+		} else if(event.getSource().equals(refreshButton)) {
+			presLayoutAgent.updateShapes();
+		}
 	}
 	
 	public void saveAllLayouts(String filePath) {

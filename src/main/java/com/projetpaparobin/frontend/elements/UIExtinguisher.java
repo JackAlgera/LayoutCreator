@@ -26,7 +26,7 @@ public class UIExtinguisher extends UIElement {
 	private UIExtinguisherText uiExText;
 	
 	public UIExtinguisher(Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
-		super(ex.getPos().getX(), ex.getPos().getY(), true, Color.BLACK, ex.getId().getColor(), viewLayoutAgent);
+		super(ex.getExtinguisherPos().getX(), ex.getExtinguisherPos().getY(), true, Color.BLACK, ex.getColor(), viewLayoutAgent);
 		this.ex = ex;
 		this.uiExText = null;
 		if(ex.getRadius() <= 0) {
@@ -47,7 +47,7 @@ public class UIExtinguisher extends UIElement {
 		int scale = 5;
 		
 		StackPane sPane = new StackPane();		
-		Text nbrText = new Text("" + ex.getId().getNumber());
+		Text nbrText = new Text("" + ex.getNumber());
 		nbrText.setFont(UIElements.EXTINGUISHER_FONT);
 		nbrText.setFill(UIColor.BLACK.getColor());	
 		
@@ -62,7 +62,7 @@ public class UIExtinguisher extends UIElement {
 		if(isSelected) {
 			drawnCircle.setFill(UIElements.EXTINGUISHER_SELECTED_COLOR.getColor());
 		} else {
-			drawnCircle.setFill(ex.getId().getColor().getColor());
+			drawnCircle.setFill(ex.getColor().getColor());
 		}
 				
 		sPane.getChildren().setAll(drawnCircle, nbrText);
@@ -98,7 +98,7 @@ public class UIExtinguisher extends UIElement {
 		double deltaY = newPosY - posY;
 		super.translateShape(newPosX, newPosY);
 		circle = new Circle(posX, posY, circle.getRadius());
-		ex.setPos(new Point(newPosX, newPosY));
+		ex.setExtinguisherPos(new Point(newPosX, newPosY));
 		if (uiExText != null) {
 			uiExText.translateShape(uiExText.getPosX() + deltaX, uiExText.getPosY() + deltaY);
 		}

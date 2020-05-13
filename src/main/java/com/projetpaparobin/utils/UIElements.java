@@ -22,6 +22,7 @@ public class UIElements {
 	public static final long MIN_FABRICATION_YEAR = 1970;
 	public static final long MAX_FABRICATION_YEAR = 2050;
 	public static final String DEFAULT_BRAND = "DE";
+	public static final Integer DEFAULT_YEAR = 1995;
 	
 	public static final String SAVE_BUTTON_TEXT = "Enregistrer";
 	public static final String CANCEL_BUTTON_TEXT = "Annuler";

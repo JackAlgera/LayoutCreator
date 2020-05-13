@@ -5,9 +5,7 @@ import java.util.stream.Stream;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
-import com.projetpaparobin.frontend.agents.recapagent.converters.ProtectionTypeConverter;
 import com.projetpaparobin.frontend.agents.recapagent.converters.UIColorConverter;
-import com.projetpaparobin.frontend.agents.recapagent.converters.ZoneConverter;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
@@ -17,9 +15,10 @@ import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -28,13 +27,11 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
 	
 	private TableColumn<Extinguisher, Integer> fabricationYearColumn;
-	private TableColumn<Extinguisher, EProtectionType> protectionTypeColumn;
-	private TableColumn<Extinguisher, String> brandColumn, numberColumn, extinguisherTypeColumn, localColumn;
+	private TableColumn<Extinguisher, String> protectionTypeColumn, brandColumn, numberColumn, extinguisherTypeColumn, localColumn, zoneColumn;
 	private TableColumn<Extinguisher, Boolean> isNewColumn;
 	private TableColumn<Extinguisher, UIColor> colorColumn;
-	private TableColumn<Extinguisher, String> zoneColumn;
 
-	double nbrColumns = 8;
+	double nbrColumns = 9;
 	
 	private ObservableList<String> zoneNames;
 	
@@ -52,8 +49,23 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		setBrandColumn(width / nbrColumns);	
 		setLocalColumn(width / nbrColumns);
 		setColorColumn(width / nbrColumns);
-		this.getColumns().addAll(zoneColumn, numberColumn, extinguisherTypeColumn, protectionTypeColumn, fabricationYearColumn, brandColumn, localColumn, colorColumn); 
+		setIsNewColumn(width / nbrColumns);
+		this.getColumns().addAll(zoneColumn, numberColumn, extinguisherTypeColumn, protectionTypeColumn, fabricationYearColumn, brandColumn, localColumn, colorColumn, isNewColumn); 
 		this.setItems(LayoutHandler.getInstance().getExtinguishers());
+		
+		LayoutHandler.getInstance().getExtinguishers().addListener(new ListChangeListener<Extinguisher>() {
+
+			@Override
+			public void onChanged(Change<? extends Extinguisher> c) {
+				while(c.next()) {
+					if(c.wasUpdated()) {
+						System.out.println("HERE");
+					}
+				}
+			}
+			
+		});
+		
 	}	
 	
 	public void resizePanel(double width, double height) {
@@ -76,6 +88,8 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		colorColumn.setMinWidth(width / nbrColumns);
 		localColumn.setMaxWidth(width / nbrColumns);
 		localColumn.setMinWidth(width / nbrColumns);
+		isNewColumn.setMaxWidth(width / nbrColumns);
+		isNewColumn.setMinWidth(width / nbrColumns);
 	}
 	
 	private void setZoneColumn(double maxWidth) {
@@ -83,7 +97,8 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 				.map(zone -> zone.getId().getDefaultAreaName())
 				.collect(Collectors.toList()));
 		
-		zoneColumn = createColumn("Zone", "zoneDisplayText", maxWidth);
+		zoneColumn = createColumn("Zone", maxWidth);
+		zoneColumn.setCellValueFactory(new PropertyValueFactory<Extinguisher, String>("zoneDisplayText"));
 		zoneColumn.setCellFactory(EditableCellComboBox.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), zoneNames));
 		
 		zoneColumn.setOnEditCommit(event -> {		
@@ -127,29 +142,32 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 	}
 	
 	private void setNumberColumn(double maxWidth) {
-		numberColumn = createColumn("Numérotation", "number", maxWidth);
+		numberColumn = createColumn("Numérotation", maxWidth);
+		numberColumn.setCellValueFactory(v -> v.getValue().numberProperty());
 		numberColumn.setCellFactory(EditableCellTextField.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), UIElements.getNumberFilter()));
 		
 		numberColumn.setOnEditCommit(event -> {
 			String newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
-			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setNumber(newVal);
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).setNumber(newVal);
 			presLayout.updateShapes();
 		});
 	}
 		
 	private void setFabricationYearColumn(double maxWidth) {
-		fabricationYearColumn = createColumn("Année de fabrication", "fabricationYear", maxWidth);
+		fabricationYearColumn = createColumn("Année de\fabrication", maxWidth);
+		fabricationYearColumn.setCellValueFactory(v -> v.getValue().fabricationYearProperty().asObject());
 		fabricationYearColumn.setCellFactory(EditableCellTextField.<Extinguisher, Integer>forTableColumn(new IntegerStringConverter(), UIElements.getNumberFilter()));
 		
 		fabricationYearColumn.setOnEditCommit(event -> {
-			Integer newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
-			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setFabricationYear(newVal);
+			Number newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).setFabricationYear(newVal.intValue());
 			presLayout.updateShapes();
 		});
 	}
 	
 	private void setExtinguisherTypeColumn(double maxWidth) {
-		extinguisherTypeColumn = createColumn("Type d'extincteur", "extinguisherType", maxWidth);
+		extinguisherTypeColumn = createColumn("Type\nd'extincteur", maxWidth);
+		extinguisherTypeColumn.setCellValueFactory(v -> v.getValue().extinguisherTypeProperty());
 		extinguisherTypeColumn.setCellFactory(EditableCellComboBox.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), FXCollections.observableArrayList(Stream.of(EExtinguisherType.values())
 				.filter(type -> !type.equals(EExtinguisherType.OTHER))
 				.map(val -> val.toString())
@@ -157,57 +175,73 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> {
 		
 		extinguisherTypeColumn.setOnEditCommit(event -> {
 			String newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
-			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setExtinguisherType(newVal);
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).setExtinguisherType(newVal);
 			presLayout.updateShapes();
 		});
 	}
 		
 	private void setProtectionTypeColumn(double maxWidth) {
-		protectionTypeColumn = createColumn("Type de protection", "protectionType", maxWidth);
-		protectionTypeColumn.setCellFactory(EditableCellComboBox.<Extinguisher, EProtectionType>forTableColumn(new ProtectionTypeConverter(), FXCollections.observableArrayList(Stream.of(EProtectionType.values())
+		protectionTypeColumn = createColumn("Type de\nprotection", maxWidth);
+		protectionTypeColumn.setCellValueFactory(v -> v.getValue().protectionTypeProperty());
+		protectionTypeColumn.setCellFactory(EditableCellComboBox.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), FXCollections.observableArrayList(Stream.of(EProtectionType.values())
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
 		
 		protectionTypeColumn.setOnEditCommit(event -> {
-			EProtectionType newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
-			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setProtectionType(newVal);
+			String newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).setProtectionType(newVal);
 			presLayout.updateShapes();
 		});
 	}
 		
 	private void setBrandColumn(double maxWidth) {
-		brandColumn = createColumn("Marque", "brand", maxWidth);
+		brandColumn = createColumn("Marque", maxWidth);
+		brandColumn.setCellValueFactory(v -> v.getValue().brandProperty());
 		brandColumn.setCellFactory(EditableCellTextField.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), null));
 		
 		brandColumn.setOnEditCommit(event -> {
 			String newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
-			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setBrand(newVal);
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).setBrand(newVal);
 			presLayout.updateShapes();
 		});
 	}
 	
 	private void setLocalColumn(double maxWidth) {
-		localColumn = createColumn("Local", "local", maxWidth);
+		localColumn = createColumn("Local", maxWidth);
+		localColumn.setCellValueFactory(v -> v.getValue().localProperty());
 		localColumn.setCellFactory(EditableCellTextField.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), null));
 		
 		localColumn.setOnEditCommit(event -> {
 			String newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
-			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setLocal(newVal);
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).setLocal(newVal);
 			presLayout.updateShapes();
 		});
 	}
 	
 	private void setColorColumn(double maxWidth) {
-		colorColumn = createColumn("Couleur", "fillColor", maxWidth);
+		colorColumn = createColumn("Couleur", maxWidth);
+		colorColumn.setCellValueFactory(new PropertyValueFactory<Extinguisher, UIColor>("color"));
 		colorColumn.setCellFactory(EditableCellComboBox.<Extinguisher, UIColor>forTableColumn(new UIColorConverter(), FXCollections.observableArrayList(UIElements.DEFAULT_EXTINGUISHER_COLORS.stream()
 				.map(val -> val.toString())
 				.collect(Collectors.toList()))));
 		
 		colorColumn.setOnEditCommit(event -> {
 			UIColor newVal = (event.getNewValue() != null) ? event.getNewValue() : event.getOldValue();
-			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setColor(newVal);
+			event.getTableView().getItems().get(event.getTablePosition().getRow()).setColor(newVal);
 			presLayout.updateShapes();
 		});
+	}
+	
+	private void setIsNewColumn(double maxWidth) {
+		isNewColumn = createColumn("Nouvel\nExtincteur", maxWidth);
+		isNewColumn.setCellValueFactory(v -> v.getValue().isNewProperty());
+		isNewColumn.setCellFactory(CheckBoxTableCell.forTableColumn(isNewColumn));
+		
+//		isNewColumn.setOnEditCommit(event -> {
+//			System.out.println(event.getNewValue());
+//			event.getTableView().getItems().get(event.getTablePosition().getRow()).setIsNew(event.getNewValue());
+//			presLayout.updateShapes();
+//		});
 	}
 	
 }

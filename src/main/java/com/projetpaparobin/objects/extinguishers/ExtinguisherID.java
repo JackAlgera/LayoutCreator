@@ -3,30 +3,41 @@ package com.projetpaparobin.objects.extinguishers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projetpaparobin.utils.UIColor;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class ExtinguisherID {
 
-	private String number; // from 01 to XX
+	private String number;
 	private String extinguisherType;
-	private EProtectionType protectionType;
+	private String protectionType;
 	private int fabricationYear;
 	private String brand;
-	private boolean isNew;
 	private UIColor color;
 	private String local;
+	private Boolean isNew;
 
 	public ExtinguisherID() {
 	}
 
-	public ExtinguisherID(String number, String extinguisherType, EProtectionType protectionType, int fabricationYear,
-			String brand, boolean isNew, UIColor color, String local) {
+	public ExtinguisherID(String number, String extinguisherType, String protectionType, int fabricationYear,
+			String brand, Boolean isNew, UIColor color, String local) {
+		this.isNew = isNew;
 		this.number = number;
 		this.extinguisherType = extinguisherType;
 		this.protectionType = protectionType;
 		this.fabricationYear = fabricationYear;
 		this.brand = brand;
-		this.isNew = isNew;
 		this.color = color;
 		this.local = local;
+	}
+
+	public Boolean getIsNew() {
+		return isNew;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		this.isNew = isNew;
 	}
 
 	public String getLocal() {
@@ -53,11 +64,11 @@ public class ExtinguisherID {
 		this.extinguisherType = extinguisherType;
 	}
 
-	public EProtectionType getProtectionType() {
+	public String getProtectionType() {
 		return protectionType;
 	}
 
-	public void setProtectionType(EProtectionType protectionType) {
+	public void setProtectionType(String protectionType) {
 		this.protectionType = protectionType;
 	}
 
@@ -75,14 +86,6 @@ public class ExtinguisherID {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
-	}
-
-	public boolean isNew() {
-		return isNew;
-	}
-
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
 	}
 
 	public UIColor getColor() {
@@ -106,7 +109,7 @@ public class ExtinguisherID {
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + ((extinguisherType == null) ? 0 : extinguisherType.hashCode());
 		result = prime * result + fabricationYear;
-		result = prime * result + (isNew ? 1231 : 1237);
+		result = prime * result + ((isNew == null) ? 0 : isNew.hashCode());
 		result = prime * result + ((local == null) ? 0 : local.hashCode());
 		result = prime * result + ((number == null) ? 0 : number.hashCode());
 		result = prime * result + ((protectionType == null) ? 0 : protectionType.hashCode());
@@ -136,7 +139,10 @@ public class ExtinguisherID {
 			return false;
 		if (fabricationYear != other.fabricationYear)
 			return false;
-		if (isNew != other.isNew)
+		if (isNew == null) {
+			if (other.isNew != null)
+				return false;
+		} else if (!isNew.equals(other.isNew))
 			return false;
 		if (local == null) {
 			if (other.local != null)
@@ -148,9 +154,13 @@ public class ExtinguisherID {
 				return false;
 		} else if (!number.equals(other.number))
 			return false;
-		if (protectionType != other.protectionType)
+		if (protectionType == null) {
+			if (other.protectionType != null)
+				return false;
+		} else if (!protectionType.equals(other.protectionType))
 			return false;
 		return true;
 	}
+	
 
 }

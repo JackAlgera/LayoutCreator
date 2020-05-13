@@ -36,6 +36,14 @@ public abstract class UITableViewAbs<T> extends TableView<T> {
 		
 	}
 	
+	protected <S> TableColumn<T, S> createColumn(String header, Double maxWidth) {
+		TableColumn<T, S> column = new TableColumn<T, S>(header);
+		column.setMaxWidth(maxWidth);
+		column.setMinWidth(maxWidth);
+		column.setStyle("-fx-alignment: CENTER;");
+		return column;
+	}
+	
 	protected <S> TableColumn<T, S> createColumn(String header, String getterName, double maxWidth) {
 		TableColumn<T, S> column = new TableColumn<T, S>(header);
 		column.setCellValueFactory(new PropertyValueFactory<T, S>(getterName));

@@ -42,9 +42,9 @@ public class ExtinguisherCreator {
 		sendEvent(EExtinguisherEvents.CREATING_NEW_EXTINGUISHER);
 	}
 
-	public void setPosition(Point p) {
+	public void setPosition(Point pos) {
 		if (state == EExtinguisherCreationState.NEW_EXTINGUISHER) {
-			currentExtinguisher.setPos(p);
+			currentExtinguisher.setExtinguisherPos(pos);
 		}
 	}
 
@@ -58,8 +58,8 @@ public class ExtinguisherCreator {
 	}
 
 	public void setExtinguisherID(ExtinguisherID id) {
-		if (currentExtinguisher != null && (state == EExtinguisherCreationState.SETTING_NAME)) {
-			currentExtinguisher.setId(id);
+		if (currentExtinguisher != null && id != null && (state == EExtinguisherCreationState.SETTING_NAME)) {
+			currentExtinguisher.addID(id);
 			doneCreatingExtinguisher();
 		}
 	}

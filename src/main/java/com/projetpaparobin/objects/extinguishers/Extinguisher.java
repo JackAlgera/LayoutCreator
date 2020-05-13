@@ -6,12 +6,24 @@ import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
 import com.projetpaparobin.utils.UIColor;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Extinguisher {
 
-	private ExtinguisherID id;
-	private Point pos, textAreaPos;
-	private double textAreaSize;
-	private double radius;
+	private Point extinguisherPos, textAreaPos;
+	private DoubleProperty textAreaSize, radius;
+	
+	private StringProperty number, extinguisherType, protectionType, brand, local;
+	private BooleanProperty isNew;
+	private IntegerProperty fabricationYear;
+	private UIColor color;
 
 	@JsonBackReference
 	private Zone zone;
@@ -19,55 +31,169 @@ public class Extinguisher {
 	public Extinguisher() {
 	}
 
-	public Extinguisher(String number, String extinguisherType, EProtectionType protectionType, UIColor color,
-			Point pos, boolean isNew, Zone zone, int anneeMiseEnService, String marque, String local) {
-		id = new ExtinguisherID(number, extinguisherType, protectionType, anneeMiseEnService, marque, isNew, color, local);
-		this.pos = pos;
+	public Extinguisher(Point extinguisherPos, String number, String extinguisherType, String protectionType, String brand,
+			String local, Boolean isNew, Integer fabricationYear, UIColor color, Zone zone) {
+		this.extinguisherPos = extinguisherPos;
+		setNumber(number);
+		setExtinguisherType(extinguisherType);
+		setProtectionType(protectionType);
+		setBrand(brand);
+		setLocal(local);
+		setIsNew(isNew);
+		setFabricationYear(fabricationYear);
+		this.color = color;
 		this.zone = zone;
-		this.textAreaSize = -1;
-		this.radius = -1;
 	}
 
-	@JsonIgnore
-	public String getZoneDisplayText() {
-		return zone.getId().getDefaultAreaName();
+	public StringProperty numberProperty() {
+		if(number == null) {
+			number = new SimpleStringProperty();
+		}
+		return number;	
+	}
+	public StringProperty extinguisherTypeProperty() {
+		if(extinguisherType == null) {
+			extinguisherType = new SimpleStringProperty();
+		}
+		return extinguisherType;	
+	}
+	public StringProperty protectionTypeProperty() {
+		if(protectionType == null) {
+			protectionType = new SimpleStringProperty();
+		}
+		return protectionType;	
+	}
+	public StringProperty brandProperty() {
+		if(brand == null) {
+			brand = new SimpleStringProperty();
+		}
+		return brand;	
+	}
+	public StringProperty localProperty() {
+		if(local == null) {
+			local = new SimpleStringProperty();
+		}
+		return local;	
+	}
+	public BooleanProperty isNewProperty() {
+		if(isNew == null) {
+			isNew = new SimpleBooleanProperty();
+		}
+		return isNew;	
+	}
+	public IntegerProperty fabricationYearProperty() {
+		if(fabricationYear == null) {
+			fabricationYear = new SimpleIntegerProperty();
+		}
+		return fabricationYear;	
+	}
+	public DoubleProperty textAreaSizeProperty() {
+		if(textAreaSize == null) {
+			textAreaSize = new SimpleDoubleProperty();
+		}
+		return textAreaSize;	
+	}
+	public DoubleProperty radiusProperty() {
+		if(radius == null) {
+			radius = new SimpleDoubleProperty();
+		}
+		return radius;	
 	}
 
-	public double getRadius() {
-		return radius;
+	public Point getExtinguisherPos() {
+		return extinguisherPos;
 	}
 
-	public void setRadius(double radius) {
-		this.radius = radius;
-	}
-
-	public double getTextAreaSize() {
-		return textAreaSize;
-	}
-
-	public void setTextAreaSize(double textAreaSize) {
-		this.textAreaSize = textAreaSize;
+	public void setExtinguisherPos(Point extinguisherPos) {
+		this.extinguisherPos = extinguisherPos;
 	}
 
 	public Point getTextAreaPos() {
 		return textAreaPos;
 	}
 
-	public void setTextAreaPos(Point textAreaPosition) {
-		this.textAreaPos = textAreaPosition;
+	public void setTextAreaPos(Point textAreaPos) {
+		this.textAreaPos = textAreaPos;
 	}
 
-	public Point getPos() {
-		return pos;
+	public Double getTextAreaSize() {
+		return textAreaSizeProperty().get();
 	}
 
-	public void setPos(Point pos) {
-		this.pos = pos;
+	public void setTextAreaSize(Double textAreaSize) {
+		textAreaSizeProperty().setValue(textAreaSize);
 	}
 
-	@JsonIgnore
-	public String getDisplayText() {
-		return id.getDisplayText();
+	public Double getRadius() {
+		return radiusProperty().get();
+	}
+
+	public void setRadius(Double radius) {
+		radiusProperty().setValue(radius);;
+	}
+
+	public String getNumber() {
+		return numberProperty().get();
+	}
+
+	public void setNumber(String number) {
+		numberProperty().setValue(number);
+	}
+
+	public String getExtinguisherType() {
+		return extinguisherTypeProperty().get();
+	}
+
+	public void setExtinguisherType(String extinguisherType) {
+		extinguisherTypeProperty().setValue(extinguisherType);
+	}
+
+	public String getProtectionType() {
+		return protectionTypeProperty().get();
+	}
+
+	public void setProtectionType(String protectionType) {
+		protectionTypeProperty().setValue(protectionType);
+	}
+
+	public String getBrand() {
+		return brandProperty().get();
+	}
+
+	public void setBrand(String brand) {
+		brandProperty().setValue(brand);
+	}
+
+	public String getLocal() {
+		return localProperty().get();
+	}
+
+	public void setLocal(String local) {
+		localProperty().setValue(local);
+	}
+
+	public Boolean getIsNew() {
+		return isNewProperty().get();
+	}
+
+	public void setIsNew(Boolean isNew) {
+		isNewProperty().setValue(isNew);
+	}
+
+	public Integer getFabricationYear() {
+		return fabricationYearProperty().get();
+	}
+
+	public void setFabricationYear(Integer fabricationYear) {
+		fabricationYearProperty().setValue(fabricationYear);
+	}
+
+	public UIColor getColor() {
+		return color;
+	}
+
+	public void setColor(UIColor color) {
+		this.color = color;
 	}
 
 	public Zone getZone() {
@@ -77,99 +203,24 @@ public class Extinguisher {
 	public void setZone(Zone zone) {
 		this.zone = zone;
 	}
-
-	public void setId(ExtinguisherID id) {
-		this.id = id;
-	}
-
-	public ExtinguisherID getId() {
-		return id;
-	}
-
+	
 	@JsonIgnore
-	public String getLocal() {
-		return id.getLocal();
+	public String getZoneDisplayText() {
+		return zone.getId().getDefaultAreaName();
 	}
-
 	@JsonIgnore
-	public String getNumber() {
-		return id.getNumber();
+	public String getDisplayText() {
+		return extinguisherTypeProperty().get() + "/" + protectionTypeProperty().get();
 	}
-
 	@JsonIgnore
-	public String getExtinguisherType() {
-		return id.getExtinguisherType();
+	public void addID(ExtinguisherID id) {
+		setNumber(id.getNumber());
+		setExtinguisherType(id.getExtinguisherType());
+		setProtectionType(id.getProtectionType());
+		setBrand(id.getBrand());
+		setLocal(id.getLocal());
+		setIsNew(id.getIsNew());
+		setFabricationYear(id.getFabricationYear());
+		setColor(id.getColor());
 	}
-
-	@JsonIgnore
-	public EProtectionType getProtectionType() {
-		return id.getProtectionType();
-	}
-
-	@JsonIgnore
-	public int getFabricationYear() {
-		return id.getFabricationYear();
-	}
-
-	@JsonIgnore
-	public String getBrand() {
-		return id.getBrand();
-	}
-
-	@JsonIgnore
-	public boolean getIsNew() {
-		return id.isNew();
-	}
-
-	@JsonIgnore
-	public String getFillColor() {
-		return id.getColor().getColorName();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(radius);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((textAreaPos == null) ? 0 : textAreaPos.hashCode());
-		temp = Double.doubleToLongBits(textAreaSize);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Extinguisher other = (Extinguisher) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (pos == null) {
-			if (other.pos != null)
-				return false;
-		} else if (!pos.equals(other.pos))
-			return false;
-		if (Double.doubleToLongBits(radius) != Double.doubleToLongBits(other.radius))
-			return false;
-		if (textAreaPos == null) {
-			if (other.textAreaPos != null)
-				return false;
-		} else if (!textAreaPos.equals(other.textAreaPos))
-			return false;
-		if (Double.doubleToLongBits(textAreaSize) != Double.doubleToLongBits(other.textAreaSize))
-			return false;
-		return true;
-	}
-
 }

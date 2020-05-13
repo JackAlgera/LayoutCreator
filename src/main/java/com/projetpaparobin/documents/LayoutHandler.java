@@ -31,7 +31,7 @@ public class LayoutHandler implements ILayoutHandlerListener {
 	
 	private LayoutHandler() {		
 		zones = FXCollections.observableArrayList();
-		extinguishers = FXCollections.observableArrayList();
+		extinguishers = FXCollections.observableArrayList();		
 		comments = FXCollections.observableArrayList();
 		bufImage = null;
 		listeners = new ArrayList<ILayoutHandlerListener>();
