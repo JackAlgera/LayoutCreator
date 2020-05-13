@@ -3,15 +3,12 @@ package com.projetpaparobin.documents;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import com.projetpaparobin.frontend.handlers.UIExtinguisherHandler;
-import com.projetpaparobin.frontend.handlers.UITextHandler;
-import com.projetpaparobin.frontend.handlers.UIZoneHandler;
 import com.projetpaparobin.objects.Comment;
+import com.projetpaparobin.objects.creators.comments.CommentCreator;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Zone;
-import com.projetpaparobin.utils.UIElements;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -19,39 +16,45 @@ import javafx.collections.ObservableList;
 
 public class LayoutHandler implements ILayoutHandlerListener {
 
-	private static LayoutHandler instance;
-
 	private ObservableList<Zone> zones;
 	private ObservableList<Extinguisher> extinguishers;
 	private ObservableList<Comment> comments;
 
+	private CommentCreator commentCreator;
+	private ZoneCreator zoneCreator;
+	private ExtinguisherCreator extinguisherCreator;
+	
 	private BufferedImage bufImage;
+	private String layoutName;
+	private static int nbrLayouts = 1;
 	
 	private ArrayList<ILayoutHandlerListener> listeners;
 	
-	private LayoutHandler() {		
+	public LayoutHandler(BufferedImage buffImage) {		
 		zones = FXCollections.observableArrayList();
 		extinguishers = FXCollections.observableArrayList();		
 		comments = FXCollections.observableArrayList();
-		bufImage = null;
+		bufImage = buffImage;
 		listeners = new ArrayList<ILayoutHandlerListener>();
+		
+		commentCreator = new CommentCreator(this);
+		zoneCreator = new ZoneCreator(this);
+		extinguisherCreator = new ExtinguisherCreator(this);
+		
+		layoutName = "Layout_" + nbrLayouts;
+		nbrLayouts++;
 	}
 	
-	public static LayoutHandler getInstance() {
-		if(instance == null) {
-			instance = new LayoutHandler();
-		}
-		
-		return instance;
+	public String getLayoutName() {
+		return layoutName;
 	}
 	
 	public void addZonesListListener(ListChangeListener<Zone> listener) {
 		zones.addListener(listener);
 	}
 	
-	public void setBufImage(BufferedImage bufImage) {
-		this.bufImage = bufImage;
-		layoutImageUpdated();
+	public void removeZonesListListener(ListChangeListener<Zone> listener) {
+		zones.removeListener(listener);
 	}
 	
 	public BufferedImage getBufImage() {
@@ -124,18 +127,18 @@ public class LayoutHandler implements ILayoutHandlerListener {
 		return comments;
 	}
 	
+	public static void resetNbrLayouts() {
+		nbrLayouts = 1;
+	}
+	
 	public void fullReset() {
 		zones.clear();
 		extinguishers.clear();
 		comments.clear();
-		ZoneCreator.getInstance().reset();
-		ExtinguisherCreator.getInstance().reset();
 		
-		UIZoneHandler.getInstance().reset();
-		UIExtinguisherHandler.getInstance().reset();
-		UITextHandler.getInstance().reset();
-		
-		UIElements.colorIndex = 1;
+		zoneCreator.reset();
+		commentCreator.reset();
+		extinguisherCreator.reset();
 	}
 
 	public void addListener(ILayoutHandlerListener listener) {
@@ -165,6 +168,18 @@ public class LayoutHandler implements ILayoutHandlerListener {
 			}
 		}
 		return highestNumber + 1;
+	}
+	
+	public CommentCreator getCommentCreator() {
+		return commentCreator;
+	}
+	
+	public ZoneCreator getZoneCreator() {
+		return zoneCreator;
+	}
+	
+	public ExtinguisherCreator getExtinguisherCreator() {
+		return extinguisherCreator;
 	}
 	
 }

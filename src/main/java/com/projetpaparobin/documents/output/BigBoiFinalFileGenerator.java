@@ -29,6 +29,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
 import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
@@ -65,7 +66,7 @@ public class BigBoiFinalFileGenerator {
 			EExtinguisherType.P6.getName()
 			));
 	
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	private static TabHandler tabHandler = TabHandler.getInstance();
 	private static DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
 	
 	private static BigBoiFinalFileGenerator instance;
@@ -121,33 +122,35 @@ public class BigBoiFinalFileGenerator {
 		int nbrIndustrielleSheets = 1;
 		int maxExtinguishersIndustrielleSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_INDUSTRIELLE_SHEET));
 
-		for (Zone zone : layoutHandler.getZones()) {		
-			boolean containsPIP = false;
-			HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
-            for (Extinguisher e: zone.getExtinguishers()) {
-                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e);
+		for (LayoutHandler layoutHandler : tabHandler.getLayoutHandlers()) {
+			for (Zone zone : layoutHandler.getZones()) {		
+				boolean containsPIP = false;
+				HashMap<TypeExtinguisher, Integer> extinguisherList = new HashMap<TypeExtinguisher, Integer>();
+	            for (Extinguisher e: zone.getExtinguishers()) {
+	                TypeExtinguisher typeExtinguisher = new TypeExtinguisher(e);
 
-                if(extinguisherList.containsKey(typeExtinguisher)) {
-                    extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
-                } else {
-                    extinguisherList.put(typeExtinguisher, 1);
-                }
-                
-                extinguishers.add(e);
-                
-                if(e.getProtectionType().equals(EProtectionType.PIP)) {
-                	containsPIP = true;
-                }
-            }
-	            	            
-			switch (zone.getId().getActivityType()) {
-			case INDUSTRIELLE:		
-				industrielleRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), industrielleSheet, baseindustrielleSheet, nbrIndustrielleSheets, industrielleRow, initIndustrielleRow, maxExtinguishersIndustrielleSheet, zone, extinguisherList, containsPIP);
-				break;
-				
-			case TERTIAIRE:
-				tertiaireRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), tertiaireSheet, basetertiaireSheet, nbrTertiaireSheets, tertiaireRow, initTertiaireRow, maxExtinguishersTertiaireSheet, zone, extinguisherList, containsPIP);
-				break;
+	                if(extinguisherList.containsKey(typeExtinguisher)) {
+	                    extinguisherList.put(typeExtinguisher, extinguisherList.get(typeExtinguisher) + 1);
+	                } else {
+	                    extinguisherList.put(typeExtinguisher, 1);
+	                }
+	                
+	                extinguishers.add(e);
+	                
+	                if(e.getProtectionType().equals(EProtectionType.PIP)) {
+	                	containsPIP = true;
+	                }
+	            }
+		            	            
+				switch (zone.getId().getActivityType()) {
+				case INDUSTRIELLE:		
+					industrielleRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), industrielleSheet, baseindustrielleSheet, nbrIndustrielleSheets, industrielleRow, initIndustrielleRow, maxExtinguishersIndustrielleSheet, zone, extinguisherList, containsPIP);
+					break;
+					
+				case TERTIAIRE:
+					tertiaireRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), tertiaireSheet, basetertiaireSheet, nbrTertiaireSheets, tertiaireRow, initTertiaireRow, maxExtinguishersTertiaireSheet, zone, extinguisherList, containsPIP);
+					break;
+				}
 			}
 		}
 		

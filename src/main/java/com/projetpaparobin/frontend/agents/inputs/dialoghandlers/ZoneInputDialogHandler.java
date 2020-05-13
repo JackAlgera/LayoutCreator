@@ -4,12 +4,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
+import com.projetpaparobin.documents.tabs.ITabHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.objects.creators.zones.EZoneEvents;
 import com.projetpaparobin.objects.creators.zones.IZoneCreatorListener;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
-import com.projetpaparobin.objects.extinguishers.EExtinguisherType;
-import com.projetpaparobin.objects.extinguishers.EProtectionType;
 import com.projetpaparobin.objects.zones.EActivityType;
 import com.projetpaparobin.objects.zones.EAreaType;
 import com.projetpaparobin.objects.zones.EUnits;
@@ -29,23 +30,21 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
-public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCreatorListener {
+public class ZoneInputDialogHandler extends DialogHandlerAbs implements ITabHandler, IZoneCreatorListener {
 
 	private static double DEFAULT_SPACE_BETWEEN_INPUTS = 8;
 	private static double width = 180;
+
+	private static TabHandler tabHandler = TabHandler.getInstance();
+	private static ZoneCreator zoneCreator = null;
 	
-	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
 	private Dialog<ZoneID> inputDialog;
 	private ComboBox<UIColor> colorComboBox;
 	private ComboBox<String> activityType, units, areaType;
 	private TextField areaNumber, areaName, areaSize;
-	
-	private PresentationLayoutAgent presLayout;
-	
+		
 	public ZoneInputDialogHandler(Window primaryStage, PresentationLayoutAgent presLayout) {
 		super(primaryStage);
-		this.presLayout = presLayout;
-		zoneCreator.addListener(this);
 		inputDialog = new Dialog<ZoneID>();
 		inputDialog.setTitle("Nouvelle zone");
 		
@@ -79,6 +78,9 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 		colorComboBox = new ComboBox<UIColor>(FXCollections.observableArrayList(UIElements.DEFAULT_ZONE_COLORS));
 		colorComboBox.setPrefWidth(width);	
 		colorComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+				if(zoneCreator == null) {
+					return;
+				}
 				Zone zone = zoneCreator.getCurrentZone();
 				if(zone != null && !zone.getShape().getPoints().isEmpty()) {
 					zone.setFillColor(colorComboBox.getValue());
@@ -113,7 +115,7 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 			if(button == ButtonType.OK) {
 				String areaNameVal = areaName.getText();
 				EAreaType areaTypeVal = EAreaType.valueOf(areaType.getValue());
-				int areaNumberVal = (areaNumber.getText().isBlank()) ? ZoneCreator.getDefaultZoneNumber() : Integer.parseInt(areaNumber.getText());
+				int areaNumberVal = (areaNumber.getText().isBlank()) ? (zoneCreator == null ? -1 : zoneCreator.getDefaultZoneNumber()) : Integer.parseInt(areaNumber.getText());
 				EActivityType activityTypeVal = EActivityType.getEnum(activityType.getValue());
 				int areaSizeVal = (areaSize.getText().isBlank()) ? 0 : Integer.parseInt(areaSize.getText());
 				EUnits unitsVal = (units == null) ? EUnits.m2 : EUnits.getEnum(units.getValue());
@@ -125,13 +127,16 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 			} 
 			if(button == ButtonType.CANCEL) {
 				resetFields();
-				zoneCreator.canceled();
+				if(zoneCreator != null) {
+					zoneCreator.canceled();
+				}
 				return null;
 			}
 			return null;
 		});
 		
 		inputDialog.setResizable(false);
+		tabHandler.addListener(this);
 	}
 
 	@Override
@@ -147,13 +152,34 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements IZoneCre
 				inputDialog.initOwner(primaryStage);
 			}
 			Optional<ZoneID> response = inputDialog.showAndWait();
-			if(!response.isEmpty()) {
+			if(!response.isEmpty() && zoneCreator != null) {
 				zoneCreator.setZoneID(response.get());
 			}
 			break;
 		case FINISHED_CREATING_ZONE:
 			break;
 		case CANCELED:
+			break;
+		}
+	}
+
+	@Override
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+		switch (event) {
+		case ADDED_NEW_TAB:
+			break;
+		case CHANGED_SELECTED_TAB:
+			if(zoneCreator != null) {
+				zoneCreator.removeListener(this);
+			}
+			
+			zoneCreator = tabHandler.getSelectedLayoutHandler().getZoneCreator();
+
+			if(zoneCreator != null) {
+				zoneCreator.addListener(this);
+			}
+			break;
+		case REMOVED_TAB:
 			break;
 		}
 	}

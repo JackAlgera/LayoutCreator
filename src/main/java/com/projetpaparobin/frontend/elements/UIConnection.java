@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.objects.zones.Zone;
@@ -19,11 +20,11 @@ public class UIConnection extends UIElement {
 	private UIZoneText uiText;
 	private static double lineWidth = 1.5;
 	
-	public UIConnection(Zone zone, UIZoneText uiText, Point centerPoint, Color rimColor, ViewLayoutAgent viewLayoutAgent) {
-		super(centerPoint.getX(), centerPoint.getY(), false, rimColor, null, viewLayoutAgent);
+	public UIConnection(LayoutHandler layoutHandler, Zone zone, UIZoneText uiText, Point centerPoint, Color rimColor, ViewLayoutAgent viewLayoutAgent) {
+		super(layoutHandler, centerPoint.getX(), centerPoint.getY(), false, rimColor, null, viewLayoutAgent);
 		this.uiText = uiText;
 		this.zone = zone;
-		this.connectionPoint = new UICorner(this, centerPoint, POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
+		this.connectionPoint = new UICorner(layoutHandler, this, centerPoint, POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent);
 		prepareImage();
 	}
 

@@ -15,7 +15,7 @@ public abstract class UIElement {
 	protected static UIColor RESIZE_FILL_COLOR = UIColor.WHITE;
 	protected static UIColor RESIZE_RIM_COLOR = UIColor.BLACK;
 	
-	protected static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	protected LayoutHandler layoutHandler;
 	
 	protected UIColor fillColor;
 	protected Color rimColor;
@@ -27,7 +27,8 @@ public abstract class UIElement {
 	private boolean hasResizeCorner;
 	protected UICorner resizeCorner;
 	
-	public UIElement(double posX, double posY, boolean hasResizeCorner, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
+	public UIElement(LayoutHandler layoutHandler, double posX, double posY, boolean hasResizeCorner, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
+		this.layoutHandler = layoutHandler;
 		this.posX = posX;
 		this.posY = posY;
 		this.viewLayoutAgent = viewLayoutAgent;
@@ -80,7 +81,7 @@ public abstract class UIElement {
 	}
 	
 	public void initResizeCorner(Point p) {
-		this.resizeCorner = new UICorner(this, p, RESIZE_POINT_RADIUS, RESIZE_RIM_COLOR.getColor(), RESIZE_FILL_COLOR, viewLayoutAgent);
+		this.resizeCorner = new UICorner(layoutHandler, this, p, RESIZE_POINT_RADIUS, RESIZE_RIM_COLOR.getColor(), RESIZE_FILL_COLOR, viewLayoutAgent);
 	}
 	
 	public abstract void resize(double newPosY);

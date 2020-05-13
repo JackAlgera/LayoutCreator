@@ -1,5 +1,8 @@
 package com.projetpaparobin.frontend.agents.inputs;
 
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
+import com.projetpaparobin.documents.tabs.ITabHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.frontend.elements.UICorner;
@@ -23,16 +26,17 @@ import com.projetpaparobin.objects.zones.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCreatorListener, ICommentCreatorListener, EventHandler<MouseEvent> {
+public class MouseInputHandler implements ITabHandler, IZoneCreatorListener, IExtinguisherCreatorListener, ICommentCreatorListener, EventHandler<MouseEvent> {
 
 	private static MouseInputHandler instance;
 	
 	private ETypeAction state;
 	private PresentationLayoutAgent presLayout;
 	
-	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
-	private static CommentCreator commentCreator = CommentCreator.getInstance();
+	private static TabHandler tabHandler = TabHandler.getInstance();
+	private static ZoneCreator zoneCreator;
+	private static ExtinguisherCreator extinguisherCreator;
+	private static CommentCreator commentCreator;
 	
 	private static UITextHandler textHandler = UITextHandler.getInstance();
 	private static UIZoneHandler zoneHandler = UIZoneHandler.getInstance();
@@ -48,10 +52,12 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 	private double dY = 0;
 	
 	private MouseInputHandler() {	
+		zoneCreator = null;
+		extinguisherCreator = null;
+		commentCreator = null;
+		
 		state = ETypeAction.IDLE;
-		zoneCreator.addListener(this);
-		extinguisherCreator.addListener(this);
-		commentCreator.addListener(this);
+		tabHandler.addListener(this);
 	}
 	
 	public static MouseInputHandler getInstance() {
@@ -348,6 +354,42 @@ public class MouseInputHandler implements IZoneCreatorListener, IExtinguisherCre
 			break;
 		case CANCELED:
 			state = ETypeAction.IDLE;
+			break;
+		}
+	}
+
+	@Override
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+		switch (event) {
+		case ADDED_NEW_TAB:
+			break;
+		case CHANGED_SELECTED_TAB:			
+			if(zoneCreator != null) {
+				zoneCreator.removeListener(this);
+			}
+			if(extinguisherCreator != null) {
+				extinguisherCreator.removeListener(this);
+			}
+			if(commentCreator != null) {
+				commentCreator.removeListener(this);
+			}
+			
+			zoneCreator = tabHandler.getSelectedLayoutHandler().getZoneCreator();
+			extinguisherCreator = tabHandler.getSelectedLayoutHandler().getExtinguisherCreator();
+			commentCreator = tabHandler.getSelectedLayoutHandler().getCommentCreator();
+
+			if(zoneCreator != null) {
+				zoneCreator.addListener(this);
+			}
+			if(extinguisherCreator != null) {
+				extinguisherCreator.addListener(this);
+			}
+			if(commentCreator != null) {
+				commentCreator.addListener(this);
+			}
+			state = ETypeAction.IDLE;
+			break;
+		case REMOVED_TAB:
 			break;
 		}
 	}

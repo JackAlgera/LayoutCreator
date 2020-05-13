@@ -9,23 +9,19 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Base64;
 
 import javax.imageio.ImageIO;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.objects.creators.comments.CommentCreator;
-import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
-import com.projetpaparobin.objects.creators.zones.ZoneCreator;
+import com.projetpaparobin.documents.tabs.TabHandler;
 
 public class ApplicationStatePersister {
 
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
-	
-	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
-	private static CommentCreator commentCreator = CommentCreator.getInstance();
+	private static TabHandler tabHandler = TabHandler.getInstance();
 	
 	private static JsonMapper mapper = new JsonMapper();
 	
@@ -45,9 +41,13 @@ public class ApplicationStatePersister {
 	}
 	
 	public static void saveState(File file) {
-		ApplicationStatePOJO state = new ApplicationStatePOJO(layoutHandler.getZones(), layoutHandler.getComments(), layoutHandler.getBufImage());
+		ArrayList<ApplicationStatePOJO> layoutStates = new ArrayList<ApplicationStatePOJO>();
+		for (LayoutHandler layoutHandler : tabHandler.getLayoutHandlers()) {
+			layoutStates.add(new ApplicationStatePOJO(layoutHandler.getZones(), layoutHandler.getComments(), layoutHandler.getBufImage()));
+		}
+
 		try {
-			mapper.writeValue(file, state);
+			mapper.writeValue(file, layoutStates);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,23 +57,25 @@ public class ApplicationStatePersister {
 	public static void loadState(File file) {
 		try {
 			String xml = inputStreamToString(new FileInputStream(file));
-			ApplicationStatePOJO state = mapper.readValue(xml, ApplicationStatePOJO.class);
+			ArrayList<ApplicationStatePOJO> layoutStates = mapper.readValue(xml, new TypeReference<ArrayList<ApplicationStatePOJO>>() {});
 
-			layoutHandler.fullReset();
-			layoutHandler.setZones(state.getZones());
-			layoutHandler.setExtinguishers(state.getExtinguishers());
-			layoutHandler.setComments(state.getComments());
+			tabHandler.fullReset();
 			
-			if(state.getBase64Image() != null && !state.getBase64Image().isBlank()) {
-				layoutHandler.setBufImage(ApplicationStatePersister.decodeToImage(state.getBase64Image()));
+			for (ApplicationStatePOJO layoutState : layoutStates) {
+				if(layoutState.getBase64Image() != null && !layoutState.getBase64Image().isBlank()) {
+					BufferedImage buffImage = ApplicationStatePersister.decodeToImage(layoutState.getBase64Image());
+					LayoutHandler newLayoutHandler = new LayoutHandler(buffImage);
+					newLayoutHandler.setZones(layoutState.getZones());
+					newLayoutHandler.setExtinguishers(layoutState.getExtinguishers());
+					newLayoutHandler.setComments(layoutState.getComments());
+					
+					newLayoutHandler.getZoneCreator().canceled();
+					newLayoutHandler.getExtinguisherCreator().canceled();
+					newLayoutHandler.getCommentCreator().canceled();
+					
+					tabHandler.addLayoutHandler(newLayoutHandler);
+				}
 			}
-			
-			zoneCreator.canceled();			
-			extinguisherCreator.canceled();
-			commentCreator.canceled();
-
-			ZoneCreator.getInstance().reset();
-			ExtinguisherCreator.getInstance().reset();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

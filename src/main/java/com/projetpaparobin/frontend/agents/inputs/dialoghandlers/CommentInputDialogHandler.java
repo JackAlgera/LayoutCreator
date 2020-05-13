@@ -2,6 +2,9 @@ package com.projetpaparobin.frontend.agents.inputs.dialoghandlers;
 
 import java.util.Optional;
 
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
+import com.projetpaparobin.documents.tabs.ITabHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.objects.creators.comments.CommentCreator;
 import com.projetpaparobin.objects.creators.comments.ECommentEvent;
 import com.projetpaparobin.objects.creators.comments.ICommentCreatorListener;
@@ -13,11 +16,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
-public class CommentInputDialogHandler extends DialogHandlerAbs implements ICommentCreatorListener {
+public class CommentInputDialogHandler extends DialogHandlerAbs implements ITabHandler, ICommentCreatorListener {
 
 	private static double width = 180;
-	
-	private static CommentCreator commentCreator = CommentCreator.getInstance();
+
+	private static TabHandler tabHandler = TabHandler.getInstance();
+	private static CommentCreator commentCreator = null;
 	
 	private Dialog<String> inputDialog;
 	private TextField text;
@@ -44,14 +48,16 @@ public class CommentInputDialogHandler extends DialogHandlerAbs implements IComm
 				return textVal;
 			} else if(button == ButtonType.CANCEL) {
 				text.setText("");
-				commentCreator.canceled();
+				if(commentCreator != null) {
+					commentCreator.canceled();
+				}
 				return null;
 			}
 			return null;
 		});
 		
 		inputDialog.setResizable(false);
-		commentCreator.addListener(this);
+		tabHandler.addListener(this);
 	}
 			
 	@Override
@@ -64,13 +70,34 @@ public class CommentInputDialogHandler extends DialogHandlerAbs implements IComm
 				inputDialog.initOwner(primaryStage);
 			}
 			Optional<String> response = inputDialog.showAndWait();
-			if(!response.isEmpty()) {
+			if(!response.isEmpty() && commentCreator != null) {				
 				commentCreator.setCommentText(response.get());
 			}
 			break;
 		case FINISHED_CREATING_COMMENT:
 			break;
 		case CANCELED:
+			break;
+		}
+	}
+
+	@Override
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+		switch (event) {
+		case ADDED_NEW_TAB:
+			break;
+		case CHANGED_SELECTED_TAB:
+			if(commentCreator != null) {
+				commentCreator.removeListener(this);
+			}
+			
+			commentCreator = tabHandler.getSelectedLayoutHandler().getCommentCreator();
+
+			if(commentCreator != null) {
+				commentCreator.addListener(this);
+			}
+			break;
+		case REMOVED_TAB:
 			break;
 		}
 	}

@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Point;
@@ -25,8 +26,8 @@ public class UIExtinguisher extends UIElement {
 	private Extinguisher ex;
 	private UIExtinguisherText uiExText;
 	
-	public UIExtinguisher(Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
-		super(ex.getExtinguisherPos().getX(), ex.getExtinguisherPos().getY(), true, Color.BLACK, ex.getColor(), viewLayoutAgent);
+	public UIExtinguisher(LayoutHandler layoutHandler, Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
+		super(layoutHandler, ex.getExtinguisherPos().getX(), ex.getExtinguisherPos().getY(), true, Color.BLACK, ex.getColor(), viewLayoutAgent);
 		this.ex = ex;
 		this.uiExText = null;
 		if(ex.getRadius() <= 0) {

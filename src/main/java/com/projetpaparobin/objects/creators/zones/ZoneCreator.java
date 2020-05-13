@@ -9,27 +9,19 @@ import com.projetpaparobin.objects.zones.Zone;
 
 public class ZoneCreator {
 
-	private static ZoneCreator instance;
-	private static int nbrInstance = 1;
+	private int nbrInstance;
 
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	private LayoutHandler layoutHandler;
 	private EZoneCreationState zoneState;
 	private ArrayList<IZoneCreatorListener> listeners;
 	private Zone currentZone;
 
-	private ZoneCreator() {
+	public ZoneCreator(LayoutHandler layoutHandler) {
+		this.layoutHandler = layoutHandler;
 		nbrInstance = layoutHandler.getHighestZoneNumber();
 		zoneState = EZoneCreationState.NEW_ZONE;
 		listeners = new ArrayList<IZoneCreatorListener>();
 		currentZone = null;
-	}
-
-	public static ZoneCreator getInstance() {
-		if (instance == null) {
-			instance = new ZoneCreator();
-		}
-
-		return instance;
 	}
 
 	public Zone getCurrentZone() {
@@ -85,7 +77,7 @@ public class ZoneCreator {
 		nbrInstance = layoutHandler.getHighestZoneNumber();
 	}
 
-	public static int getDefaultZoneNumber() {
+	public int getDefaultZoneNumber() {
 		return nbrInstance;
 	}
 

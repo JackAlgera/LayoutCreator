@@ -5,9 +5,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
+import com.projetpaparobin.documents.tabs.ITabHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
@@ -40,9 +44,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	private static BigBoiFinalFileGenerator fileGenerator = BigBoiFinalFileGenerator.getInstance();
 	private static DAOPreferencesImpl dao = DAOPreferencesImpl.getInstance();
 	
-	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
-	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
-	private static CommentCreator commentCreator = CommentCreator.getInstance();
+	private static TabHandler tabHandler = TabHandler.getInstance();
 	
 	private FileGenerationDialogHandler fileGenerationInputDialog;
 	
@@ -52,7 +54,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	private MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
 	
 	public SideBarButtonAgent(PresentationLayoutAgent presLayoutAgent, Stage primaryStage, double width, double height) {
-		super(50);
+		super(50);		
 		this.setPadding(new Insets(10, 10, 10, 10));
 		this.setMaxSize(width, height);
 		this.setMinSize(width, height);
@@ -64,7 +66,7 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 				BorderWidths.DEFAULT)));
 		this.presLayoutAgent = presLayoutAgent;
 		this.fileGenerationInputDialog = new FileGenerationDialogHandler(primaryStage);
-		
+				
 		newExtinguisherButton = new Button("Nouveau extincteur");
 		newExtinguisherButton.addEventHandler(ActionEvent.ACTION, this);
 		newZoneButton = new Button("Nouvelle zone");
@@ -125,17 +127,22 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 	
 	@Override
 	public void handle(ActionEvent event) {
+		LayoutHandler layoutHandler = tabHandler.getSelectedLayoutHandler();
+		if(layoutHandler == null) {
+			return;
+		}
+		
 		if(event.getSource().equals(newExtinguisherButton)) {
 			presLayoutAgent.updateCanvas();
-			extinguisherCreator.newExtinguisher();
+			layoutHandler.getExtinguisherCreator().newExtinguisher();
 		} else if(event.getSource().equals(newZoneButton)) {
 			presLayoutAgent.updateCanvas();
-			zoneCreator.newZone();
+			layoutHandler.getZoneCreator().newZone();
 			doneEditingZoneButton.requestFocus();
 		} else if(event.getSource().equals(createCommentButton)) {
-			commentCreator.newComment();
+			layoutHandler.getCommentCreator().newComment();
 		} else if(event.getSource().equals(doneEditingZoneButton)) {
-			zoneCreator.finishedCreatingShape();			
+			layoutHandler.getZoneCreator().finishedCreatingShape();			
 		} else if(event.getSource().equals(createExcelButton)) {
 			String response = fileGenerationInputDialog.showAndWait();
 			if(!response.isBlank()) {
@@ -145,7 +152,9 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 			}
 		} else if(event.getSource().equals(cancelButton)) {
 			mouseInputHandler.cancelSelection();
-			zoneCreator.canceled();
+			layoutHandler.getZoneCreator().canceled();
+			layoutHandler.getCommentCreator().canceled();
+			layoutHandler.getExtinguisherCreator().canceled();
 		} else if(event.getSource().equals(refreshButton)) {
 			presLayoutAgent.updateShapes();
 		}

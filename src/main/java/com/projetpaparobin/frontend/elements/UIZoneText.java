@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
@@ -32,8 +33,8 @@ public class UIZoneText extends UIElement {
 
 	private WritableImage drawnImage;
 		
-	public UIZoneText(Zone zone, UIZone uiZone, ViewLayoutAgent viewLayoutAgent) {
-		super(	(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getCenterX() : zone.getTextAreaPos().getX(),
+	public UIZoneText(LayoutHandler layoutHandler, Zone zone, UIZone uiZone, ViewLayoutAgent viewLayoutAgent) {
+		super(layoutHandler, (zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getCenterX() : zone.getTextAreaPos().getX(),
 				(zone.getTextAreaPos() == null) ? zone.getShape().getArea().getBoundsInLocal().getMinY() : zone.getTextAreaPos().getY(),
 				true, zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
@@ -42,7 +43,7 @@ public class UIZoneText extends UIElement {
 			zone.setTextAreaSize(DEFAULT_TEXT_HEIGHT);
 		}
 		this.textHeight = zone.getTextAreaSize();
-		this.connection = new UIConnection(zone, this, getInitConnectionPos(zone, uiZone, this), zone.getRimColor(), viewLayoutAgent);
+		this.connection = new UIConnection(layoutHandler, zone, this, getInitConnectionPos(zone, uiZone, this), zone.getRimColor(), viewLayoutAgent);
 		prepareImage();
 		initResizeCorner(new Point(posX + hitbox.getWidth() / 2.0, posY - hitbox.getHeight() / 2));
 	}

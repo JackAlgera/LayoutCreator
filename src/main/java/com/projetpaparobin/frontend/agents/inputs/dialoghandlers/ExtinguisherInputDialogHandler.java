@@ -6,6 +6,9 @@ import java.util.stream.Stream;
 
 import org.controlsfx.control.textfield.TextFields;
 
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
+import com.projetpaparobin.documents.tabs.ITabHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.objects.creators.extinguishers.EExtinguisherEvents;
 import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.extinguishers.IExtinguisherCreatorListener;
@@ -28,12 +31,13 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
-public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements IExtinguisherCreatorListener {
+public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements ITabHandler, IExtinguisherCreatorListener {
 
 	private static double DEFAULT_SPACE_BETWEEN_INPUTS = 8;
 	private static double width = 180;
-	
-	private static ExtinguisherCreator extinguisherCreator = ExtinguisherCreator.getInstance();
+
+	private static TabHandler tabHandler = TabHandler.getInstance();
+	private static ExtinguisherCreator extinguisherCreator = null;
 	
 	private Dialog<ExtinguisherID> inputDialog;
 	private ComboBox<String> protectionType;
@@ -133,14 +137,16 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 			} 
 			if(button == ButtonType.CANCEL) {
 				resetFields();
-				extinguisherCreator.canceled();
+				if(extinguisherCreator != null) {
+					extinguisherCreator.canceled();
+				}
 				return null;
 			}
 			return null;
 		});
 		
 		inputDialog.setResizable(true);
-		extinguisherCreator.addListener(this);
+		tabHandler.addListener(this);
 	}
 
 	@Override
@@ -154,13 +160,34 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 				inputDialog.initOwner(primaryStage);
 			}
 			Optional<ExtinguisherID> response = inputDialog.showAndWait();
-			if(!response.isEmpty()) {
+			if(!response.isEmpty() && extinguisherCreator != null) {
 				extinguisherCreator.setExtinguisherID(response.get());
 			}
 			break;		
 		case FINISHED_CREATING_EXTINGUISHER:
 			break;
 		case CANCELED:
+			break;
+		}
+	}
+
+	@Override
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+		switch (event) {
+		case ADDED_NEW_TAB:
+			break;
+		case CHANGED_SELECTED_TAB:
+			if(extinguisherCreator != null) {
+				extinguisherCreator.removeListener(this);
+			}
+			
+			extinguisherCreator = tabHandler.getSelectedLayoutHandler().getExtinguisherCreator();
+
+			if(extinguisherCreator != null) {
+				extinguisherCreator.addListener(this);
+			}
+			break;
+		case REMOVED_TAB:
 			break;
 		}
 	}

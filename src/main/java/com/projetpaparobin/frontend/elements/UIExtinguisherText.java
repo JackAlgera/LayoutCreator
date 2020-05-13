@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
@@ -30,8 +31,8 @@ public class UIExtinguisherText extends UIElement {
 
 	private WritableImage drawnImage;
 		
-	public UIExtinguisherText(Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
-		super(	(ex.getTextAreaPos() == null) ? ex.getExtinguisherPos().getX() : ex.getTextAreaPos().getX(),
+	public UIExtinguisherText(LayoutHandler layoutHandler, Extinguisher ex, ViewLayoutAgent viewLayoutAgent) {
+		super(layoutHandler, (ex.getTextAreaPos() == null) ? ex.getExtinguisherPos().getX() : ex.getTextAreaPos().getX(),
 				(ex.getTextAreaPos() == null) ? ex.getExtinguisherPos().getY() + Y_OFFSET : ex.getTextAreaPos().getY(),
 				true, Color.BLACK, null, viewLayoutAgent);
 		updateDefaultTextSize();

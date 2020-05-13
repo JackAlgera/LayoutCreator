@@ -3,6 +3,7 @@ package com.projetpaparobin.frontend.elements;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.extinguishers.Extinguisher;
 import com.projetpaparobin.objects.zones.Point;
@@ -20,13 +21,13 @@ public class UIZone extends UIElement {
 	private Zone zone;
 	private UIZoneText zoneText;
 	
-	public UIZone(Zone zone, ViewLayoutAgent viewLayoutAgent, boolean isSelected) {
-		super(zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), false, zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
+	public UIZone(LayoutHandler layoutHandler, Zone zone, ViewLayoutAgent viewLayoutAgent, boolean isSelected) {
+		super(layoutHandler, zone.getShape().getPoints().get(0).getX(), zone.getShape().getPoints().get(0).getY(), false, zone.getRimColor(), zone.getFillColor(), viewLayoutAgent);
 		this.zone = zone;
 		this.zoneText = null;
 		this.corners = new ArrayList<UICorner>();
 		for (Point point : zone.getShape().getPoints()) {
-			corners.add(new UICorner(this, point, INIT_POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent));
+			corners.add(new UICorner(layoutHandler, this, point, INIT_POINT_RADIUS, Color.BLACK, UIColor.WHITE, viewLayoutAgent));
 		}
 		this.setIsSelected(isSelected);
 	}

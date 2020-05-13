@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 
 public class MainInterface extends Application {
 
-	private MainUI layout;
-	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		double height = 800;
@@ -29,32 +27,23 @@ public class MainInterface extends Application {
 		addResizeListener(primaryStage);
 		primaryStage.setOnCloseRequest(new ConfirmCloseEventHandler(primaryStage).getConfirmCloseEventHandler());
 
-		layout = new MainUI();
+		MainUI layout = new MainUI(primaryStage, width, height);		
+		layout.setOnKeyPressed(KeyboardInputHandler.getInstance());
 		Scene scene = new Scene(layout);
+		scene.getStylesheets().add("stylesheet.css");
 		primaryStage.setScene(scene);
-
-		FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
-		ChosenInputFilesPOJO file = fileChooser.showAndWait();
-
-    	if(file != null && !file.getLayoutPDFPath().isBlank() && !file.getExcelTemplatePath().isBlank() && file.getLayoutPageNum() > 0) {
-    		layout = new MainUI(primaryStage, width, height, file.getExcelTemplatePath(), file.getLayoutPDFPath(), file.getLayoutPageNum());		
-    		layout.setOnKeyPressed(KeyboardInputHandler.getInstance());
-    		scene = new Scene(layout);
-    		scene.getStylesheets().add("stylesheet.css");
-    		primaryStage.setScene(scene);
-    		primaryStage.show();
-    		
-    		ApplicationStatePersister.startAutomaticSaver(1);
-    	} 
+		primaryStage.show();
+		
+		ApplicationStatePersister.startAutomaticSaver(1);
 	}
 
 	private void addResizeListener(Stage primaryStage) {
-		ChangeListener<Number> sizeListener = (observable, oldValue, newValue) -> {
-			layout.resizePanel(primaryStage.getWidth(), primaryStage.getHeight());
-		};
-
-		primaryStage.widthProperty().addListener(sizeListener);
-		primaryStage.heightProperty().addListener(sizeListener);
+//		ChangeListener<Number> sizeListener = (observable, oldValue, newValue) -> {
+//			layout.resizePanel(primaryStage.getWidth(), primaryStage.getHeight());
+//		};
+//
+//		primaryStage.widthProperty().addListener(sizeListener);
+//		primaryStage.heightProperty().addListener(sizeListener);
 	}
 
 	public static void main(String[] args) {

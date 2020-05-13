@@ -17,6 +17,7 @@ public class MainUI extends VBox {
 	private static double heightRatio = 0.35;
 	
 	private UIMenuBar menuBar;
+	private UITabHandler uiTabBar;
 	
 	private PresentationLayoutAgent layoutPres;
 	private ViewLayoutAgent layoutView;
@@ -28,12 +29,13 @@ public class MainUI extends VBox {
 	public MainUI() {
 	}
 	
-	public MainUI(Stage primaryStage, double width, double height, String excelTemplatePath, String layoutPDFPath, int layoutPageNum) {
+	public MainUI(Stage primaryStage, double width, double height) {
 		super();	
 		menuBar = new UIMenuBar(primaryStage);
+		uiTabBar = new UITabHandler();
 		
 		layoutPres = new PresentationLayoutAgent();
-		layoutView = new ViewLayoutAgent(primaryStage, layoutPDFPath, layoutPageNum, width * widthRatio, height, layoutPres);
+		layoutView = new ViewLayoutAgent(primaryStage, width * widthRatio, height, layoutPres);
 		layoutPres.setView(layoutView);		
 
 		sideBarButtonAgent = new SideBarButtonAgent(layoutPres, primaryStage, width * (1.0 - widthRatio), height * heightRatio);				
@@ -45,7 +47,7 @@ public class MainUI extends VBox {
 		sideBox.setMinSize(width * (1.0 - widthRatio), height);
 		sideBox.setBorder(UIElements.BLACK_BORDER);
 		
-		this.getChildren().addAll(menuBar, new HBox(layoutView, sideBox));
+		this.getChildren().addAll(menuBar, uiTabBar, new HBox(layoutView, sideBox));
 	}	
 
 	public void resizePanel(double width, double height) {

@@ -5,12 +5,12 @@ import java.io.IOException;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.PDFHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.ChosenInputFilesPOJO;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.FileChooseInputDialogHandler;
 import com.projetpaparobin.frontend.agents.settings.SettingsStage;
-import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -19,8 +19,7 @@ import javafx.stage.Stage;
 
 public class UIMenuBar extends MenuBar {
 
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
-	private static ZoneCreator zoneCreator = ZoneCreator.getInstance();
+	private static TabHandler tabHandler = TabHandler.getInstance();
 	private static PDFHandler pdfHandler = PDFHandler.getInstance();
 	
 	private FileSaveInputDialogHandler fileSaveInputDialog;
@@ -45,25 +44,40 @@ public class UIMenuBar extends MenuBar {
 	private void setFileMenu() {
 		fileMenu = new Menu("Fichier");
 
-		MenuItem newItem = new MenuItem("Nouveau");
+		MenuItem newItem = new MenuItem("Nouveau fichier");
 		newItem.setOnAction(event -> {
-			if(areYouSureInputDialog.showAndWait()) {				
+			if(tabHandler.isEmpty() || areYouSureInputDialog.showAndWait()) {				
 				FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
 				ChosenInputFilesPOJO file = fileChooser.showAndWait();
 
-				layoutHandler.fullReset();
-				zoneCreator.canceled();			
+				tabHandler.fullReset();		
 				
 		    	if(file != null && !file.getLayoutPDFPath().isBlank() && !file.getExcelTemplatePath().isBlank() && file.getLayoutPageNum() > 0) {
 					try {
 						BufferedImage bufImage = pdfHandler.getImageFromPDF(file.getLayoutPDFPath(), file.getLayoutPageNum());
-						layoutHandler.setBufImage(bufImage);
+						tabHandler.addLayoutHandler(new LayoutHandler(bufImage));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 		    	} 						
 			}
+		});
+		
+		MenuItem newLayout = new MenuItem("Nouveau plan");
+		newLayout.setOnAction(event -> {		
+			FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
+			ChosenInputFilesPOJO file = fileChooser.showAndWait();
+			
+	    	if(file != null && !file.getLayoutPDFPath().isBlank() && !file.getExcelTemplatePath().isBlank() && file.getLayoutPageNum() > 0) {
+				try {
+					BufferedImage bufImage = pdfHandler.getImageFromPDF(file.getLayoutPDFPath(), file.getLayoutPageNum());
+					tabHandler.addLayoutHandler(new LayoutHandler(bufImage));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	} 	
 		});
 		
 		MenuItem saveItem = new MenuItem("Sauvegarder");
@@ -76,7 +90,7 @@ public class UIMenuBar extends MenuBar {
 			fileSaveInputDialog.showLoadDialog();
 		});		
 		
-		fileMenu.getItems().addAll(newItem, saveItem, loadItem);		
+		fileMenu.getItems().addAll(newItem, newLayout, saveItem, loadItem);		
 	}
 	
 	private void setOptionsMenu() {

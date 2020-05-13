@@ -4,6 +4,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.projetpaparobin.documents.LayoutHandler;
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
+import com.projetpaparobin.documents.tabs.ITabHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
 import com.projetpaparobin.frontend.agents.recapagent.converters.ActivityTypeConverter;
 import com.projetpaparobin.frontend.agents.recapagent.converters.AreaTypeConverter;
@@ -19,8 +22,11 @@ import javafx.scene.control.TableColumn;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-public class ZoneTableView extends UITableViewAbs<Zone> {
+public class ZoneTableView extends UITableViewAbs<Zone> implements ITabHandler {
 
+	private static TabHandler tabHandler = TabHandler.getInstance();
+	private static LayoutHandler selectedLayoutHandler = null;
+	
 	private TableColumn<Zone, String> areaNameColumn;
 	private TableColumn<Zone, EActivityType> activityTypeColumn;
 	private TableColumn<Zone, EAreaType> areaTypeColumn;
@@ -42,7 +48,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 		setColorColumn(width / nbrColumns);
 		
 		this.getColumns().addAll(areaNameColumn, areaTypeColumn, areaNumberColumn, activityTypeColumn, areaSizeColumn, colorColumn); 
-		this.setItems(LayoutHandler.getInstance().getZones());
+		tabHandler.addListener(this);
 	}
 	
 	public void resizePanel(double width, double height) {
@@ -134,6 +140,23 @@ public class ZoneTableView extends UITableViewAbs<Zone> {
 			event.getTableView().getItems().get(event.getTablePosition().getRow()).getId().setAreaSize(newVal);
 			presLayout.updateShapes();
 		});
+	}
+
+	@Override
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+		switch (event) {
+		case ADDED_NEW_TAB:
+			break;
+		case CHANGED_SELECTED_TAB:			
+			selectedLayoutHandler = tabHandler.getSelectedLayoutHandler();
+			
+			if(selectedLayoutHandler != null) {
+				this.setItems(selectedLayoutHandler.getZones());
+			}
+			break;
+		case REMOVED_TAB:
+			break;
+		}
 	}
 	
 }

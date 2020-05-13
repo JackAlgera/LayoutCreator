@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
 import com.projetpaparobin.objects.zones.Point;
 import com.projetpaparobin.utils.UIColor;
@@ -13,8 +14,8 @@ public class UICorner extends UIElement {
 	private UIElement uiElement;
 	private static double lineWidth = 1.0;
 	
-	public UICorner(UIElement uiElement, Point p, double radius, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
-		super(p.getX(), p.getY(), false, rimColor, fillColor, viewLayoutAgent);
+	public UICorner(LayoutHandler layoutHandler, UIElement uiElement, Point p, double radius, Color rimColor, UIColor fillColor, ViewLayoutAgent viewLayoutAgent) {
+		super(layoutHandler, p.getX(), p.getY(), false, rimColor, fillColor, viewLayoutAgent);
 		this.uiElement = uiElement;
 		prepareImage(radius);
 	}

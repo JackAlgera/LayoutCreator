@@ -2,6 +2,8 @@ package com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser;
 
 import java.io.File;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.PreferencesPOJO;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
@@ -45,6 +47,7 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		layoutPath.setPromptText("Nom du fichier");
 		layoutPath.setOnMouseClicked((event) -> {
 			fileChooser.setTitle("Choix du fichier PDF");
+			fileChooser.setInitialDirectory(new File(FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH))));
 			File file = fileChooser.showOpenDialog(primaryStage);
 			if(file != null) {
 				layoutPath.setText(file.getAbsolutePath());
@@ -65,6 +68,7 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		excelPath.setPromptText("Nom du fichier");
 		excelPath.setOnMouseClicked((event) -> {
 			fileChooser.setTitle("Choix du fichier excel");
+			fileChooser.setInitialDirectory(new File(FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH))));
 			File file = fileChooser.showOpenDialog(primaryStage);
 			if(file != null) {
 				excelPath.setText(file.getAbsolutePath());

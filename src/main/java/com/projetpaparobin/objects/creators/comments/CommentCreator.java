@@ -8,27 +8,18 @@ import com.projetpaparobin.objects.zones.Point;
 
 public class CommentCreator {
 
-	private static CommentCreator instance;
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
-	private static int nbrInstance = 1;
+	private LayoutHandler layoutHandler;
 
 	private ECommentCreationState state;
 	private ArrayList<ICommentCreatorListener> listeners;
 	private Comment currentComment;
 
-	private CommentCreator() {
+	public CommentCreator(LayoutHandler layoutHandler) {
+		this.layoutHandler = layoutHandler;
 		state = ECommentCreationState.FINISHED;
 		listeners = new ArrayList<ICommentCreatorListener>();
 	}
-
-	public static CommentCreator getInstance() {
-		if (instance == null) {
-			instance = new CommentCreator();
-		}
-
-		return instance;
-	}
-
+	
 	public Comment getCurrentComment() {
 		return currentComment;
 	}
@@ -58,18 +49,16 @@ public class CommentCreator {
 		if (state == ECommentCreationState.SETTING_TEXT) {
 			state = ECommentCreationState.FINISHED;
 			layoutHandler.addComment(currentComment);
-			nbrInstance++;
 			sendEvent(ECommentEvent.FINISHED_CREATING_COMMENT);
 		}
 	}
 
+	public void reset() {
+	}
+	
 	public void canceled() {
 		state = ECommentCreationState.FINISHED;
 		sendEvent(ECommentEvent.CANCELED);
-	}
-
-	public void reset() {
-		nbrInstance = 1;
 	}
 
 	public void addListener(ICommentCreatorListener listener) {

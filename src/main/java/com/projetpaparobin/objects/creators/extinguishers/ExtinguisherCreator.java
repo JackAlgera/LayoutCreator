@@ -10,8 +10,7 @@ import com.projetpaparobin.objects.zones.Zone;
 
 public class ExtinguisherCreator {
 
-	private static ExtinguisherCreator instance;
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	private LayoutHandler layoutHandler;
 	private static int nbrInstance = 1;
 
 	private EExtinguisherCreationState state;
@@ -19,19 +18,12 @@ public class ExtinguisherCreator {
 	private Zone selectedZone;
 	private Extinguisher currentExtinguisher;
 
-	private ExtinguisherCreator() {
+	public ExtinguisherCreator(LayoutHandler layoutHandler) {
+		this.layoutHandler = layoutHandler;
 		state = EExtinguisherCreationState.FINISHED;
 		listeners = new ArrayList<IExtinguisherCreatorListener>();
 	}
-
-	public static ExtinguisherCreator getInstance() {
-		if (instance == null) {
-			instance = new ExtinguisherCreator();
-		}
-
-		return instance;
-	}
-
+	
 	public Extinguisher getCurrentExtinguisher() {
 		return currentExtinguisher;
 	}

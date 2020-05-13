@@ -1,5 +1,6 @@
 package com.projetpaparobin.frontend.elements;
 
+import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 import com.projetpaparobin.frontend.agents.layout.ViewLayoutAgent;
@@ -29,8 +30,8 @@ public class UIComment extends UIElement {
 	
 	private WritableImage drawnImage;
 		
-	public UIComment(Comment comment, ViewLayoutAgent viewLayoutAgent) {
-		super(comment.getPos().getX(), comment.getPos().getY(), true, comment.getColor().getColor(), null, viewLayoutAgent);
+	public UIComment(LayoutHandler layoutHandler, Comment comment, ViewLayoutAgent viewLayoutAgent) {
+		super(layoutHandler, comment.getPos().getX(), comment.getPos().getY(), true, comment.getColor().getColor(), null, viewLayoutAgent);
 		updateDefaultTextSize();
 		this.comment = comment;
 		if(comment.getTextAreaSize() <= 0) {

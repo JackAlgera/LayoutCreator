@@ -1,11 +1,10 @@
 package com.projetpaparobin.frontend.agents.layout;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 import com.projetpaparobin.documents.ILayoutHandlerListener;
 import com.projetpaparobin.documents.LayoutHandler;
-import com.projetpaparobin.documents.PDFHandler;
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
+import com.projetpaparobin.documents.tabs.ITabHandler;
+import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.CommentInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.ExtinguisherInputDialogHandler;
@@ -22,11 +21,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Window;
 
-public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILayoutHandlerListener {
+public class ViewLayoutAgent extends StackPane implements ITabHandler, IViewLayoutAgent, ILayoutHandlerListener {
 
+	private static TabHandler tabHandler = TabHandler.getInstance();
 	private static MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
-	private static PDFHandler pdfHandler = PDFHandler.getInstance();
-	private static LayoutHandler layoutHandler = LayoutHandler.getInstance();
+	private LayoutHandler layoutHandler;
 	
 	private Image image;
 	private ImageView imageView;
@@ -39,57 +38,40 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 	private double canvasRatio;
 		
 	public ViewLayoutAgent() {
+		layoutHandler = null;
 	}
 	
-	public ViewLayoutAgent(Window primaryStage, String imagePath, int pageNum, double width, double height, PresentationLayoutAgent pres) {
+	public ViewLayoutAgent(Window primaryStage, double width, double height, PresentationLayoutAgent pres) {
 		super();
 		this.setMaxSize(width, height);
 		this.setMinSize(width, height);
 		this.setAlignment(Pos.CENTER);
 		this.pres = pres;		
+		layoutHandler = null;
 		zoneInputDialog = new ZoneInputDialogHandler(primaryStage, pres);
 		extinguisherInputDialog = new ExtinguisherInputDialogHandler(primaryStage);
 		commentInputDialog = new CommentInputDialogHandler(primaryStage);
 		
-		try {
-			BufferedImage bufImage = pdfHandler.getImageFromPDF(imagePath, pageNum);
-			image = SwingFXUtils.toFXImage(bufImage, null);
-			layoutHandler.setBufImage(bufImage);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		imageView = new ImageView(image);
-		imageView.setPreserveRatio(true);
-		imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInputHandler);
-		imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseInputHandler);
-		imageView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseInputHandler);
-		
-		double heightRatio = image.getHeight() / height;
-		double widthRatio = image.getWidth() / width;
-		double aspectRatio = image.getWidth() / image.getHeight();
-		
-		if(heightRatio > widthRatio) {
-			imageView.setFitHeight(height);
-			canvas = new Canvas(height * aspectRatio, height);
-		} else {
-			imageView.setFitWidth(width);
-			canvas = new Canvas(width, width / aspectRatio);
-		}
-		
-		canvas.setMouseTransparent(true);
-		
 		mouseInputHandler.setViewLayoutAgent(this);
-		layoutHandler.addListener(this);
-		this.getChildren().addAll(imageView ,canvas);		
-		this.canvasRatio = getHeight() / getWidth();
+		imageView = null;
+		tabHandler.addListener(this);
 	}
 	
-	public void updateLayoutImage() {		
-		if(layoutHandler.getBufImage() == null) {
+	public void updateLayoutImage(LayoutHandler layoutHandler) {		
+		if(this.layoutHandler != null) {
+			this.layoutHandler.removeListener(this);
+		}
+		
+		this.layoutHandler = layoutHandler;
+		
+		if(layoutHandler == null) {
 			return;
 		}
+		layoutHandler.addListener(this);
+		if(layoutHandler.getBufImage() == null) {
+			imageView = null;
+			return;
+		}		
 		
 		image = SwingFXUtils.toFXImage(layoutHandler.getBufImage(), null);
 
@@ -115,7 +97,9 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 
 	@Override
 	public void cleanCanvas() {
-		canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		if(canvas != null) {
+			canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		}
 	}
 	
 	public double getCanvasWidth() {
@@ -127,6 +111,9 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 	}
 	
 	public void resizePanel(double width, double height) {
+		if(imageView == null) {
+			return;
+		}
 		this.setMaxSize(width, height);
 		this.setMinSize(width, height);
 		
@@ -152,11 +139,26 @@ public class ViewLayoutAgent extends StackPane implements IViewLayoutAgent, ILay
 
 	@Override
 	public void layoutImageUpdated() {
-		updateLayoutImage();
+		updateLayoutImage(layoutHandler);
 	}
 
 	public double getCanvasRatio() {
 		return canvasRatio;
+	}
+
+	@Override
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+		switch (event) {
+		case ADDED_NEW_TAB:
+			break;
+		case CHANGED_SELECTED_TAB:
+			layoutHandler = tabHandler.getSelectedLayoutHandler();
+			updateLayoutImage(layoutHandler);
+			pres.updateShapes();
+			break;
+		case REMOVED_TAB:
+			break;
+		}
 	}
 	
 }
