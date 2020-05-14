@@ -220,7 +220,11 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 	private void updateFields() {
 		switch (extinguisherCreator.getCurrentExtinguisher().getZone().getId().getAreaType()) {
 		case ZB:
-			protectionType.setValue(EProtectionType.PG.toString());
+			if(EProtectionType.getEnum(protectionType.getValue()).equals(EProtectionType.PC)) {
+				protectionType.setValue(EProtectionType.PC.toString());
+			} else {
+				protectionType.setValue(EProtectionType.PG.toString());
+			}
 			break;
 		case ZIP:
 			protectionType.setValue(EProtectionType.PIP.toString());
