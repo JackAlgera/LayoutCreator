@@ -80,16 +80,17 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 				.collect(Collectors.toList())));	
 		protectionType.setPrefWidth(width);
 		protectionType.valueProperty().addListener((observable, oldValue, newValue) -> {
-			if(dialogPane.getScene() == null) {
-				return;
-			}
 			EProtectionType type = EProtectionType.getEnum(newValue);
 			if(type.equals(EProtectionType.PC)) {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, local, fabricationYear, brand, colorComboBox, isNew));
-				dialogPane.getScene().getWindow().sizeToScene();
+				if(dialogPane.getScene() != null) {
+					dialogPane.getScene().getWindow().sizeToScene();
+				}
 			} else {
 				dialogPane.setContent(new VBox(DEFAULT_SPACE_BETWEEN_INPUTS, number, extinguisherType, protectionType, fabricationYear, brand, colorComboBox, isNew));
-				dialogPane.getScene().getWindow().sizeToScene();
+				if(dialogPane.getScene() != null) {
+					dialogPane.getScene().getWindow().sizeToScene();
+				}
 			}
 		});
 		
@@ -161,10 +162,10 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		case CREATING_NEW_EXTINGUISHER:
 			break;
 		case SETTING_NAME:
-			updateFields();
 			if(inputDialog.getOwner() == null) {
 				inputDialog.initOwner(primaryStage);
 			}
+			updateFields();
 			Optional<ExtinguisherID> response = inputDialog.showAndWait();
 			if(!response.isEmpty() && extinguisherCreator != null) {
 				extinguisherCreator.setExtinguisherID(response.get());
