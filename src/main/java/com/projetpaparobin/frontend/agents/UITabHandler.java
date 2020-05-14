@@ -30,7 +30,7 @@ public class UITabHandler extends HBox implements ITabHandler, EventHandler<Acti
 	}
 	
 	@Override
-	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+	public void handleTabHandlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 		case REMOVED_TAB:

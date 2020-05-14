@@ -82,7 +82,7 @@ public class CommentInputDialogHandler extends DialogHandlerAbs implements ITabH
 	}
 
 	@Override
-	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+	public void handleTabHandlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 			break;
