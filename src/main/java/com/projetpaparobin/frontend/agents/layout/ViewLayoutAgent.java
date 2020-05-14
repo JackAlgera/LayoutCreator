@@ -111,11 +111,11 @@ public class ViewLayoutAgent extends StackPane implements ITabHandler, IViewLayo
 	}
 	
 	public void resizePanel(double width, double height) {
+		this.setMaxSize(width, height);
+		this.setMinSize(width, height);
 		if(imageView == null) {
 			return;
 		}
-		this.setMaxSize(width, height);
-		this.setMinSize(width, height);
 		
 		double heightRatio = image.getHeight() / height;
 		double widthRatio = image.getWidth() / width;
