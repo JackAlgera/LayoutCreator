@@ -1,5 +1,7 @@
 package com.projetpaparobin.documents.output;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -468,6 +470,8 @@ public class BigBoiFinalFileGenerator {
 			workbook.write(outputStream);
 			workbook.close();	
 			outputStream.close();
+			
+			Desktop.getDesktop().open(new File(outputName));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
