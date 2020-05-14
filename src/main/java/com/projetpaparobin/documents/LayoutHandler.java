@@ -136,7 +136,6 @@ public class LayoutHandler implements ILayoutHandlerListener {
 		extinguishers.clear();
 		comments.clear();
 		
-		zoneCreator.reset();
 		commentCreator.reset();
 		extinguisherCreator.reset();
 	}
@@ -158,7 +157,7 @@ public class LayoutHandler implements ILayoutHandlerListener {
 	
 	public int getHighestZoneNumber() {
 		if(zones.size() == 0) {
-			return 1;
+			return 0;
 		}
 		
 		int highestNumber = Integer.MIN_VALUE;
@@ -167,7 +166,7 @@ public class LayoutHandler implements ILayoutHandlerListener {
 				highestNumber = zone.getId().getAreaNumber();
 			}
 		}
-		return highestNumber + 1;
+		return highestNumber;
 	}
 	
 	public CommentCreator getCommentCreator() {

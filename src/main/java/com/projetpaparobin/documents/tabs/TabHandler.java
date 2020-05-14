@@ -117,6 +117,21 @@ public class TabHandler implements ITabHandler {
 	
 	public void removeListener(ITabHandler listener) {
 		listeners.remove(listener);
+	}	
+	
+	public int getHighestZoneNumber() {
+		if(layoutHandlers.size() == 0) {
+			return 1;
+		}
+		
+		int highestNumber = Integer.MIN_VALUE;
+		for (LayoutHandler layoutHandler : layoutHandlers) {
+			int highestLayoutNumber = layoutHandler.getHighestZoneNumber();
+			if (highestLayoutNumber > highestNumber) {
+				highestNumber = highestLayoutNumber;
+			}
+		}
+		return highestNumber + 1;
 	}
 	
 }

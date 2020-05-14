@@ -11,6 +11,7 @@ import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDi
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.ChosenInputFilesPOJO;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.FileChooseInputDialogHandler;
 import com.projetpaparobin.frontend.agents.settings.SettingsStage;
+import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -44,8 +45,8 @@ public class UIMenuBar extends MenuBar {
 	private void setFileMenu() {
 		fileMenu = new Menu("Fichier");
 
-		MenuItem newItem = new MenuItem("Nouveau fichier");
-		newItem.setOnAction(event -> {
+		MenuItem newProject = new MenuItem("Nouveau fichier");
+		newProject.setOnAction(event -> {
 			if(tabHandler.isEmpty() || areYouSureInputDialog.showAndWait()) {				
 				FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
 				ChosenInputFilesPOJO file = fileChooser.showAndWait();
@@ -60,7 +61,9 @@ public class UIMenuBar extends MenuBar {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-		    	} 						
+		    	} 		
+		    	
+		    	ZoneCreator.setNbrInstances(1);
 			}
 		});
 		
@@ -86,11 +89,15 @@ public class UIMenuBar extends MenuBar {
 		});
 		
 		MenuItem loadItem = new MenuItem("Ouvrir");
-		loadItem.setOnAction(event -> {
-			fileSaveInputDialog.showLoadDialog();
+		loadItem.setOnAction(event -> {	    	
+			if(tabHandler.isEmpty() || areYouSureInputDialog.showAndWait()) {			
+				fileSaveInputDialog.showLoadDialog();
+		    	ZoneCreator.setNbrInstances(tabHandler.getHighestZoneNumber());
+			}
+	    	
 		});		
 		
-		fileMenu.getItems().addAll(newItem, newLayout, saveItem, loadItem);		
+		fileMenu.getItems().addAll(newProject, newLayout, saveItem, loadItem);		
 	}
 	
 	private void setOptionsMenu() {
