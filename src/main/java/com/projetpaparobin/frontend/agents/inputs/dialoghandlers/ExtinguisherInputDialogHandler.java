@@ -131,12 +131,15 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 				UIColor colorVal = colorComboBox.getValue();
 				String localValue = (local == null) ? "" : local.getText();
 				
-				resetFields();
-				
+				number.setText(ExtinguisherCreator.getDefaultZoneNumberAndOne());
+				extinguisherType.setText(extinguisherTypeVal);
+				fabricationYear.setText("" + fabricationYearVal);
+				brand.setText(brandVal);
+				local.setText(localValue);
+								
 				return new ExtinguisherID(numberVal, extinguisherTypeVal, protectionTypeVal, fabricationYearVal, brandVal, isNewVal, colorVal, localValue);
 			} 
 			if(button == ButtonType.CANCEL) {
-				resetFields();
 				if(extinguisherCreator != null) {
 					extinguisherCreator.canceled();
 				}
@@ -171,6 +174,22 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		}
 	}
 
+	public void resetFields() {
+		fabricationYear.setText("");
+		number.setText("");
+		extinguisherType.setText("");
+		brand.setText("");
+		protectionType.setValue(EProtectionType.values()[0].toString());
+		isNew.setSelected(false);
+		colorComboBox.setValue(EExtinguisherType.getDefaultExtinguisherType().getColor());
+		local.setText("");
+		
+		setErrorStyle(false, fabricationYear);
+		setErrorStyle(false, number);
+		setErrorStyle(false, extinguisherType);
+		setErrorStyle(false, brand);
+	}
+	
 	@Override
 	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
 		switch (event) {
@@ -189,6 +208,9 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 			break;
 		case REMOVED_TAB:
 			break;
+		case FULL_RESET:
+			resetFields();
+			break;
 		}
 	}
 	
@@ -201,22 +223,6 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 			protectionType.setValue(EProtectionType.PIP.toString());
 			break;
 		}
-	}
-	
-	private void resetFields() {
-		fabricationYear.setText("");
-		number.setText("");
-		extinguisherType.setText("");
-		brand.setText("");
-		protectionType.setValue(EProtectionType.values()[0].toString());
-		isNew.setSelected(false);
-		colorComboBox.setValue(EExtinguisherType.getDefaultExtinguisherType().getColor());
-		local.setText("");
-		
-		setErrorStyle(false, fabricationYear);
-		setErrorStyle(false, number);
-		setErrorStyle(false, extinguisherType);
-		setErrorStyle(false, brand);
 	}
 	
 	private boolean checkValuesOk() {
@@ -235,11 +241,11 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 		return allValuesOk;
 	}
 	
-	private void setErrorStyle(boolean hasError, TextField fabricationYear) {
+	private void setErrorStyle(boolean hasError, TextField textField) {
 		if(hasError) {
-			fabricationYear.getStyleClass().add("validation-error");
+			textField.getStyleClass().add("validation-error");
 		} else {
-			fabricationYear.getStyleClass().setAll("text-field", "text-input");
+			textField.getStyleClass().setAll("text-field", "text-input");
 		}
 	}
 	

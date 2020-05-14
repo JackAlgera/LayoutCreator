@@ -99,6 +99,8 @@ public class CommentInputDialogHandler extends DialogHandlerAbs implements ITabH
 			break;
 		case REMOVED_TAB:
 			break;
+		case FULL_RESET:
+			break;
 		}
 	}
 	

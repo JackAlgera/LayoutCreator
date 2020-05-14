@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.projetpaparobin.documents.LayoutHandler;
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
 import com.projetpaparobin.documents.tabs.TabHandler;
 
 public class ApplicationStatePersister {
@@ -76,6 +77,7 @@ public class ApplicationStatePersister {
 					tabHandler.addLayoutHandler(newLayoutHandler);
 				}
 			}
+			tabHandler.handleTabHAndlerEvent(ETabHandlerEvent.FULL_RESET);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

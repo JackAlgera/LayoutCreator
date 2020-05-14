@@ -5,12 +5,14 @@ import java.io.IOException;
 
 import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.PDFHandler;
+import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
 import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.AreYouSureInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileSaveInputDialogHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.ChosenInputFilesPOJO;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.filechooser.FileChooseInputDialogHandler;
 import com.projetpaparobin.frontend.agents.settings.SettingsStage;
+import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
 import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 
 import javafx.scene.control.Menu;
@@ -63,7 +65,9 @@ public class UIMenuBar extends MenuBar {
 					}
 		    	} 		
 		    	
+		    	ExtinguisherCreator.setNbrInstances(1);
 		    	ZoneCreator.setNbrInstances(1);
+				tabHandler.handleTabHAndlerEvent(ETabHandlerEvent.FULL_RESET);
 			}
 		});
 		
@@ -92,6 +96,7 @@ public class UIMenuBar extends MenuBar {
 		loadItem.setOnAction(event -> {	    	
 			if(tabHandler.isEmpty() || areYouSureInputDialog.showAndWait()) {			
 				fileSaveInputDialog.showLoadDialog();
+		    	ExtinguisherCreator.setNbrInstances(tabHandler.getHighestExtinguisherNumber());
 		    	ZoneCreator.setNbrInstances(tabHandler.getHighestZoneNumber());
 			}
 	    	

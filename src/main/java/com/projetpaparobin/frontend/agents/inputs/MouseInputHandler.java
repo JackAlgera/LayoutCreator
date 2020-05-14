@@ -391,6 +391,8 @@ public class MouseInputHandler implements ITabHandler, IZoneCreatorListener, IEx
 			break;
 		case REMOVED_TAB:
 			break;
+		case FULL_RESET:
+			break;
 		}
 	}
 	

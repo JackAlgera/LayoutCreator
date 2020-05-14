@@ -158,6 +158,8 @@ public class ViewLayoutAgent extends StackPane implements ITabHandler, IViewLayo
 			break;
 		case REMOVED_TAB:
 			break;
+		case FULL_RESET:
+			break;
 		}
 	}
 	

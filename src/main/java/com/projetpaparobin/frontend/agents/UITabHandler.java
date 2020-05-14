@@ -45,6 +45,8 @@ public class UITabHandler extends HBox implements ITabHandler, EventHandler<Acti
 			break;
 		case CHANGED_SELECTED_TAB:
 			break;
+		case FULL_RESET:
+			break;
 		}
 	}
 

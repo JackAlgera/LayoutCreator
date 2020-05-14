@@ -181,6 +181,8 @@ public class ZoneInputDialogHandler extends DialogHandlerAbs implements ITabHand
 			break;
 		case REMOVED_TAB:
 			break;
+		case FULL_RESET:
+			break;
 		}
 	}
 	

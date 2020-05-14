@@ -9,15 +9,10 @@ import com.projetpaparobin.documents.LayoutHandler;
 import com.projetpaparobin.documents.output.BigBoiFinalFileGenerator;
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
-import com.projetpaparobin.documents.tabs.ETabHandlerEvent;
-import com.projetpaparobin.documents.tabs.ITabHandler;
 import com.projetpaparobin.documents.tabs.TabHandler;
 import com.projetpaparobin.frontend.agents.inputs.MouseInputHandler;
 import com.projetpaparobin.frontend.agents.inputs.dialoghandlers.FileGenerationDialogHandler;
 import com.projetpaparobin.frontend.agents.layout.PresentationLayoutAgent;
-import com.projetpaparobin.objects.creators.comments.CommentCreator;
-import com.projetpaparobin.objects.creators.extinguishers.ExtinguisherCreator;
-import com.projetpaparobin.objects.creators.zones.ZoneCreator;
 import com.projetpaparobin.utils.UIElements;
 
 import javafx.embed.swing.SwingFXUtils;

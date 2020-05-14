@@ -74,11 +74,24 @@ public class ExtinguisherCreator {
 		}
 	}
 
+	public static String getDefaultZoneNumberAndOne() {
+		int nbrInstanceAndOne = nbrInstance + 1;
+		if (nbrInstanceAndOne < 10) {
+			return "0" + nbrInstanceAndOne;
+		} else {
+			return "" + nbrInstanceAndOne;
+		}
+	}
+	
 	public void canceled() {
 		state = EExtinguisherCreationState.FINISHED;
 		sendEvent(EExtinguisherEvents.CANCELED);
 	}
 
+	public static void setNbrInstances(int nbrInstsances) {
+		ExtinguisherCreator.nbrInstance = nbrInstsances;
+	}
+	
 	public void reset() {
 		nbrInstance = 1;
 	}

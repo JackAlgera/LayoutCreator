@@ -155,6 +155,23 @@ public class LayoutHandler implements ILayoutHandlerListener {
 		}
 	}
 	
+	public int getHighestExtinguisherNumber() {
+		if(zones.size() == 0) {
+			return 0;
+		}
+		
+		int highestNumber = Integer.MIN_VALUE;
+		for (Zone zone : zones) {
+			for (Extinguisher ex : zone.getExtinguishers()) {
+				int exNumber = ex.getNumber().isBlank() ? 0 : Integer.parseInt(ex.getNumber());
+				if(exNumber > highestNumber) {
+					highestNumber = exNumber;
+				}
+			}
+		}
+		return highestNumber;
+	}
+	
 	public int getHighestZoneNumber() {
 		if(zones.size() == 0) {
 			return 0;

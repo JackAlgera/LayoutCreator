@@ -236,6 +236,8 @@ public class PresentationLayoutAgent implements ITabHandler, IZoneCreatorListene
 			break;
 		case REMOVED_TAB:
 			break;
+		case FULL_RESET:
+			break;
 		}
 	}
 	
