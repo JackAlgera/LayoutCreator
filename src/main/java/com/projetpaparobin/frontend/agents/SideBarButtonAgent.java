@@ -164,23 +164,32 @@ public class SideBarButtonAgent extends VBox implements EventHandler<ActionEvent
 		SnapshotParameters sp = new SnapshotParameters();
 	    sp.setFill(Color.TRANSPARENT);	
 	        
-	    try {			
-		    presLayoutAgent.showLayoutWithoutZones();
-		    WritableImage wi = presLayoutAgent.getSnapshot(sp, null);
-			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_plan_sans_zones" + ".png"));
-			
-		    presLayoutAgent.showLayoutWithoutZonesAndOldExtinguishers();
-	        wi = presLayoutAgent.getSnapshot(sp, null);
-			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_extincteurs_nouv_uniquement" + ".png"));
-			
-		    presLayoutAgent.setShouldDrawEverything(true);
-	        wi = presLayoutAgent.getSnapshot(sp, null);
-			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_plan_complet" + ".png"));
+	    try {	
+	    	for (int i = 0; i < tabHandler.getLayoutHandlers().size(); i++) {
+				tabHandler.selectLayoutHandler(i);
+				LayoutHandler layoutHandler = tabHandler.getLayoutHandlers().get(i);
+				saveOneLayout(filePath, layoutHandler, sp);
+			}
+	    	
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	    
 	    resetCheckBoxes();
+	}
+	
+	private void saveOneLayout(String filePath, LayoutHandler layoutHandler, SnapshotParameters sp) throws IOException {
+	    presLayoutAgent.showLayoutWithoutZones();
+	    WritableImage wi = presLayoutAgent.getSnapshot(sp, null);
+		ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_" + layoutHandler.getLayoutName() + "_plan_sans_zones" + ".png"));
+		
+	    presLayoutAgent.showLayoutWithoutZonesAndOldExtinguishers();
+        wi = presLayoutAgent.getSnapshot(sp, null);
+		ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_" + layoutHandler.getLayoutName() + "_extincteurs_nouv_uniquement" + ".png"));
+		
+	    presLayoutAgent.setShouldDrawEverything(true);
+        wi = presLayoutAgent.getSnapshot(sp, null);
+		ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", new File(filePath + "_" + layoutHandler.getLayoutName() + "_plan_complet" + ".png"));
 	}
 	
 	public void resetCheckBoxes() {
