@@ -107,6 +107,7 @@ public class BigBoiFinalFileGenerator {
 		copySheet(industrielleSheet, baseindustrielleSheet);
 		copySheet(tertiaireSheet, basetertiaireSheet);
 		copySheet(recensementSheet, baseRecensementSheet);
+		fillBaseRecensementSheet(baseRecensementSheet);
 		
 		int tertiaireRow = 11;
 		int initTertiaireRow = tertiaireRow;
@@ -188,11 +189,11 @@ public class BigBoiFinalFileGenerator {
 		closeProject(fileInputStream, outputTitle, workbook);
 	}
 	
-	private void copySheet(XSSFSheet baseSheet, XSSFSheet copySheet) {
+	private void copySheet(XSSFSheet fromSheet, XSSFSheet toSheet) {
 		ArrayList<CellStyle> baseCellStyles = new ArrayList<CellStyle>();
-		for (int i = 0; i < baseSheet.getWorkbook().getNumCellStyles(); i++) {
-			CellStyle baseCellStyle = baseSheet.getWorkbook().getCellStyleAt(i);
-			CellStyle copiedCellStyle = copySheet.getWorkbook().createCellStyle();
+		for (int i = 0; i < fromSheet.getWorkbook().getNumCellStyles(); i++) {
+			CellStyle baseCellStyle = fromSheet.getWorkbook().getCellStyleAt(i);
+			CellStyle copiedCellStyle = toSheet.getWorkbook().createCellStyle();
 			
 			copiedCellStyle.cloneStyleFrom(baseCellStyle);	
 			baseCellStyles.add(copiedCellStyle);
@@ -200,8 +201,8 @@ public class BigBoiFinalFileGenerator {
 			
 		int maxColumnNum = 0;
 		
-		for (Row row : baseSheet) {
-			Row newRow = copySheet.createRow(row.getRowNum());
+		for (Row row : fromSheet) {
+			Row newRow = toSheet.createRow(row.getRowNum());
 			
 			if(row.isFormatted()) {
 				CellStyle baseRowStyle = baseCellStyles.get(row.getRowStyle().getIndex());
@@ -258,13 +259,13 @@ public class BigBoiFinalFileGenerator {
 					break;
 				}
 				
-				CellRangeAddress mergedRegion = getMergedRegion(baseSheet, cell);
+				CellRangeAddress mergedRegion = getMergedRegion(fromSheet, cell);
 				if (mergedRegion != null) {
 					CellRangeAddress newMergedRegion = new CellRangeAddress(
 							mergedRegion.getFirstRow(), mergedRegion.getLastRow(), 
 							mergedRegion.getFirstColumn(), mergedRegion.getLastColumn());
 					try {
-						copySheet.addMergedRegion(newMergedRegion);
+						toSheet.addMergedRegion(newMergedRegion);
 					} catch (IllegalStateException e) {
 					}
 				}
@@ -272,9 +273,9 @@ public class BigBoiFinalFileGenerator {
 		}
 		
 		for (int i = 0; i < maxColumnNum; i++) {
-			copySheet.setColumnWidth(i, baseSheet.getColumnWidth(i));
-			if(baseSheet.getColumnStyle(i) != null) {
-				copySheet.setDefaultColumnStyle(i, baseCellStyles.get(baseSheet.getColumnStyle(i).getIndex()));
+			toSheet.setColumnWidth(i, fromSheet.getColumnWidth(i));
+			if(fromSheet.getColumnStyle(i) != null) {
+				toSheet.setDefaultColumnStyle(i, baseCellStyles.get(fromSheet.getColumnStyle(i).getIndex()));
 			}
 		}	
 		
@@ -427,6 +428,10 @@ public class BigBoiFinalFileGenerator {
 		return maxRow;
 	}
 	
+	private void fillBaseRecensementSheet(XSSFSheet sheet) {
+		fillExcelCell(sheet, 5, 16, CellType.FORMULA, dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME) + "!Q6");
+	}
+	
 	private void fillExcelCell(XSSFSheet sheet, int rowNbr, int columnNbr, CellType cellType, Object data) {
 		Row row = (sheet.getRow(rowNbr) == null) ? sheet.createRow(rowNbr) : sheet.getRow(rowNbr);
 		Cell cell = (row.getCell(columnNbr) == null) ? row.createCell(columnNbr) : row.getCell(columnNbr);
@@ -447,6 +452,9 @@ public class BigBoiFinalFileGenerator {
 			break;
 		case _NONE:
 			cell.setCellValue((String) data);
+			break;
+		case FORMULA:
+			cell.setCellFormula((String) data);
 			break;
 		default:
 			break;
