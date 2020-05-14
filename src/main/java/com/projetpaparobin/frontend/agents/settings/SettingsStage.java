@@ -40,6 +40,7 @@ public class SettingsStage {
 		SettingsVariable excelTemplatePath = new SettingsVariable(stage, EPreferencesValues.EXCEL_TEMPLATE_PATH, dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH), EFileType.FILE);
 		SettingsVariable workspacePath = new SettingsVariable(stage, EPreferencesValues.WORKSPACE_PATH, dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH), EFileType.FOLDER);
 
+		SettingsVariable firstSheetName = new SettingsVariable(stage, EPreferencesValues.FIRST_SHEET_NAME, dao.getKeyValue(EPreferencesValues.FIRST_SHEET_NAME), EFileType.STRING);
 		SettingsVariable nbrExtinguishersSheetName = new SettingsVariable(stage, EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME, dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME), EFileType.STRING);
 		SettingsVariable parcIndustrielleSheetName = new SettingsVariable(stage, EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME, dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), EFileType.STRING);
 		SettingsVariable parcTertiaireSheetName = new SettingsVariable(stage, EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME, dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), EFileType.STRING);
@@ -52,7 +53,7 @@ public class SettingsStage {
 		
 		settingsVariables = new ArrayList<SettingsVariable>(Arrays.asList(
 				excelTemplatePath, workspacePath,
-				nbrExtinguishersSheetName, parcIndustrielleSheetName, parcTertiaireSheetName, recensementSheetName,
+				firstSheetName, nbrExtinguishersSheetName, parcIndustrielleSheetName, parcTertiaireSheetName, recensementSheetName,
 				minTextSize, maxExtinguishersRecensementSheet, maxExtinguishersTertiaireSheet, maxExtinguishersIndustrielleSheet
 				));
 		

@@ -22,7 +22,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -91,25 +90,25 @@ public class BigBoiFinalFileGenerator {
 			fileInputStream = new FileInputStream(dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH));
 			workbook = new XSSFWorkbook(fileInputStream);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		List<Extinguisher> extinguishers = new ArrayList<Extinguisher>();
-		
+
 		XSSFSheet industrielleSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME));
 		XSSFSheet tertiaireSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME));
 		XSSFSheet nbrExtinguishersSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME));
 		XSSFSheet recensementSheet = workbook.getSheet(dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME));
 		
-		XSSFWorkbook tempBook = new XSSFWorkbook();
-		XSSFSheet baseindustrielleSheet = tempBook.createSheet(industrielleSheet.getSheetName());	
-		XSSFSheet basetertiaireSheet = tempBook.createSheet(tertiaireSheet.getSheetName());
-		XSSFSheet baseRecensementSheet = tempBook.createSheet(recensementSheet.getSheetName());
-		copySheet(industrielleSheet, baseindustrielleSheet);
-		copySheet(tertiaireSheet, basetertiaireSheet);
-		copySheet(recensementSheet, baseRecensementSheet);
+		ArrayList<XSSFSheet> copiedSheets = new ArrayList<XSSFSheet>();
+		XSSFSheet baseIndustrielleSheet = workbook.cloneSheet(workbook.getSheetIndex(industrielleSheet), industrielleSheet.getSheetName() + "_clone");
+		XSSFSheet baseTertiaireSheet = workbook.cloneSheet(workbook.getSheetIndex(tertiaireSheet), tertiaireSheet.getSheetName() + "_clone");
+		XSSFSheet baseRecensementSheet = workbook.cloneSheet(workbook.getSheetIndex(recensementSheet), recensementSheet.getSheetName() + "_clone");
 		fillBaseRecensementSheet(baseRecensementSheet);
+
+		copiedSheets.add(baseIndustrielleSheet);
+		copiedSheets.add(baseTertiaireSheet);
+		copiedSheets.add(baseRecensementSheet);
 		
 		int tertiaireRow = 11;
 		int initTertiaireRow = tertiaireRow;
@@ -120,10 +119,10 @@ public class BigBoiFinalFileGenerator {
 		
 		ExtinguisherTypePositionHandler positionHandler = new ExtinguisherTypePositionHandler(nbrExtinguishersSheet);
 		
-		int nbrTertiaireSheets = 1;
-		int maxExtinguishersTertiaireSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_TERTIAIRE_SHEET));
-		int nbrIndustrielleSheets = 1;
-		int maxExtinguishersIndustrielleSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_INDUSTRIELLE_SHEET));
+		Integer nbrTertiaireSheets = 1;
+		Integer maxExtinguishersTertiaireSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_TERTIAIRE_SHEET));
+		Integer nbrIndustrielleSheets = 1;
+		Integer maxExtinguishersIndustrielleSheet = Integer.parseInt(dao.getKeyValue(EPreferencesValues.MAX_EXTINGUISHERS_INDUSTRIELLE_SHEET));
 
 		for (LayoutHandler layoutHandler : tabHandler.getLayoutHandlers()) {
 			for (Zone zone : layoutHandler.getZones()) {		
@@ -140,18 +139,24 @@ public class BigBoiFinalFileGenerator {
 	                
 	                extinguishers.add(e);
 	                
-	                if(e.getProtectionType().equals(EProtectionType.PIP)) {
+	                if(e.getProtectionType().equals(EProtectionType.PIP.toString())) {
 	                	containsPIP = true;
 	                }
 	            }
 		            	            
 				switch (zone.getId().getActivityType()) {
-				case INDUSTRIELLE:		
-					industrielleRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), industrielleSheet, baseindustrielleSheet, nbrIndustrielleSheets, industrielleRow, initIndustrielleRow, maxExtinguishersIndustrielleSheet, zone, extinguisherList, containsPIP);
+				case INDUSTRIELLE:	
+					FillActivityResponsePOJO indusResponse = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME), industrielleSheet, baseIndustrielleSheet, nbrIndustrielleSheets, industrielleRow, initIndustrielleRow, maxExtinguishersIndustrielleSheet, zone, extinguisherList, containsPIP);
+					industrielleRow = indusResponse.getRow();
+					nbrIndustrielleSheets = indusResponse.getNbrSheets();
+					industrielleSheet = indusResponse.getSheet();
 					break;
 					
 				case TERTIAIRE:
-					tertiaireRow = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), tertiaireSheet, basetertiaireSheet, nbrTertiaireSheets, tertiaireRow, initTertiaireRow, maxExtinguishersTertiaireSheet, zone, extinguisherList, containsPIP);
+					FillActivityResponsePOJO tertRresponse = fillActivitySheet(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME), tertiaireSheet, baseTertiaireSheet, nbrTertiaireSheets, tertiaireRow, initTertiaireRow, maxExtinguishersTertiaireSheet, zone, extinguisherList, containsPIP);
+					tertiaireRow = tertRresponse.getRow();
+					nbrTertiaireSheets = tertRresponse.getNbrSheets();
+					tertiaireSheet = tertRresponse.getSheet();
 					break;
 				}
 			}
@@ -172,8 +177,8 @@ public class BigBoiFinalFileGenerator {
 				nbrRecensementPages++;
 				String newSheetName = dao.getKeyValue(EPreferencesValues.RECENSEMENT_SHEET_NAME) + nbrRecensementPages;
 				
-				XSSFSheet newSheet = workbook.createSheet(newSheetName);
-				copySheet(baseRecensementSheet, newSheet);
+				XSSFSheet newSheet = workbook.cloneSheet(workbook.getSheetIndex(baseRecensementSheet), newSheetName);
+				workbook.setSheetOrder(newSheetName, workbook.getSheetIndex(recensementSheet.getSheetName()) + 1);
 				recensementSheet = newSheet;
 				recensementRow = initRecensementRow;
 				nbrExtinguishers = 0;
@@ -183,116 +188,9 @@ public class BigBoiFinalFileGenerator {
 			recensementRow++;
 			nbrExtinguishers++;
 		}
-		
-		fillTimeDates(nbrExtinguishersSheet);
-		setNbrPages(nbrExtinguishersSheet, workbook.getNumberOfSheets());
-		
-		XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
-		closeProject(fileInputStream, outputTitle, workbook);
+		closeProject(fileInputStream, outputTitle, workbook, copiedSheets);
 	}
-	
-	private void copySheet(XSSFSheet fromSheet, XSSFSheet toSheet) {
-		ArrayList<CellStyle> baseCellStyles = new ArrayList<CellStyle>();
-		for (int i = 0; i < fromSheet.getWorkbook().getNumCellStyles(); i++) {
-			CellStyle baseCellStyle = fromSheet.getWorkbook().getCellStyleAt(i);
-			CellStyle copiedCellStyle = toSheet.getWorkbook().createCellStyle();
-			
-			copiedCellStyle.cloneStyleFrom(baseCellStyle);	
-			baseCellStyles.add(copiedCellStyle);
-		}
-			
-		int maxColumnNum = 0;
 		
-		for (Row row : fromSheet) {
-			Row newRow = toSheet.createRow(row.getRowNum());
-			
-			if(row.isFormatted()) {
-				CellStyle baseRowStyle = baseCellStyles.get(row.getRowStyle().getIndex());
-				newRow.setRowStyle(baseRowStyle);
-			}
-			
-			newRow.setHeight(row.getHeight());
-			
-			if(row.getLastCellNum() > maxColumnNum) {
-				maxColumnNum = row.getLastCellNum();
-			}
-			
-			int j = row.getFirstCellNum();
-			if (j < 0) {
-				j = 0;
-			}
-			
-			for (; j <= row.getLastCellNum(); j++) {
-				Cell cell = row.getCell(j);
-				Cell newCell = newRow.getCell(j);
-				if(cell == null) {
-					continue;
-				}
-				if(newCell == null) {
-					newCell = newRow.createCell(j);
-				}
-						
-				newCell.setCellStyle(baseCellStyles.get(cell.getCellStyle().getIndex()));
-				
-				switch (cell.getCellType()) {
-				case BLANK:					
-					newCell.setBlank();
-					break;
-				case BOOLEAN:
-					newCell.setCellValue(cell.getBooleanCellValue());
-					break;
-				case ERROR:
-					newCell.setCellErrorValue(cell.getErrorCellValue());
-					break;
-				case FORMULA:
-					newCell.setCellFormula(cell.getCellFormula());
-					break;
-				case NUMERIC:
-					newCell.setCellValue(cell.getNumericCellValue());
-					break;
-				case STRING:
-					newCell.setCellValue(cell.getRichStringCellValue());
-					break;
-				case _NONE:
-					newCell.setBlank();
-					break;
-				default:
-					newCell.setBlank();
-					break;
-				}
-				
-				CellRangeAddress mergedRegion = getMergedRegion(fromSheet, cell);
-				if (mergedRegion != null) {
-					CellRangeAddress newMergedRegion = new CellRangeAddress(
-							mergedRegion.getFirstRow(), mergedRegion.getLastRow(), 
-							mergedRegion.getFirstColumn(), mergedRegion.getLastColumn());
-					try {
-						toSheet.addMergedRegion(newMergedRegion);
-					} catch (IllegalStateException e) {
-					}
-				}
-			}
-		}
-		
-		for (int i = 0; i < maxColumnNum; i++) {
-			toSheet.setColumnWidth(i, fromSheet.getColumnWidth(i));
-			if(fromSheet.getColumnStyle(i) != null) {
-				toSheet.setDefaultColumnStyle(i, baseCellStyles.get(fromSheet.getColumnStyle(i).getIndex()));
-			}
-		}	
-		
-	}
-	
-	private CellRangeAddress getMergedRegion(XSSFSheet sheet, Cell cell) {
-		for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
-			CellRangeAddress mergedRegion = sheet.getMergedRegion(i);
-			if (mergedRegion.isInRange(cell)) {
-				return mergedRegion;
-			}
-		}
-		return null;
-	}
-	
 	private void fillTimeDates(XSSFSheet sheet) {
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 		fillExcelCell(sheet, 17, 1, CellType.STRING, timeFormatter.format(LocalDateTime.now()));
@@ -307,7 +205,7 @@ public class BigBoiFinalFileGenerator {
 		fillExcelCell(sheet, row, 2, CellType.STRING, ex.getZone().getId().getAreaName() + " " + ((ex.getLocal() == null) ? "" : ex.getLocal()));
 		
 		fillExcelCell(sheet, row, 9, CellType.STRING, ex.getZone().getId().getActivityTypeAbbreviation());	
-		if(!ex.getProtectionType().equals(EProtectionType.PIP)) {
+		if(!ex.getProtectionType().equals(EProtectionType.PIP.toString())) {
 			fillExcelCell(sheet, row, 10, CellType.NUMERIC, ex.getZone().getId().getAreaSize());
 		}
 		fillExcelCell(sheet, row, 12, CellType.STRING, ex.getExtinguisherType());
@@ -355,7 +253,7 @@ public class BigBoiFinalFileGenerator {
 		}
 	}
 	
-	private int fillActivitySheet(String sheetName, XSSFSheet sheet, XSSFSheet baseSheet, int nbrSheets, int rowNbr, int initRowNbr, int maxRowNbr, Zone zone, HashMap<TypeExtinguisher, Integer> extinguisherList, boolean containsPIP) {
+	private FillActivityResponsePOJO fillActivitySheet(String sheetName, XSSFSheet sheet, XSSFSheet baseSheet, Integer nbrSheets, int rowNbr, int initRowNbr, int maxRowNbr, Zone zone, HashMap<TypeExtinguisher, Integer> extinguisherList, boolean containsPIP) {
 		int rowNbrPG = rowNbr;
 		int rowNbrPIP = rowNbr;
 		
@@ -395,9 +293,8 @@ public class BigBoiFinalFileGenerator {
 				nbrSheets++;
 				String newSheetName = sheetName + nbrSheets;
 				
-				XSSFSheet newSheet = sheet.getWorkbook().createSheet(newSheetName);
-				sheet.getWorkbook().setSheetOrder(newSheetName, sheet.getWorkbook().getSheetIndex(baseSheet.getSheetName()) + nbrSheets - 1);
-				copySheet(baseSheet, newSheet);
+				XSSFSheet newSheet = sheet.getWorkbook().cloneSheet(sheet.getWorkbook().getSheetIndex(baseSheet), newSheetName);
+				sheet.getWorkbook().setSheetOrder(newSheetName, sheet.getWorkbook().getSheetIndex(sheet.getSheetName()) + 1);
 				sheet = newSheet;
 				rowNbrPG = initRowNbr;
 				rowNbrPIP = initRowNbr;
@@ -415,10 +312,9 @@ public class BigBoiFinalFileGenerator {
 				
 				nbrSheets++;
 				String newSheetName = sheetName + nbrSheets;
-				
-				XSSFSheet newSheet = sheet.getWorkbook().createSheet(newSheetName);
-				sheet.getWorkbook().setSheetOrder(newSheetName, sheet.getWorkbook().getSheetIndex(baseSheet.getSheetName()) + nbrSheets - 1);
-				copySheet(baseSheet, newSheet);
+
+				XSSFSheet newSheet = sheet.getWorkbook().cloneSheet(sheet.getWorkbook().getSheetIndex(baseSheet), newSheetName);
+				sheet.getWorkbook().setSheetOrder(newSheetName, sheet.getWorkbook().getSheetIndex(sheet.getSheetName()) + 1);
 				sheet = newSheet;
 				rowNbrPG = initRowNbr;
 				rowNbrPIP = initRowNbr;
@@ -427,7 +323,7 @@ public class BigBoiFinalFileGenerator {
 		
 		int maxRow = Math.max(rowNbrPG, rowNbrPIP);
 		addTopBorderToCells(maxRow, 1, 20, sheet);
-		return maxRow;
+		return new FillActivityResponsePOJO(maxRow, nbrSheets, sheet);
 	}
 	
 	private void fillBaseRecensementSheet(XSSFSheet sheet) {
@@ -463,8 +359,16 @@ public class BigBoiFinalFileGenerator {
 		}
 	}
 			
-	private void closeProject(FileInputStream fileInputStream, String outputName, XSSFWorkbook workbook) {
-		try {
+	private void closeProject(FileInputStream fileInputStream, String outputName, XSSFWorkbook workbook, ArrayList<XSSFSheet> copiedSheets) {
+		try {			
+			fillTimeDates(workbook.getSheet(dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME)));
+			
+			for (XSSFSheet copiedSheet : copiedSheets) {
+				workbook.removeSheetAt(workbook.getSheetIndex(copiedSheet));
+			}
+			setNbrPages(workbook.getSheet(dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME)), workbook.getNumberOfSheets());
+			XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
+			
 			fileInputStream.close();
 			FileOutputStream outputStream = new FileOutputStream(outputName);
 			workbook.write(outputStream);
@@ -473,7 +377,6 @@ public class BigBoiFinalFileGenerator {
 			
 			Desktop.getDesktop().open(new File(outputName));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}	
