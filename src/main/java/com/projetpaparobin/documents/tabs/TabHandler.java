@@ -52,23 +52,23 @@ public class TabHandler implements ITabHandler {
 	public void selectLayoutHandler(int index) {
 		if(index >= 0 && index < layoutHandlers.size()) {
 			selectedLayoutHandler = layoutHandlers.get(index);
-			handleTabHAndlerEvent(ETabHandlerEvent.CHANGED_SELECTED_TAB);
+			handleTabHandlerEvent(ETabHandlerEvent.CHANGED_SELECTED_TAB);
 		}
 	}
 	
 	public void addLayoutHandler(LayoutHandler layoutHandler) {
 		layoutHandlers.add(layoutHandler);
-		handleTabHAndlerEvent(ETabHandlerEvent.ADDED_NEW_TAB);
+		handleTabHandlerEvent(ETabHandlerEvent.ADDED_NEW_TAB);
 		selectedLayoutHandler = layoutHandler;
-		handleTabHAndlerEvent(ETabHandlerEvent.CHANGED_SELECTED_TAB);
+		handleTabHandlerEvent(ETabHandlerEvent.CHANGED_SELECTED_TAB);
 	}
 	
 	public void removeLayoutHandler(LayoutHandler layoutHandler) {
 		if(layoutHandlers.remove(layoutHandler)) {
-			handleTabHAndlerEvent(ETabHandlerEvent.REMOVED_TAB);
+			handleTabHandlerEvent(ETabHandlerEvent.REMOVED_TAB);
 			if (layoutHandler == selectedLayoutHandler) {
 				selectedLayoutHandler = null;
-				handleTabHAndlerEvent(ETabHandlerEvent.CHANGED_SELECTED_TAB);
+				handleTabHandlerEvent(ETabHandlerEvent.CHANGED_SELECTED_TAB);
 			}
 		}
 	}
@@ -105,9 +105,9 @@ public class TabHandler implements ITabHandler {
 	}
 	
 	@Override
-	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+	public void handleTabHandlerEvent(ETabHandlerEvent event) {
 		for (ITabHandler listener : listeners) {
-			listener.handleTabHAndlerEvent(event);
+			listener.handleTabHandlerEvent(event);
 		}
 	}
 	

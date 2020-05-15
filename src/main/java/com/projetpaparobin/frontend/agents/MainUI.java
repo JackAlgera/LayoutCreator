@@ -51,7 +51,7 @@ public class MainUI extends VBox {
 	}	
 
 	public void resizePanel(double width, double height) {
-		height -= 27 + menuBar.getHeight();
+		height -= 70 + menuBar.getHeight();
 		sideBox.setMaxSize(width * (1.0 - widthRatio), height);
 		sideBox.setMinSize(width * (1.0 - widthRatio), height);
 		

@@ -143,7 +143,7 @@ public class ZoneTableView extends UITableViewAbs<Zone> implements ITabHandler {
 	}
 
 	@Override
-	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+	public void handleTabHandlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 			break;
@@ -155,6 +155,8 @@ public class ZoneTableView extends UITableViewAbs<Zone> implements ITabHandler {
 			}
 			break;
 		case REMOVED_TAB:
+			break;
+		case FULL_RESET:
 			break;
 		}
 	}

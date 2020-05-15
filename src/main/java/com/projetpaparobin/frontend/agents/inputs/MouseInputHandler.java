@@ -359,7 +359,7 @@ public class MouseInputHandler implements ITabHandler, IZoneCreatorListener, IEx
 	}
 
 	@Override
-	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+	public void handleTabHandlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 			break;

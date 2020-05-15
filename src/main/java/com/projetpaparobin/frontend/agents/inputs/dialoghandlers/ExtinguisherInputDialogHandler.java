@@ -195,7 +195,7 @@ public class ExtinguisherInputDialogHandler extends DialogHandlerAbs implements 
 	}
 	
 	@Override
-	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+	public void handleTabHandlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 			break;

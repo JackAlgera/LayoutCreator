@@ -147,7 +147,7 @@ public class ViewLayoutAgent extends StackPane implements ITabHandler, IViewLayo
 	}
 
 	@Override
-	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
+	public void handleTabHandlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 			break;
