@@ -67,7 +67,7 @@ public class UIMenuBar extends MenuBar {
 		    	
 		    	ExtinguisherCreator.setNbrInstances(1);
 		    	ZoneCreator.setNbrInstances(1);
-				tabHandler.handleTabHandlerEvent(ETabHandlerEvent.FULL_RESET);
+				tabHandler.handleTabHAndlerEvent(ETabHandlerEvent.FULL_RESET);
 			}
 		});
 		

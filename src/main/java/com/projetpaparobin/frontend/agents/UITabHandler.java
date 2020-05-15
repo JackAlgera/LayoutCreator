@@ -21,8 +21,8 @@ public class UITabHandler extends HBox implements ITabHandler, EventHandler<Acti
 	
 	public UITabHandler() {
 		super(8);
-		this.setMinHeight(30);
-		this.setMaxHeight(30);
+		this.setMinHeight(40);
+		this.setMaxHeight(40);
 		this.setBorder(UIElements.BLACK_BORDER);
 		tabs = new ArrayList<Button>();
 		
@@ -30,7 +30,7 @@ public class UITabHandler extends HBox implements ITabHandler, EventHandler<Acti
 	}
 	
 	@Override
-	public void handleTabHandlerEvent(ETabHandlerEvent event) {
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 		case REMOVED_TAB:

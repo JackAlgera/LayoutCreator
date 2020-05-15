@@ -367,16 +367,6 @@ public class BigBoiFinalFileGenerator {
 				workbook.removeSheetAt(workbook.getSheetIndex(copiedSheet));
 			}
 			setNbrPages(workbook.getSheet(dao.getKeyValue(EPreferencesValues.NBR_EXTINGUISHERS_SHEET_NAME)), workbook.getNumberOfSheets());
-			for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-				XSSFSheet sheet = workbook.getSheetAt(i);
-				if (sheet.getSheetName().replaceAll("\\d", "").equals(dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME)) || 
-						sheet.getSheetName().replaceAll("\\d", "").equals(dao.getKeyValue(EPreferencesValues.PARC_TERTIAIRE_SHEET_NAME))) {
-					fillExcelCell(sheet, 2, 18, CellType.NUMERIC, i + 1);
-				} else {
-					fillExcelCell(sheet, 2, 17, CellType.NUMERIC, i + 1);					
-				}
-				System.out.println(i + " - " + sheet.getSheetName().replaceAll("\\d", "") + " - " + dao.getKeyValue(EPreferencesValues.PARC_INDUSTRIELLE_SHEET_NAME));
-			}
 			XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
 			
 			fileInputStream.close();

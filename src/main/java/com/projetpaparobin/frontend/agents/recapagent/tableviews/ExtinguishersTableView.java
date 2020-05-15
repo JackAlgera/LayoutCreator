@@ -224,7 +224,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> impleme
 	}
 
 	@Override
-	public void handleTabHandlerEvent(ETabHandlerEvent event) {
+	public void handleTabHAndlerEvent(ETabHandlerEvent event) {
 		switch (event) {
 		case ADDED_NEW_TAB:
 			break;
@@ -241,8 +241,6 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> impleme
 			}
 			break;
 		case REMOVED_TAB:
-			break;
-		case FULL_RESET:
 			break;
 		}
 	}

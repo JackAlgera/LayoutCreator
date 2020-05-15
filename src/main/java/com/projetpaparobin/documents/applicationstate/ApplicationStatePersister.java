@@ -77,7 +77,7 @@ public class ApplicationStatePersister {
 					tabHandler.addLayoutHandler(newLayoutHandler);
 				}
 			}
-			tabHandler.handleTabHandlerEvent(ETabHandlerEvent.FULL_RESET);
+			tabHandler.handleTabHAndlerEvent(ETabHandlerEvent.FULL_RESET);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
