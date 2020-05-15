@@ -21,8 +21,8 @@ public class UITabHandler extends HBox implements ITabHandler, EventHandler<Acti
 	
 	public UITabHandler() {
 		super(8);
-		this.setMinHeight(40);
-		this.setMaxHeight(40);
+		this.setMinHeight(30);
+		this.setMaxHeight(30);
 		this.setBorder(UIElements.BLACK_BORDER);
 		tabs = new ArrayList<Button>();
 		
