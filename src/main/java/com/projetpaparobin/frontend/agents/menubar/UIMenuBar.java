@@ -71,7 +71,7 @@ public class UIMenuBar extends MenuBar {
 			}
 		});
 		
-		MenuItem newLayout = new MenuItem("Nouveau plan");
+		MenuItem newLayout = new MenuItem("Ajouter plan");
 		newLayout.setOnAction(event -> {		
 			FileChooseInputDialogHandler fileChooser = new FileChooseInputDialogHandler(primaryStage);
 			ChosenInputFilesPOJO file = fileChooser.showAndWait();
