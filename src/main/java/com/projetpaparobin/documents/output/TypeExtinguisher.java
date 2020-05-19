@@ -11,7 +11,7 @@ public class TypeExtinguisher {
 	private String local;
 	
 	public TypeExtinguisher(Extinguisher ex) {
-		this.type = ex.getProtectionType();
+		this.type = ex.getExtinguisherType();
 		this.fabricationYear = ex.getFabricationYear();
 		this.protectionType = EProtectionType.getEnum(ex.getProtectionType());
 		this.local = ex.getLocal();
