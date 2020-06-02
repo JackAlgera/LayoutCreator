@@ -86,7 +86,7 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> impleme
 		zoneNames = FXCollections.observableArrayList(tabHandler.getAllZones().stream()
 				.map(zone -> zone.getId().getDefaultAreaName())
 				.collect(Collectors.toList()));
-		
+
 		zoneColumn = createColumn("Zone", maxWidth);
 		zoneColumn.setCellValueFactory(new PropertyValueFactory<Extinguisher, String>("zoneDisplayText"));
 		zoneColumn.setCellFactory(EditableCellComboBox.<Extinguisher, String>forTableColumn(new DefaultStringConverter(), zoneNames));
@@ -112,9 +112,6 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> impleme
 			if(newZone != null) {
 				newZone.addExtinguisher(ex);
 				ex.setZone(newZone);
-			}
-			for (Zone zone : selectedLayoutHandler.getZones()) {
-				System.out.println("zone " + zone.getId().getDefaultAreaName() + ":" + zone.getExtinguishers().size());
 			}
 			presLayout.updateShapes();
 		});
@@ -215,12 +212,6 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> impleme
 		isNewColumn = createColumn("Nouvel\nExtincteur", maxWidth);
 		isNewColumn.setCellValueFactory(v -> v.getValue().isNewProperty());
 		isNewColumn.setCellFactory(CheckBoxTableCell.forTableColumn(isNewColumn));
-		
-//		isNewColumn.setOnEditCommit(event -> {
-//			System.out.println(event.getNewValue());
-//			event.getTableView().getItems().get(event.getTablePosition().getRow()).setIsNew(event.getNewValue());
-//			presLayout.updateShapes();
-//		});
 	}
 
 	@Override
@@ -236,6 +227,10 @@ public class ExtinguishersTableView extends UITableViewAbs<Extinguisher> impleme
 			selectedLayoutHandler = tabHandler.getSelectedLayoutHandler();
 			
 			if(selectedLayoutHandler != null) {
+				zoneNames.clear();
+				for (Zone zone : selectedLayoutHandler.getZones()) {
+					zoneNames.add(zone.getId().getDefaultAreaName());
+				}
 				this.setItems(selectedLayoutHandler.getExtinguishers());
 				selectedLayoutHandler.addZonesListListener(this);
 			}
