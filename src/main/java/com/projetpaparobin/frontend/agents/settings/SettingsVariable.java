@@ -2,6 +2,8 @@ package com.projetpaparobin.frontend.agents.settings;
 
 import java.io.File;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.projetpaparobin.documents.preferences.EPreferencesValues;
 import com.projetpaparobin.documents.preferences.dao.DAOPreferencesImpl;
 
@@ -35,6 +37,13 @@ public class SettingsVariable extends HBox {
 		case FILE:
 			textField.setOnMouseClicked((event) -> {
 				fileChooser.setTitle(key.getDisplayValue());
+				String keyVal = FilenameUtils.getFullPath(dao.getKeyValue(key));
+				String workspacePath = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));
+				if(keyVal != null && !keyVal.isBlank()) {
+					fileChooser.setInitialDirectory(new File(keyVal));
+				} else if(workspacePath != null && !workspacePath.isBlank()) {
+					fileChooser.setInitialDirectory(new File(workspacePath));
+				}
 				File file = fileChooser.showOpenDialog(stage);
 				if(file != null) {
 					textField.setText(file.getAbsolutePath());
@@ -44,6 +53,13 @@ public class SettingsVariable extends HBox {
 		case FOLDER:
 			textField.setOnMouseClicked((event) -> {
 				folderChooser.setTitle(key.getDisplayValue());
+				String keyVal = FilenameUtils.getFullPath(dao.getKeyValue(key));
+				String workspacePath = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));
+				if(keyVal != null && !keyVal.isBlank()) {
+					fileChooser.setInitialDirectory(new File(keyVal));
+				} else if(workspacePath != null && !workspacePath.isBlank()) {
+					fileChooser.setInitialDirectory(new File(workspacePath));
+				}
 				File file = folderChooser.showDialog(stage);
 				if(file != null) {
 					textField.setText(file.getAbsolutePath());

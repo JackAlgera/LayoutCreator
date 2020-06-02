@@ -29,9 +29,13 @@ public class FileSaveInputDialogHandler {
 				new FileChooser.ExtensionFilter("Tout", "*"));
 	}
 	
-	public boolean showSaveDialog() {
+	public boolean showSaveDialog() {		
 		fileChooser.setTitle("Enregistrer sous");
-		fileChooser.setInitialDirectory(new File(FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH))));
+		
+		String initDirect = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));
+		if(initDirect != null && !initDirect.isBlank()) {
+			fileChooser.setInitialDirectory(new File(initDirect));
+		}
 		File saveFile = fileChooser.showSaveDialog(primaryStage);
 		if(saveFile != null) {
 			ApplicationStatePersister.saveState(saveFile);
@@ -42,7 +46,11 @@ public class FileSaveInputDialogHandler {
 	
 	public void showLoadDialog() {
 		fileChooser.setTitle("Ouvrir");
-		fileChooser.setInitialDirectory(new File(FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH))));
+		
+		String initDirect = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));
+		if(initDirect != null && !initDirect.isBlank()) {
+			fileChooser.setInitialDirectory(new File(initDirect));
+		}
 		File loadFile = fileChooser.showOpenDialog(primaryStage);
 		if(loadFile != null) {
 			ApplicationStatePersister.loadState(loadFile);

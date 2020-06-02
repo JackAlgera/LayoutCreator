@@ -47,7 +47,13 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		layoutPath.setPromptText("Nom du fichier");
 		layoutPath.setOnMouseClicked((event) -> {
 			fileChooser.setTitle("Choix du fichier PDF");
-			fileChooser.setInitialDirectory(new File(FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH))));
+			String initPath = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.LAYOUT_PDF_PATH));
+			String workspacePath = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));
+			if(initPath != null && !initPath.isBlank()) {
+				fileChooser.setInitialDirectory(new File(initPath));
+			} else if(workspacePath != null && !workspacePath.isBlank()) {
+				fileChooser.setInitialDirectory(new File(workspacePath));
+			}
 			File file = fileChooser.showOpenDialog(primaryStage);
 			if(file != null) {
 				layoutPath.setText(file.getAbsolutePath());
@@ -68,7 +74,13 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		excelPath.setPromptText("Nom du fichier");
 		excelPath.setOnMouseClicked((event) -> {
 			fileChooser.setTitle("Choix du fichier excel");
-			fileChooser.setInitialDirectory(new File(FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH))));
+			String initPath = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.EXCEL_TEMPLATE_PATH));
+			String workspacePath = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));
+			if(initPath != null && !initPath.isBlank()) {
+				fileChooser.setInitialDirectory(new File(initPath));
+			} else if(workspacePath != null && !workspacePath.isBlank()) {
+				fileChooser.setInitialDirectory(new File(workspacePath));
+			}
 			File file = fileChooser.showOpenDialog(primaryStage);
 			if(file != null) {
 				excelPath.setText(file.getAbsolutePath());
@@ -80,6 +92,10 @@ public class FileChooseInputDialogHandler extends DialogHandlerAbs {
 		workspacePath.setText(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));		
 		workspacePath.setPromptText("Nom du dossier");
 		workspacePath.setOnMouseClicked((event) -> {
+			String workspacePathString = FilenameUtils.getFullPath(dao.getKeyValue(EPreferencesValues.WORKSPACE_PATH));
+			if(workspacePathString != null && !workspacePathString.isBlank()) {
+				fileChooser.setInitialDirectory(new File(workspacePathString));
+			}
 			File file = folderChooser.showDialog(primaryStage);
 			if(file != null) {
 				workspacePath.setText(file.getAbsolutePath());
